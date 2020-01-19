@@ -1,0 +1,18 @@
+C:\Users\ulgeo\OneDrive\Desktop\Phisic\Phisic\obj\Release\Phisic.csprojAssemblyReference.cache
+C:\Users\ulgeo\OneDrive\Desktop\Phisic\Phisic\obj\Release\Phisic.Form1.resources
+C:\Users\ulgeo\OneDrive\Desktop\Phisic\Phisic\obj\Release\Phisic.Properties.Resources.resources
+C:\Users\ulgeo\OneDrive\Desktop\Phisic\Phisic\obj\Release\Phisic.csproj.GenerateResource.cache
+C:\Users\ulgeo\OneDrive\Desktop\Phisic\Phisic\bin\Release\Electrostatic Field v1.0.exe.config
+C:\Users\ulgeo\OneDrive\Desktop\Phisic\Phisic\bin\Release\Electrostatic Field v1.0.exe
+C:\Users\ulgeo\OneDrive\Desktop\Phisic\Phisic\bin\Release\Electrostatic Field v1.0.pdb
+C:\Users\ulgeo\OneDrive\Desktop\Phisic\Phisic\obj\Release\Electrostatic Field v1.0.exe
+C:\Users\ulgeo\OneDrive\Desktop\Phisic\Phisic\obj\Release\Electrostatic Field v1.0.pdb
+C:\Users\ulgeo\OneDrive\Desktop\elstat_v1.1\Phisic\obj\Release\Phisic.csprojAssemblyReference.cache
+C:\Users\ulgeo\OneDrive\Desktop\elstat_v1.1\Phisic\obj\Release\Phisic.Form1.resources
+C:\Users\ulgeo\OneDrive\Desktop\elstat_v1.1\Phisic\obj\Release\Phisic.Properties.Resources.resources
+C:\Users\ulgeo\OneDrive\Desktop\elstat_v1.1\Phisic\obj\Release\Phisic.csproj.GenerateResource.cache
+C:\Users\ulgeo\OneDrive\Desktop\elstat_v1.1\Phisic\bin\Release\elstat_v1.1.exe.config
+C:\Users\ulgeo\OneDrive\Desktop\elstat_v1.1\Phisic\bin\Release\elstat_v1.1.exe
+C:\Users\ulgeo\OneDrive\Desktop\elstat_v1.1\Phisic\bin\Release\elstat_v1.1.pdb
+C:\Users\ulgeo\OneDrive\Desktop\elstat_v1.1\Phisic\obj\Release\elstat_v1.1.exe
+C:\Users\ulgeo\OneDrive\Desktop\elstat_v1.1\Phisic\obj\Release\elstat_v1.1.pdb
