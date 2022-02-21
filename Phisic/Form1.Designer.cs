@@ -551,13 +551,12 @@
             // checkBox4
             // 
             this.checkBox4.AutoSize = true;
-            this.checkBox4.Location = new System.Drawing.Point(770, 542);
+            this.checkBox4.Location = new System.Drawing.Point(770, 565);
             this.checkBox4.Name = "checkBox4";
             this.checkBox4.Size = new System.Drawing.Size(85, 17);
             this.checkBox4.TabIndex = 27;
             this.checkBox4.Text = "Field tension";
             this.checkBox4.UseVisualStyleBackColor = true;
-            this.checkBox4.Visible = false;
             this.checkBox4.CheckedChanged += new System.EventHandler(this.checkBox4_CheckedChanged);
             // 
             // openFileDialog1
@@ -567,12 +566,13 @@
             // checkBox5
             // 
             this.checkBox5.AutoSize = true;
-            this.checkBox5.Location = new System.Drawing.Point(770, 565);
+            this.checkBox5.Location = new System.Drawing.Point(770, 542);
             this.checkBox5.Name = "checkBox5";
             this.checkBox5.Size = new System.Drawing.Size(81, 17);
             this.checkBox5.TabIndex = 28;
             this.checkBox5.Text = "Show E = 0";
             this.checkBox5.UseVisualStyleBackColor = true;
+            this.checkBox5.Visible = false;
             this.checkBox5.CheckedChanged += new System.EventHandler(this.checkBox5_CheckedChanged);
             // 
             // Form1

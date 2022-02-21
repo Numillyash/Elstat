@@ -81,3 +81,5 @@ C:\Users\ulgeo\OneDrive\Desktop\Поделки\InfoNotNow\elstat_v2.4\Phisic\obj
 C:\Users\ulgeo\OneDrive\Desktop\Поделки\InfoNotNow\elstat_v2.4\Phisic\obj\Release\Phisic.csproj.CoreCompileInputs.cache
 C:\Users\ulgeo\OneDrive\Desktop\Поделки\InfoNotNow\elstat_v2.4\Phisic\obj\Release\elstat_v2.4.exe
 C:\Users\ulgeo\OneDrive\Desktop\Поделки\InfoNotNow\elstat_v2.4\Phisic\obj\Release\elstat_v2.4.pdb
+C:\Users\ulgeo\OneDrive\Desktop\Поделки\InfoNotNow\elstat_v2.4\Phisic\bin\Release\TypeOfObjects.dll
+C:\Users\ulgeo\OneDrive\Desktop\Поделки\InfoNotNow\elstat_v2.4\Phisic\bin\Release\TypeOfObjects.pdb

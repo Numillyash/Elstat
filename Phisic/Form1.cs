@@ -337,7 +337,60 @@ namespace Phisic
         /// </summary>
         private void phisica3()
         {
+            double k = 1.045;
+            Brush brush = new SolidBrush(Color.Red);
 
+            Brush brush_bl = new SolidBrush(Color.Black);
+            Brush brush_b = new SolidBrush(Color.Blue);
+            Brush brush_y = new SolidBrush(Color.Yellow);
+            Brush brush_g = new SolidBrush(Color.Green);
+
+            if (tent)
+            {
+                for (int i = 0; i < 800; i++)
+                {
+                    for (int j = 0; j < 800; j++)
+                    {
+                        El_ch el = new El_ch(i, j, false);
+
+                        Vector new_pos = new Vector();
+
+                        foreach (Atom at in atoms)
+                        {
+                            new_pos = vsum(new_pos, at.forcer(el));
+                            //double rad = Math.Sqrt((at.x - x_now) * (at.x - x_now) + (at.y - y_now) * (at.y - y_now));
+                        }
+                        double rad = Math.Sqrt(Math.Pow(new_pos.x, 2) + Math.Pow(new_pos.y, 2));
+                        if (!double.IsNaN(rad) && !double.IsInfinity(rad))
+                        {
+                            if (Math.Log(rad,k) >= 255)
+                            {
+                                _graphics.FillRectangle(new SolidBrush(Color.FromArgb(255, 255, 255)), new Rectangle(i, j, 1, 1));
+
+                            }
+                            else if(Math.Log(rad, k) <= 0)
+                            {
+                                _graphics.FillRectangle(new SolidBrush(Color.FromArgb((int)rad, (int)rad, (int)rad)), new Rectangle(i, j, 1, 1));
+                            }
+                            else
+                            {
+                                _graphics.FillRectangle(new SolidBrush(Color.FromArgb((int)(Math.Log(rad, k)), (int)(Math.Log(rad, k)), (int)(Math.Log(rad, k)))), new Rectangle(i, j, 1, 1));
+                            }
+                        }
+                    }
+                }
+
+            }
+            foreach (Atom at in atoms)
+            {
+                if (at.charge > 0)
+                    _graphics.FillEllipse(brush, new Rectangle(at.x - at.radius / 2, at.y - at.radius / 2, at.radius, at.radius));
+                if (at.charge == 0)
+                    _graphics.FillEllipse(brush_bl, new Rectangle(at.x - at.radius / 2, at.y - at.radius / 2, at.radius, at.radius));
+                if (at.charge < 0)
+                    _graphics.FillEllipse(brush_b, new Rectangle(at.x - at.radius / 2, at.y - at.radius / 2, at.radius, at.radius));
+
+            }
         }
 
         /// <summary>
@@ -359,24 +412,50 @@ namespace Phisic
                         all_one_charge += 1;
                     }
                 }
+                // 10 20 30
+                // 20 30 10
+                // 30 10 20
+
+                int kv_min_x = 800, kv_min_y = 800, kv_max_x = -1, kv_max_y = -1;
+                foreach (Atom at in atoms)
+                {
+                    if (at.x > kv_max_x)
+                        kv_max_x = at.x;
+                    if (at.x < kv_min_x)
+                        kv_min_x = at.x;
+                    if (at.y > kv_max_y)
+                        kv_max_y = at.y;
+                    if (at.y < kv_min_y)
+                        kv_min_y = at.y;
+                }
+
                 if (all_one_charge == 0 || all_one_charge == atoms.Count)
                 {
-                    int n = 0; double e_x = -10, e_y = -10;
+                    double e_x = -10, e_y = -10;
                     int e_0_rad = 10;
-                    foreach (Atom atom in atoms)
+                    for (e_x = kv_min_x; e_x < kv_max_x; e_x+=0.1)
                     {
-                        if (atom.charge != 0)
+                        for (e_y = kv_min_y; e_y < kv_max_y; e_y+=0.1)
                         {
-                            if (e_x == 0 && e_y == 0) { 
-                                e_x = atom.x; e_y = atom.y; n = 1;
+                            El_ch el_Ch = new El_ch(e_x, e_y, false);
+                            Vector summ = new Vector(0, 0);
+                            foreach (Atom at in atoms)
+                            {
+                                summ += at.forcer(el_Ch);
                             }
-                            else{
-                                e_x *= n; e_y *= n; e_x += atom.x; e_y += atom.y; n += 1; e_x /= n; e_y /= n;
+                            if (Math.Abs(summ.GetLong()) <= 0.1)
+                            {
+                                if (atoms.Count > 1)
+                                {
+                                    Brush brush = new SolidBrush(Color.Purple);
+                                    _graphics.FillEllipse(brush, new Rectangle((int)e_x - e_0_rad / 2, (int)e_y - e_0_rad / 2, e_0_rad, e_0_rad));
+                                }
+                                Console.WriteLine(e_x + " " + e_y + " " + summ);
                             }
                         }
                     }
-                    Brush brush = new SolidBrush(Color.Purple);
-                    _graphics.FillEllipse(brush, new Rectangle((int)e_x - e_0_rad / 2, (int)e_y - e_0_rad / 2, e_0_rad, e_0_rad));
+                    
+                    
                 }
             }
         }
@@ -510,9 +589,13 @@ namespace Phisic
                 _graphics.DrawEllipse(new Pen(Color.Purple, 2), new Rectangle(atoms[selected].x - atoms[selected].radius / 2 - 2, atoms[selected].y - atoms[selected].radius / 2 - 2, atoms[selected].radius + 4, atoms[selected].radius + 4));
             }
 
-            phisica3();
-            phisica();
-            phisica2();
+            if (tent)
+                phisica3();
+            else
+            {
+                phisica();
+                phisica2();
+            }
             phisica_E_0();
             Refresh();
         }
@@ -1840,6 +1923,16 @@ namespace Phisic
         public override string ToString()
         {
             return String.Format("{0:0.000000000000}, {1:0.000000000000}", x, y);
+        }
+
+        public static Vector operator +(Vector a, Vector b) 
+        {
+            return new Vector(a.x + b.x, a.y + b.y);
+        }
+
+        public double GetLong()
+        {
+            return Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));
         }
     }
 
