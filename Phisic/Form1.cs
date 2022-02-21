@@ -23,9 +23,14 @@ namespace Phisic
         //Флаги
 
         /// <summary>
-        /// Флаг, отвечающий за рисовку "напряженности" поля
+        /// Флаг, отвечающий за отрисовку "напряженности" поля
         /// </summary>
         bool tent = false;
+
+        /// <summary>
+        /// Флаг, отвечающий за отрисовку точки "нулевой напряженности" поля
+        /// </summary>
+        bool E_0 = false;
 
         /// <summary>
         /// Флаг, отвечающий за темную тему
@@ -171,10 +176,10 @@ namespace Phisic
                 {
                     Vector new_pos = new Vector();
                     know_new_pos(ref kekl, ref new_pos, x_now, y_now);
-                    if (double.IsNaN(new_pos.x) || double.IsNaN(new_pos.y)) continue;
+                    if (double.IsNaN(new_pos.x) || double.IsNaN(new_pos.y)) break;
                     Vector rv = new Vector(new_pos.x / Math.Sqrt(new_pos.x * new_pos.x + new_pos.y * new_pos.y), new_pos.y / Math.Sqrt(new_pos.x * new_pos.x + new_pos.y * new_pos.y));
-                    if (double.IsNaN(rv.x) || double.IsNaN(rv.y)) continue;
-
+                    if (double.IsNaN(rv.x) || double.IsNaN(rv.y)) break;
+                    if ((Math.Abs(x_now + rv.x * k) >= 1000) || (Math.Abs(y_now + rv.y * k) >= 1000)) break;
 
                     draw_arrow(true, new PointF(x_now, y_now), new PointF(x_now + (float)(rv.x * k), y_now + (float)(rv.y * k)));
                     kal++;
@@ -194,16 +199,16 @@ namespace Phisic
         /// <param name="y_now">Текущая координата по Y</param>
         private void drawer_line2(int dk, float k, bool kekl, float x_now, float y_now)
         {
-
             for (int i = 0; i < dk; i++)
             {
                 if (!kekl)
                 {
                     Vector new_pos = new Vector();
                     know_new_pos(ref kekl, ref new_pos, x_now, y_now);
-                    if (double.IsNaN(new_pos.x) || double.IsNaN(new_pos.y)) continue;
+                    if (double.IsNaN(new_pos.x) || double.IsNaN(new_pos.y)) break;
                     Vector rv = new Vector(new_pos.x / Math.Sqrt(new_pos.x * new_pos.x + new_pos.y * new_pos.y), new_pos.y / Math.Sqrt(new_pos.x * new_pos.x + new_pos.y * new_pos.y));
-                    if (double.IsNaN(rv.x) || double.IsNaN(rv.y)) continue;
+                    if (double.IsNaN(rv.x) || double.IsNaN(rv.y)) break;
+                    if ((Math.Abs(x_now + rv.x * k) >= 1000) || (Math.Abs(y_now + rv.y * k) >= 1000)) break;
 
                     draw_arrow(false, new PointF(x_now, y_now), new PointF(x_now - (float)(rv.x * k), y_now - (float)(rv.y * k)));
                     kal++;
@@ -220,7 +225,7 @@ namespace Phisic
         {
             int k = 1;
             kal = 1;
-            int dk = 2500;
+            int dk = 5000;
 
             foreach (El_ch el in points)
             {
@@ -333,6 +338,47 @@ namespace Phisic
         private void phisica3()
         {
 
+        }
+
+        /// <summary>
+        /// Расчет точки нулевой напряженности поля
+        /// </summary>
+        private void phisica_E_0()
+        {
+            if (E_0)
+            {
+                int all_one_charge = 0;
+                foreach (Atom atom in atoms)
+                {
+                    if (atom.charge < 0)
+                    {
+                        all_one_charge += 0;
+                    }
+                    else
+                    {
+                        all_one_charge += 1;
+                    }
+                }
+                if (all_one_charge == 0 || all_one_charge == atoms.Count)
+                {
+                    int n = 0; double e_x = -10, e_y = -10;
+                    int e_0_rad = 10;
+                    foreach (Atom atom in atoms)
+                    {
+                        if (atom.charge != 0)
+                        {
+                            if (e_x == 0 && e_y == 0) { 
+                                e_x = atom.x; e_y = atom.y; n = 1;
+                            }
+                            else{
+                                e_x *= n; e_y *= n; e_x += atom.x; e_y += atom.y; n += 1; e_x /= n; e_y /= n;
+                            }
+                        }
+                    }
+                    Brush brush = new SolidBrush(Color.Purple);
+                    _graphics.FillEllipse(brush, new Rectangle((int)e_x - e_0_rad / 2, (int)e_y - e_0_rad / 2, e_0_rad, e_0_rad));
+                }
+            }
         }
 
         /// <summary>
@@ -467,6 +513,7 @@ namespace Phisic
             phisica3();
             phisica();
             phisica2();
+            phisica_E_0();
             Refresh();
         }
 
@@ -1370,7 +1417,7 @@ namespace Phisic
         /// <param name="e"></param>
         private void checkBox4_CheckedChanged(object sender, EventArgs e)
         {
-            //tent = checkBox4.Checked;
+            tent = checkBox4.Checked;
             paintka();
         }
 
@@ -1542,6 +1589,17 @@ namespace Phisic
 
             writer.Close();
         }//Сохранить как
+
+        /// <summary>
+        /// Вывод точки нулевой напряженности поля
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void checkBox5_CheckedChanged(object sender, EventArgs e)
+        {
+            E_0 = checkBox5.Checked;
+            paintka();
+        }
     }
 
     /// <summary>
