@@ -830,7 +830,7 @@ namespace Phisic
         /// <param name="e"></param>
         private void toolStripMenuItem2_Click(object sender, EventArgs e)
         {
-            if (fill_curr < 32)
+            if (fill_curr < 16)
             {
                 foreach (Atom at in atoms)
                 {
@@ -928,6 +928,8 @@ namespace Phisic
                 if (selected >= 0)
                 {
                     atoms[selected].charge = cha;
+                    atoms[selected].sta = 8 * (int)Math.Sqrt(Math.Abs(cha));
+                    atoms[selected].create_at_els();
                     atoms[selected].radius = Math.Abs((int)(atoms[selected].charge)) / 2 + 10;
                     paintka();
                 }
