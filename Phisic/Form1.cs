@@ -105,11 +105,6 @@ namespace Phisic
         //Списки
 
         /// <summary>
-        /// Список точек для отрисовки линий
-        /// </summary>
-        List<El_ch> points = new List<El_ch> { };
-
-        /// <summary>
         /// Список зарядов
         /// </summary>
         List<Atom> atoms = new List<Atom> { };
@@ -221,18 +216,6 @@ namespace Phisic
             kal = 1;
             int dk = 5000;
 
-            foreach (El_ch el in points)
-            {
-                float x_now = (float)el.x;
-                float y_now = (float)el.y;
-                bool kekl = false;
-                drawer_line1(dk, k, kekl, x_now, y_now);
-                x_now = (float)el.x;
-                y_now = (float)el.y;
-                kekl = false;
-                drawer_line2(dk, k, kekl, x_now, y_now);
-                draw_at();
-            }
             foreach (Atom at in atoms)
             {
                 foreach (El_ch el in at.electrons)
@@ -538,10 +521,6 @@ namespace Phisic
             if (drawer)
             {
                 Brush brush_b = new SolidBrush(Color.Blue);
-                foreach (El_ch el in points)
-                {
-                    _graphics.FillEllipse(brush_b, new Rectangle((int)(el.x - 2), (int)(el.y - 2), 4, 4));
-                }
                 foreach (Atom at in atoms)
                 {
                     foreach (El_ch el in at.electrons)
@@ -640,7 +619,6 @@ namespace Phisic
         private void clear()
         {
             type = Type.PLUS;
-            points = new List<El_ch> { };
             atoms = new List<Atom> { };
             probs = new List<Prob> { };
             selected = -1;
