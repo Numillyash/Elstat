@@ -90,8 +90,8 @@ C:\Users\ulgeo\OneDrive\Desktop\Поделки\InfoNotNow\Elstat\Phisic\obj\Rele
 C:\Users\ulgeo\OneDrive\Desktop\Поделки\InfoNotNow\Elstat\Phisic\obj\Release\Phisic.Properties.Resources.resources
 C:\Users\ulgeo\OneDrive\Desktop\Поделки\InfoNotNow\Elstat\Phisic\obj\Release\Phisic.csproj.GenerateResource.cache
 C:\Users\ulgeo\OneDrive\Desktop\Поделки\InfoNotNow\Elstat\Phisic\obj\Release\Phisic.csproj.CoreCompileInputs.cache
-C:\Users\ulgeo\OneDrive\Desktop\Поделки\InfoNotNow\Elstat\Phisic\bin\Release\elstat_v2.5.exe.config
-C:\Users\ulgeo\OneDrive\Desktop\Поделки\InfoNotNow\Elstat\Phisic\bin\Release\elstat_v2.5.exe
-C:\Users\ulgeo\OneDrive\Desktop\Поделки\InfoNotNow\Elstat\Phisic\bin\Release\elstat_v2.5.pdb
-C:\Users\ulgeo\OneDrive\Desktop\Поделки\InfoNotNow\Elstat\Phisic\obj\Release\elstat_v2.5.exe
-C:\Users\ulgeo\OneDrive\Desktop\Поделки\InfoNotNow\Elstat\Phisic\obj\Release\elstat_v2.5.pdb
+C:\Users\ulgeo\OneDrive\Desktop\Поделки\InfoNotNow\Elstat\Phisic\bin\Release\elstat_v3.0.exe.config
+C:\Users\ulgeo\OneDrive\Desktop\Поделки\InfoNotNow\Elstat\Phisic\bin\Release\elstat_v3.0.exe
+C:\Users\ulgeo\OneDrive\Desktop\Поделки\InfoNotNow\Elstat\Phisic\bin\Release\elstat_v3.0.pdb
+C:\Users\ulgeo\OneDrive\Desktop\Поделки\InfoNotNow\Elstat\Phisic\obj\Release\elstat_v3.0.exe
+C:\Users\ulgeo\OneDrive\Desktop\Поделки\InfoNotNow\Elstat\Phisic\obj\Release\elstat_v3.0.pdb

@@ -39,10 +39,8 @@
             this.moveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.clearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fillToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripMenuItem();
+            this.Fill_Multyple = new System.Windows.Forms.ToolStripMenuItem();
+            this.clearFillToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lineWidthToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem6 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem7 = new System.Windows.Forms.ToolStripMenuItem();
@@ -60,8 +58,6 @@
             this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.loadAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
@@ -180,42 +176,26 @@
             // fillToolStripMenuItem
             // 
             this.fillToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem2,
-            this.toolStripMenuItem3,
-            this.toolStripMenuItem4,
-            this.toolStripMenuItem5});
+            this.Fill_Multyple,
+            this.clearFillToolStripMenuItem});
             this.fillToolStripMenuItem.Name = "fillToolStripMenuItem";
             this.fillToolStripMenuItem.Size = new System.Drawing.Size(34, 20);
             this.fillToolStripMenuItem.Text = "Fill";
             this.fillToolStripMenuItem.Click += new System.EventHandler(this.fillToolStripMenuItem_Click);
             // 
-            // toolStripMenuItem2
+            // Fill_Multyple
             // 
-            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(92, 22);
-            this.toolStripMenuItem2.Text = "10";
-            this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
+            this.Fill_Multyple.Name = "Fill_Multyple";
+            this.Fill_Multyple.Size = new System.Drawing.Size(180, 22);
+            this.Fill_Multyple.Text = "Multiply lines";
+            this.Fill_Multyple.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
             // 
-            // toolStripMenuItem3
+            // clearFillToolStripMenuItem
             // 
-            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(92, 22);
-            this.toolStripMenuItem3.Text = "20";
-            this.toolStripMenuItem3.Click += new System.EventHandler(this.toolStripMenuItem3_Click);
-            // 
-            // toolStripMenuItem4
-            // 
-            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-            this.toolStripMenuItem4.Size = new System.Drawing.Size(92, 22);
-            this.toolStripMenuItem4.Text = "50";
-            this.toolStripMenuItem4.Click += new System.EventHandler(this.toolStripMenuItem4_Click);
-            // 
-            // toolStripMenuItem5
-            // 
-            this.toolStripMenuItem5.Name = "toolStripMenuItem5";
-            this.toolStripMenuItem5.Size = new System.Drawing.Size(92, 22);
-            this.toolStripMenuItem5.Text = "100";
-            this.toolStripMenuItem5.Click += new System.EventHandler(this.toolStripMenuItem5_Click);
+            this.clearFillToolStripMenuItem.Name = "clearFillToolStripMenuItem";
+            this.clearFillToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.clearFillToolStripMenuItem.Text = "Clear fill";
+            this.clearFillToolStripMenuItem.Click += new System.EventHandler(this.clearFillToolStripMenuItem_Click);
             // 
             // lineWidthToolStripMenuItem
             // 
@@ -337,28 +317,6 @@
             this.loadAsToolStripMenuItem.Name = "loadAsToolStripMenuItem";
             this.loadAsToolStripMenuItem.Size = new System.Drawing.Size(32, 19);
             // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(770, 85);
-            this.button2.Margin = new System.Windows.Forms.Padding(4);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(100, 50);
-            this.button2.TabIndex = 4;
-            this.button2.Text = "16 lines";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
-            // button4
-            // 
-            this.button4.Location = new System.Drawing.Point(770, 140);
-            this.button4.Margin = new System.Windows.Forms.Padding(4);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(100, 50);
-            this.button4.TabIndex = 6;
-            this.button4.Text = "8 lines";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
-            // 
             // button3
             // 
             this.button3.Location = new System.Drawing.Point(770, 31);
@@ -371,7 +329,7 @@
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(770, 275);
+            this.textBox1.Location = new System.Drawing.Point(770, 163);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(100, 20);
             this.textBox1.TabIndex = 8;
@@ -389,7 +347,7 @@
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(770, 195);
+            this.button5.Location = new System.Drawing.Point(770, 87);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(100, 50);
             this.button5.TabIndex = 10;
@@ -400,7 +358,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(785, 300);
+            this.label1.Location = new System.Drawing.Point(785, 188);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(12, 13);
             this.label1.TabIndex = 11;
@@ -410,7 +368,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(840, 300);
+            this.label2.Location = new System.Drawing.Point(840, 188);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(12, 13);
             this.label2.TabIndex = 12;
@@ -419,7 +377,7 @@
             // 
             // textBox2
             // 
-            this.textBox2.Location = new System.Drawing.Point(770, 321);
+            this.textBox2.Location = new System.Drawing.Point(770, 209);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(45, 20);
             this.textBox2.TabIndex = 13;
@@ -427,7 +385,7 @@
             // 
             // textBox3
             // 
-            this.textBox3.Location = new System.Drawing.Point(825, 321);
+            this.textBox3.Location = new System.Drawing.Point(825, 209);
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(45, 20);
             this.textBox3.TabIndex = 14;
@@ -436,7 +394,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(790, 255);
+            this.label3.Location = new System.Drawing.Point(790, 143);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(41, 13);
             this.label3.TabIndex = 15;
@@ -445,7 +403,7 @@
             // 
             // button6
             // 
-            this.button6.Location = new System.Drawing.Point(770, 356);
+            this.button6.Location = new System.Drawing.Point(770, 244);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(100, 50);
             this.button6.TabIndex = 16;
@@ -464,7 +422,7 @@
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(770, 412);
+            this.checkBox1.Location = new System.Drawing.Point(770, 300);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(77, 17);
             this.checkBox1.TabIndex = 18;
@@ -475,7 +433,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(770, 440);
+            this.label5.Location = new System.Drawing.Point(770, 328);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(79, 13);
             this.label5.TabIndex = 19;
@@ -484,7 +442,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(770, 461);
+            this.label6.Location = new System.Drawing.Point(770, 349);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(65, 13);
             this.label6.TabIndex = 20;
@@ -601,14 +559,12 @@
             this.Controls.Add(this.button1);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.button3);
-            this.Controls.Add(this.button4);
-            this.Controls.Add(this.button2);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.menuStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "Form1";
-            this.Text = "Electrostatic Field v2.5";
+            this.Text = "Electrostatic Field v3.0";
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.menuStrip1.ResumeLayout(false);
@@ -628,12 +584,7 @@
         private System.Windows.Forms.ToolStripMenuItem elcToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem clearToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem fillToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem3;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem4;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem5;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.ToolStripMenuItem Fill_Multyple;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.ToolStripMenuItem moveToolStripMenuItem;
         private System.Windows.Forms.TextBox textBox1;
@@ -677,6 +628,7 @@
         private System.Windows.Forms.ToolStripMenuItem loadToolStripMenuItem2;
         private System.Windows.Forms.ToolStripMenuItem loadAsToolStripMenuItem1;
         private System.Windows.Forms.CheckBox checkBox5;
+        private System.Windows.Forms.ToolStripMenuItem clearFillToolStripMenuItem;
     }
 }
 

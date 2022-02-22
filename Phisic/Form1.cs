@@ -80,19 +80,22 @@ namespace Phisic
         int selected = -1;
 
         /// <summary>
-        /// Кол-во СЛ, исходящих из атома
-        /// </summary>
-        int dalk = 0;
-
-        /// <summary>
         /// Размер поля для функции заполнения линиями
         /// </summary>
-        int fillk = 750;
+        int fill_curr = 1;
 
         /// <summary>
         /// Тип заряда (+,-,0,пробный)
         /// </summary>
-        int type = 1;
+        Type type = Type.PLUS;
+        enum Type
+        {
+            PLUS,
+            MINUS,
+            NEUTRAL,
+            PROB,
+            MOVE
+        }
 
         /// <summary>
         /// Изначальный заряд
@@ -168,13 +171,14 @@ namespace Phisic
                     if (double.IsNaN(new_pos.x) || double.IsNaN(new_pos.y)) break;
                     Vector rv = new Vector(new_pos.x / Math.Sqrt(new_pos.x * new_pos.x + new_pos.y * new_pos.y), new_pos.y / Math.Sqrt(new_pos.x * new_pos.x + new_pos.y * new_pos.y));
                     if (double.IsNaN(rv.x) || double.IsNaN(rv.y)) break;
-                    if ((Math.Abs(x_now + rv.x * k) >= 1000) || (Math.Abs(y_now + rv.y * k) >= 1000)) break;
 
                     draw_arrow(true, new PointF(x_now, y_now), new PointF(x_now + (float)(rv.x * k), y_now + (float)(rv.y * k)));
                     kal++;
                     x_now += (float)(rv.x * k);
                     y_now += (float)(rv.y * k);
                 }
+                else
+                    break;
             }
         }
 
@@ -197,13 +201,14 @@ namespace Phisic
                     if (double.IsNaN(new_pos.x) || double.IsNaN(new_pos.y)) break;
                     Vector rv = new Vector(new_pos.x / Math.Sqrt(new_pos.x * new_pos.x + new_pos.y * new_pos.y), new_pos.y / Math.Sqrt(new_pos.x * new_pos.x + new_pos.y * new_pos.y));
                     if (double.IsNaN(rv.x) || double.IsNaN(rv.y)) break;
-                    if ((Math.Abs(x_now + rv.x * k) >= 1000) || (Math.Abs(y_now + rv.y * k) >= 1000)) break;
 
                     draw_arrow(false, new PointF(x_now, y_now), new PointF(x_now - (float)(rv.x * k), y_now - (float)(rv.y * k)));
                     kal++;
                     x_now -= (float)(rv.x * k);
                     y_now -= (float)(rv.y * k);
                 }
+                else
+                    break;
             }
         }
 
@@ -228,6 +233,22 @@ namespace Phisic
                 drawer_line2(dk, k, kekl, x_now, y_now);
                 draw_at();
             }
+            foreach (Atom at in atoms)
+            {
+                foreach (El_ch el in at.electrons)
+                {
+                    float x_now = (float)el.x;
+                    float y_now = (float)el.y;
+                    bool kekl = false;
+                    drawer_line1(dk, k, kekl, x_now, y_now);
+                    x_now = (float)el.x;
+                    y_now = (float)el.y;
+                    kekl = false;
+                    drawer_line2(dk, k, kekl, x_now, y_now);
+                    draw_at();
+                }
+
+            }
         }
 
         /// <summary>
@@ -245,6 +266,7 @@ namespace Phisic
                 double rad = Math.Sqrt((at.x - x_now) * (at.x - x_now) + (at.y - y_now) * (at.y - y_now));
                 if (rad < 5 && at.charge != 0) kekl = true;
             }
+            if ((Math.Abs(x_now) >= 1500) || (Math.Abs(y_now) >= 1500)) kekl = true;
         }
 
         /// <summary>
@@ -270,9 +292,9 @@ namespace Phisic
                     bool d = false;
                     know_new_pos(ref d, ref new_pos, x_now, y_now);
 
-                    if (double.IsNaN(new_pos.x) || double.IsNaN(new_pos.y)) continue;
+                    if (double.IsNaN(new_pos.x) || double.IsNaN(new_pos.y)) break;
                     Vector rv = new Vector(new_pos.x / Math.Sqrt(new_pos.x * new_pos.x + new_pos.y * new_pos.y), new_pos.y / Math.Sqrt(new_pos.x * new_pos.x + new_pos.y * new_pos.y));
-                    if (double.IsNaN(rv.x) || double.IsNaN(rv.y)) continue;
+                    if (double.IsNaN(rv.x) || double.IsNaN(rv.y)) break;
 
                     float a = x_now, b = y_now;
                     x_now = (float)(2 * x_now - x_old + rv.x * k2 * k2);
@@ -283,6 +305,8 @@ namespace Phisic
                     _graphics.FillEllipse(brush_bl, new RectangleF(x_now - 2, y_now - 2, 4, 4));
                     _graphics.DrawLine(new Pen(brush_y), new PointF(x_old, y_old), new PointF(x_now, y_now));
                 }
+                else
+                    break;
             }
         }
 
@@ -322,7 +346,7 @@ namespace Phisic
         }
 
         /// <summary>
-        /// Расчет напряженности поля (не используется)
+        /// Расчет напряженности поля
         /// </summary>
         private void phisica3()
         {
@@ -352,12 +376,12 @@ namespace Phisic
                         double rad = Math.Sqrt(Math.Pow(new_pos.x, 2) + Math.Pow(new_pos.y, 2));
                         if (!double.IsNaN(rad) && !double.IsInfinity(rad))
                         {
-                            if (Math.Log(rad,k) >= 255)
+                            if (Math.Log(rad, k) >= 255)
                             {
                                 _graphics.FillRectangle(new SolidBrush(Color.FromArgb(255, 255, 255)), new Rectangle(i, j, 1, 1));
 
                             }
-                            else if(Math.Log(rad, k) <= 0)
+                            else if (Math.Log(rad, k) <= 0)
                             {
                                 _graphics.FillRectangle(new SolidBrush(Color.FromArgb((int)rad, (int)rad, (int)rad)), new Rectangle(i, j, 1, 1));
                             }
@@ -378,12 +402,11 @@ namespace Phisic
                     _graphics.FillEllipse(brush_bl, new Rectangle(at.x - at.radius / 2, at.y - at.radius / 2, at.radius, at.radius));
                 if (at.charge < 0)
                     _graphics.FillEllipse(brush_b, new Rectangle(at.x - at.radius / 2, at.y - at.radius / 2, at.radius, at.radius));
-
             }
         }
 
         /// <summary>
-        /// Расчет точки нулевой напряженности поля
+        /// Расчет точки нулевой напряженности поля (не используется)
         /// </summary>
         private void phisica_E_0()
         {
@@ -423,9 +446,9 @@ namespace Phisic
                 {
                     double e_x = -10, e_y = -10;
                     int e_0_rad = 10;
-                    for (e_x = kv_min_x; e_x < kv_max_x; e_x+=0.1)
+                    for (e_x = kv_min_x; e_x < kv_max_x; e_x += 0.1)
                     {
-                        for (e_y = kv_min_y; e_y < kv_max_y; e_y+=0.1)
+                        for (e_y = kv_min_y; e_y < kv_max_y; e_y += 0.1)
                         {
                             El_ch el_Ch = new El_ch(e_x, e_y, false);
                             Vector summ = new Vector(0, 0);
@@ -444,8 +467,8 @@ namespace Phisic
                             }
                         }
                     }
-                    
-                    
+
+
                 }
             }
         }
@@ -512,10 +535,19 @@ namespace Phisic
         /// </summary>
         private void draw_el()
         {
-            Brush brush_b = new SolidBrush(Color.Blue);
-            foreach (El_ch el in points)
+            if (drawer)
             {
-                if (drawer) _graphics.FillEllipse(brush_b, new Rectangle((int)(el.x - 2), (int)(el.y - 2), 4, 4));
+                Brush brush_b = new SolidBrush(Color.Blue);
+                foreach (El_ch el in points)
+                {
+                    _graphics.FillEllipse(brush_b, new Rectangle((int)(el.x - 2), (int)(el.y - 2), 4, 4));
+                }
+                foreach (Atom at in atoms)
+                {
+                    foreach (El_ch el in at.electrons)
+                        _graphics.FillEllipse(brush_b, new Rectangle((int)(el.x - 2), (int)(el.y - 2), 4, 4));
+
+                }
             }
         }
 
@@ -591,51 +623,6 @@ namespace Phisic
         }
 
         /// <summary>
-        /// Присваивание данному атому електрона на i-ю позицию. 8 зарядов максимум
-        /// </summary>
-        /// <param name="at">Атом</param>
-        /// <param name="i">Номер позиции</param>
-        private void create_at_els_8(Atom at, int i)
-        {
-            double[] x8 = new double[16] { -30, 0, 0, -30, 0, 30, 30, 0, 30 * 0.707, 30 * 0.707, 30 * 0.707, -30 * 0.707, -30 * 0.707, 30 * 0.707, -30 * 0.707, -30 * 0.707 };
-            El_ch ela = new El_ch(at.x + x8[2 * i], at.y + x8[2 * i + 1], false);
-            points.Add(ela);
-            at.x8[i] = points.Count - 1;
-        }
-
-        /// <summary>
-        /// Присваивание данному атому електрона на i-ю позицию. 16 зарядов максимум
-        /// </summary>
-        /// <param name="at">Атом</param>
-        /// <param name="i">Номер позиции</param>
-        private void create_at_els_16(Atom at, int i)
-        {
-            double pi = Math.PI / 8;
-            double[] x8 = new double[32]
-            {
-                - 30 * Math.Cos(pi * 0), - 30 * Math.Sin(pi * 0),
-                - 30 * Math.Cos(pi * 1), - 30 * Math.Sin(pi * 1),
-                - 30 * Math.Cos(pi * 2), - 30 * Math.Sin(pi * 2),
-                - 30 * Math.Cos(pi * 3), - 30 * Math.Sin(pi * 3),
-                - 30 * Math.Cos(pi * 4), - 30 * Math.Sin(pi * 4),
-                - 30 * Math.Cos(pi * 5), - 30 * Math.Sin(pi * 5),
-                - 30 * Math.Cos(pi * 6), - 30 * Math.Sin(pi * 6),
-                - 30 * Math.Cos(pi * 7), - 30 * Math.Sin(pi * 7),
-                30 * Math.Cos(pi * 0), 30 * Math.Sin(pi * 0),
-                30 * Math.Cos(pi * 1), 30 * Math.Sin(pi * 1),
-                30 * Math.Cos(pi * 2), 30 * Math.Sin(pi * 2),
-                30 * Math.Cos(pi * 3), 30 * Math.Sin(pi * 3),
-                30 * Math.Cos(pi * 4), 30 * Math.Sin(pi * 4),
-                30 * Math.Cos(pi * 5), 30 * Math.Sin(pi * 5),
-                30 * Math.Cos(pi * 6), 30 * Math.Sin(pi * 6),
-                30 * Math.Cos(pi * 7), 30 * Math.Sin(pi * 7),
-            };
-            El_ch ela = new El_ch(at.x + x8[2 * i], at.y + x8[2 * i + 1], false);
-            points.Add(ela);
-            at.x16[i] = points.Count - 1;
-        }
-
-        /// <summary>
         /// Создание атома с параметрами координат и заряда
         /// </summary>
         /// <param name="x">Координата по Х</param>
@@ -643,24 +630,8 @@ namespace Phisic
         /// <param name="ch">Модуль заряда</param>
         private void create_atom(int x, int y, int ch)
         {
-            Atom at = new Atom(x, y, ch);
+            Atom at = new Atom(x, y, ch, fill_curr);
             atoms.Add(at);
-            if (dalk == 0)
-            {
-                for (int i = 0; i < 8; i += 1)
-                {
-                    create_at_els_8(at, i);
-                }
-                at.sta = 8;
-            }
-            else
-            {
-                for (int i = 0; i < 16; i += 1)
-                {
-                    create_at_els_16(at, i);
-                }
-                at.sta = 16;
-            }
         }
 
         /// <summary>
@@ -668,7 +639,7 @@ namespace Phisic
         /// </summary>
         private void clear()
         {
-            type = 1;
+            type = Type.PLUS;
             points = new List<El_ch> { };
             atoms = new List<Atom> { };
             probs = new List<Prob> { };
@@ -705,7 +676,7 @@ namespace Phisic
         {
             selected = -1;
             paintka();
-            type = 2;
+            type = Type.MINUS;
         }
 
         /// <summary>
@@ -716,7 +687,7 @@ namespace Phisic
         private void plusToolStripMenuItem_Click(object sender, EventArgs e)
         {
             selected = -1;
-            type = 1;
+            type = Type.PLUS;
             paintka();
         }
 
@@ -728,7 +699,7 @@ namespace Phisic
         private void elcToolStripMenuItem_Click(object sender, EventArgs e)
         {
             selected = -1;
-            type = 3;
+            type = Type.PROB;
             paintka();
         }
 
@@ -754,19 +725,19 @@ namespace Phisic
             selected = -1;
             switch (type)
             {
-                case 1:
+                case Type.PLUS:
                     dow = true;
                     create_atom(e.X, e.Y, Math.Abs(cha));
                     break;
-                case 2:
+                case Type.MINUS:
                     dow = true;
                     create_atom(e.X, e.Y, -Math.Abs(cha));
                     break;
-                case 3:
+                case Type.PROB:
                     Prob el = new Prob(e.X, e.Y, false);
                     probs.Add(el);
                     break;
-                case 7:
+                case Type.MOVE:
                     foreach (Atom atom in atoms)
                     {
                         double rad = Math.Sqrt((atom.x - e.X) * (atom.x - e.X) + (atom.y - e.Y) * (atom.y - e.Y));
@@ -778,7 +749,7 @@ namespace Phisic
                         }
                     }
                     break;
-                case 10:
+                case Type.NEUTRAL:
                     dow = true;
                     create_atom(e.X, e.Y, 0);
                     break;
@@ -788,93 +759,26 @@ namespace Phisic
         }
 
         /// <summary>
-        /// Смена положения атома и его електронов (8)
+        /// Смена положения атома и его електронов
         /// </summary>
         /// <param name="e"></param>
-        private void changer_atom_0(MouseEventArgs e)
+        private void changer_atom(MouseEventArgs e)
         {
             atoms[atoms.Count - 1].x = e.X;
             atoms[atoms.Count - 1].y = e.Y;
-            points[points.Count - 8] = new El_ch(e.X - 30, e.Y, false);
-            points[points.Count - 7] = new El_ch(e.X, e.Y - 30, false);
-            points[points.Count - 6] = new El_ch(e.X, e.Y + 30, false);
-            points[points.Count - 5] = new El_ch(e.X + 30, e.Y, false);
-            points[points.Count - 4] = new El_ch(e.X + 30 * 0.707, e.Y + 30 * 0.707, false);
-            points[points.Count - 3] = new El_ch(e.X + 30 * 0.707, e.Y - 30 * 0.707, false);
-            points[points.Count - 2] = new El_ch(e.X - 30 * 0.707, e.Y + 30 * 0.707, false);
-            points[points.Count - 1] = new El_ch(e.X - 30 * 0.707, e.Y - 30 * 0.707, false);
+            atoms[atoms.Count - 1].create_at_els();
         }
 
         /// <summary>
-        /// Смена положения атома и его електронов (16)
+        /// Смена положения выделенного атома и его електронов
         /// </summary>
         /// <param name="e"></param>
-        private void changer_atom_1(MouseEventArgs e)
-        {
-            atoms[atoms.Count - 1].x = e.X;
-            atoms[atoms.Count - 1].y = e.Y;
-            points[points.Count - 16] = new El_ch(e.X - 30 * Math.Cos(Math.PI * 0), e.Y - 30 * Math.Sin(Math.PI * 0), false);
-            points[points.Count - 15] = new El_ch(e.X - 30 * Math.Cos(Math.PI / 8), e.Y - 30 * Math.Sin(Math.PI / 8), false);
-            points[points.Count - 14] = new El_ch(e.X - 30 * Math.Cos(Math.PI / 4), e.Y - 30 * Math.Sin(Math.PI / 4), false);
-            points[points.Count - 13] = new El_ch(e.X - 30 * Math.Cos(Math.PI / 8 * 3), e.Y - 30 * Math.Sin(Math.PI / 8 * 3), false);
-            points[points.Count - 12] = new El_ch(e.X - 30 * Math.Cos(Math.PI / 2), e.Y - 30 * Math.Sin(Math.PI / 2), false);
-            points[points.Count - 11] = new El_ch(e.X - 30 * Math.Cos(Math.PI / 8 * 5), e.Y - 30 * Math.Sin(Math.PI / 8 * 5), false);
-            points[points.Count - 10] = new El_ch(e.X - 30 * Math.Cos(Math.PI / 8 * 6), e.Y - 30 * Math.Sin(Math.PI / 8 * 6), false);
-            points[points.Count - 9] = new El_ch(e.X - 30 * Math.Cos(Math.PI / 8 * 7), e.Y - 30 * Math.Sin(Math.PI / 8 * 7), false);
-            points[points.Count - 8] = new El_ch(e.X + 30 * Math.Cos(Math.PI * 0), e.Y + 30 * Math.Sin(Math.PI * 0), false);
-            points[points.Count - 7] = new El_ch(e.X + 30 * Math.Cos(Math.PI / 8), e.Y + 30 * Math.Sin(Math.PI / 8), false);
-            points[points.Count - 6] = new El_ch(e.X + 30 * Math.Cos(Math.PI / 4), e.Y + 30 * Math.Sin(Math.PI / 4), false);
-            points[points.Count - 5] = new El_ch(e.X + 30 * Math.Cos(Math.PI / 8 * 3), e.Y + 30 * Math.Sin(Math.PI / 8 * 3), false);
-            points[points.Count - 4] = new El_ch(e.X + 30 * Math.Cos(Math.PI / 2), e.Y + 30 * Math.Sin(Math.PI / 2), false);
-            points[points.Count - 3] = new El_ch(e.X + 30 * Math.Cos(Math.PI / 8 * 5), e.Y + 30 * Math.Sin(Math.PI / 8 * 5), false);
-            points[points.Count - 2] = new El_ch(e.X + 30 * Math.Cos(Math.PI / 8 * 6), e.Y + 30 * Math.Sin(Math.PI / 8 * 6), false);
-            points[points.Count - 1] = new El_ch(e.X + 30 * Math.Cos(Math.PI / 8 * 7), e.Y + 30 * Math.Sin(Math.PI / 8 * 7), false);
-        }
-
-        /// <summary>
-        /// Смена положения выделенного атома и его електронов (8)
-        /// </summary>
-        /// <param name="e"></param>
-        private void selected_changa_0(MouseEventArgs e, int selected)
+        private void selected_changa(MouseEventArgs e, int selected)
         {
             atoms[selected].x = e.X;
             atoms[selected].y = e.Y;
 
-            points[atoms[selected].x8[0]] = new El_ch(e.X - 30, e.Y, false);
-            points[atoms[selected].x8[1]] = new El_ch(e.X, e.Y - 30, false);
-            points[atoms[selected].x8[2]] = new El_ch(e.X, e.Y + 30, false);
-            points[atoms[selected].x8[3]] = new El_ch(e.X + 30, e.Y, false);
-            points[atoms[selected].x8[4]] = new El_ch(e.X + 30 * 0.707, e.Y + 30 * 0.707, false);
-            points[atoms[selected].x8[5]] = new El_ch(e.X + 30 * 0.707, e.Y - 30 * 0.707, false);
-            points[atoms[selected].x8[6]] = new El_ch(e.X - 30 * 0.707, e.Y + 30 * 0.707, false);
-            points[atoms[selected].x8[7]] = new El_ch(e.X - 30 * 0.707, e.Y - 30 * 0.707, false);
-        }
-
-        /// <summary>
-        /// Смена положения выделенного атома и его електронов (16)
-        /// </summary>
-        /// <param name="e"></param>
-        private void selected_changa_1(MouseEventArgs e, int selected)
-        {
-            atoms[selected].x = e.X;
-            atoms[selected].y = e.Y;
-
-            points[atoms[selected].x16[0]] = new El_ch(e.X - 30 * Math.Cos(Math.PI * 0), e.Y - 30 * Math.Sin(Math.PI * 0), false);
-            points[atoms[selected].x16[1]] = new El_ch(e.X - 30 * Math.Cos(Math.PI / 8), e.Y - 30 * Math.Sin(Math.PI / 8), false);
-            points[atoms[selected].x16[2]] = new El_ch(e.X - 30 * Math.Cos(Math.PI / 4), e.Y - 30 * Math.Sin(Math.PI / 4), false);
-            points[atoms[selected].x16[3]] = new El_ch(e.X - 30 * Math.Cos(Math.PI / 8 * 3), e.Y - 30 * Math.Sin(Math.PI / 8 * 3), false);
-            points[atoms[selected].x16[4]] = new El_ch(e.X - 30 * Math.Cos(Math.PI / 2), e.Y - 30 * Math.Sin(Math.PI / 2), false);
-            points[atoms[selected].x16[5]] = new El_ch(e.X - 30 * Math.Cos(Math.PI / 8 * 5), e.Y - 30 * Math.Sin(Math.PI / 8 * 5), false);
-            points[atoms[selected].x16[6]] = new El_ch(e.X - 30 * Math.Cos(Math.PI / 8 * 6), e.Y - 30 * Math.Sin(Math.PI / 8 * 6), false);
-            points[atoms[selected].x16[7]] = new El_ch(e.X - 30 * Math.Cos(Math.PI / 8 * 7), e.Y - 30 * Math.Sin(Math.PI / 8 * 7), false);
-            points[atoms[selected].x16[8]] = new El_ch(e.X + 30 * Math.Cos(Math.PI * 0), e.Y + 30 * Math.Sin(Math.PI * 0), false);
-            points[atoms[selected].x16[9]] = new El_ch(e.X + 30 * Math.Cos(Math.PI / 8), e.Y + 30 * Math.Sin(Math.PI / 8), false);
-            points[atoms[selected].x16[10]] = new El_ch(e.X + 30 * Math.Cos(Math.PI / 4), e.Y + 30 * Math.Sin(Math.PI / 4), false);
-            points[atoms[selected].x16[11]] = new El_ch(e.X + 30 * Math.Cos(Math.PI / 8 * 3), e.Y + 30 * Math.Sin(Math.PI / 8 * 3), false);
-            points[atoms[selected].x16[12]] = new El_ch(e.X + 30 * Math.Cos(Math.PI / 2), e.Y + 30 * Math.Sin(Math.PI / 2), false);
-            points[atoms[selected].x16[13]] = new El_ch(e.X + 30 * Math.Cos(Math.PI / 8 * 5), e.Y + 30 * Math.Sin(Math.PI / 8 * 5), false);
-            points[atoms[selected].x16[14]] = new El_ch(e.X + 30 * Math.Cos(Math.PI / 8 * 6), e.Y + 30 * Math.Sin(Math.PI / 8 * 6), false);
-            points[atoms[selected].x16[15]] = new El_ch(e.X + 30 * Math.Cos(Math.PI / 8 * 7), e.Y + 30 * Math.Sin(Math.PI / 8 * 7), false);
+            atoms[selected].create_at_els();
         }
 
         /// <summary>
@@ -888,31 +792,16 @@ namespace Phisic
             {
                 switch (type)
                 {
-                    case 1:
-
-                        if (dalk == 0)
-                        {
-                            changer_atom_0(e);
-                        }
-                        else
-                        {
-                            changer_atom_1(e);
-                        }
+                    case Type.PLUS:
+                        changer_atom(e);
                         break;
-                    case 2:
-                        if (dalk == 0)
-                        {
-                            changer_atom_0(e);
-                        }
-                        else
-                        {
-                            changer_atom_1(e);
-                        }
+                    case Type.MINUS:
+                        changer_atom(e);
                         break;
-                    case 3:
+                    case Type.PROB:
                         probs[probs.Count - 1] = new Prob(e.X, e.Y, false);
                         break;
-                    case 7:
+                    case Type.MOVE:
                         selected = -1;
                         foreach (Atom atom in atoms)
                         {
@@ -924,25 +813,11 @@ namespace Phisic
                         {
                             label7.Text = string.Format("{0}", atoms[selected].x);
                             label8.Text = string.Format("{0}", 750 - atoms[selected].y);
-                            if (atoms[selected].sta == 8)
-                            {
-                                selected_changa_0(e, selected);
-                            }
-                            else
-                            {
-                                selected_changa_1(e, selected);
-                            }
+                            selected_changa(e, selected);
                         }
                         break;
-                    case 10:
-                        if (dalk == 0)
-                        {
-                            changer_atom_0(e);
-                        }
-                        else
-                        {
-                            changer_atom_1(e);
-                        }
+                    case Type.NEUTRAL:
+                        changer_atom(e);
                         break;
                     default: break;
                 }
@@ -967,15 +842,7 @@ namespace Phisic
         /// <param name="e"></param>
         private void toolStripMenuItem3_Click(object sender, EventArgs e)
         {
-            for (int i = 0; i <= fillk; i += 20)
-            {
-                for (int j = 0; j <= fillk; j += 20)
-                {
-                    El_ch el = new El_ch(i, j, false);
-                    points.Add(el);
-                }
-            }
-            paintka();
+            
         }
 
         /// <summary>
@@ -985,14 +852,13 @@ namespace Phisic
         /// <param name="e"></param>
         private void toolStripMenuItem2_Click(object sender, EventArgs e)
         {
-            for (int i = 0; i <= fillk; i += 10)
+            foreach (Atom at in atoms)
             {
-                for (int j = 0; j <= fillk; j += 10)
-                {
-                    El_ch el = new El_ch(i, j, false);
-                    points.Add(el);
-                }
+                at.sta_koeff *= 2;
+                at.create_at_els();
+                Console.WriteLine("Atom sta = "+at.sta_koeff);            
             }
+            fill_curr *= 2;
             paintka();
         }
 
@@ -1003,15 +869,7 @@ namespace Phisic
         /// <param name="e"></param>
         private void toolStripMenuItem4_Click(object sender, EventArgs e)
         {
-            for (int i = 0; i <= fillk; i += 50)
-            {
-                for (int j = 0; j <= fillk; j += 50)
-                {
-                    El_ch el = new El_ch(i, j, false);
-                    points.Add(el);
-                }
-            }
-            paintka();
+            
         }
 
         /// <summary>
@@ -1021,15 +879,7 @@ namespace Phisic
         /// <param name="e"></param>
         private void toolStripMenuItem5_Click(object sender, EventArgs e)
         {
-            for (int i = 0; i <= fillk; i += 100)
-            {
-                for (int j = 0; j <= fillk; j += 100)
-                {
-                    El_ch el = new El_ch(i, j, false);
-                    points.Add(el);
-                }
-            }
-            paintka();
+           
         }
 
         /// <summary>
@@ -1039,7 +889,7 @@ namespace Phisic
         /// <param name="e"></param>
         private void button1_Click(object sender, EventArgs e)
         {
-            dalk = 8;
+            //dalk = 8;
         }
 
         /// <summary>
@@ -1049,17 +899,17 @@ namespace Phisic
         /// <param name="e"></param>
         private void button2_Click(object sender, EventArgs e)
         {
-            dalk = 16;
+            //dalk = 16;
         }
 
         /// <summary>
-        /// Назначение 8 линий исходящих из заряда
+        /// Назначение 0 линий исходящих из заряда
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void button4_Click(object sender, EventArgs e)
         {
-            dalk = 0;
+            //dalk = 0;
         }
 
         /// <summary>
@@ -1080,7 +930,7 @@ namespace Phisic
         /// <param name="e"></param>
         private void moveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            type = 7;
+            type = Type.MOVE;
         }
 
         /// <summary>
@@ -1093,8 +943,8 @@ namespace Phisic
             try
             {
                 cha = (int.Parse(textBox1.Text));
-                if (cha > 100) cha = 100;
-                if (cha < -100) cha = -100;
+                if (cha > 16) cha = 16;
+                if (cha < -16) cha = -16;
                 if (selected >= 0)
                 {
                     atoms[selected].charge = cha;
@@ -1124,32 +974,8 @@ namespace Phisic
         private void nullChargeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             selected = -1;
-            type = 10;
+            type = Type.NEUTRAL;
             paintka();
-        }
-
-        /// <summary>
-        /// Удаление атома с 8-ю электронами
-        /// </summary>
-        private void char_del_8()
-        {
-            for (int i = 0; i < 8; i++)
-            {
-                points.RemoveAt(atoms[selected].x8[0]);
-            }
-            atoms.RemoveAt(selected);
-        }
-
-        /// <summary>
-        /// Удаление атома с 16-ю электронами
-        /// </summary>
-        private void char_del_16()
-        {
-            for (int i = 0; i < 16; i++)
-            {
-                points.RemoveAt(atoms[selected].x16[0]);
-            }
-            atoms.RemoveAt(selected);
         }
 
         /// <summary>
@@ -1161,14 +987,7 @@ namespace Phisic
         {
             if (selected >= 0)
             {
-                if (atoms[selected].sta == 8)
-                {
-                    char_del_8();
-                }
-                else
-                {
-                    char_del_16();
-                }
+                atoms.RemoveAt(selected);
             }
             selected = -1;
             paintka();
@@ -1225,19 +1044,8 @@ namespace Phisic
             {
                 try
                 {
-                    int x_old = atoms[selected].x;
-                    int dx = int.Parse(textBox2.Text) - x_old;
                     atoms[selected].x = int.Parse(textBox2.Text);
-                    if (atoms[selected].sta == 8)
-                    {
-                        for (int i = 0; i < 8; i++)
-                            create_at_els_8(atoms[selected], i);
-                    }
-                    else
-                    {
-                        for (int i = 0; i < 16; i++)
-                            create_at_els_8(atoms[selected], i);
-                    }
+                    atoms[selected].create_at_els();
                     label4.Text = "";
                 }
                 catch
@@ -1261,19 +1069,8 @@ namespace Phisic
             {
                 try
                 {
-                    int x_old = atoms[selected].y;
-                    int dx = 750 - int.Parse(textBox3.Text) - x_old;
                     atoms[selected].y = 750 - int.Parse(textBox3.Text);
-                    if (atoms[selected].sta == 8)
-                    {
-                        for (int i = 0; i < 8; i++)
-                            create_at_els_8(atoms[selected], i);
-                    }
-                    else
-                    {
-                        for (int i = 0; i < 16; i++)
-                            create_at_els_8(atoms[selected], i);
-                    }
+                    atoms[selected].create_at_els();
                     label4.Text = "";
                 }
                 catch
@@ -1405,12 +1202,8 @@ namespace Phisic
 
             this.button1.BackColor = Control.DefaultForeColor;
             this.button1.ForeColor = Color.White;
-            this.button2.BackColor = Control.DefaultForeColor;
-            this.button2.ForeColor = Color.White;
             this.button3.BackColor = Control.DefaultForeColor;
             this.button3.ForeColor = Color.White;
-            this.button4.BackColor = Control.DefaultForeColor;
-            this.button4.ForeColor = Color.White;
             this.button5.BackColor = Control.DefaultForeColor;
             this.button5.ForeColor = Color.White;
             this.button6.BackColor = Control.DefaultForeColor;
@@ -1447,12 +1240,8 @@ namespace Phisic
 
             this.button1.BackColor = Control.DefaultBackColor;
             this.button1.ForeColor = Control.DefaultForeColor;
-            this.button2.BackColor = Control.DefaultBackColor;
-            this.button2.ForeColor = Control.DefaultForeColor;
             this.button3.BackColor = Control.DefaultBackColor;
             this.button3.ForeColor = Control.DefaultForeColor;
-            this.button4.BackColor = Control.DefaultBackColor;
-            this.button4.ForeColor = Control.DefaultForeColor;
             this.button5.BackColor = Control.DefaultBackColor;
             this.button5.ForeColor = Control.DefaultForeColor;
             this.button6.BackColor = Control.DefaultBackColor;
@@ -1516,14 +1305,7 @@ namespace Phisic
             writer.WriteLine("Atoms: \n" + atoms.Count);
             foreach (Atom point in atoms)
             {
-                if (point.sta == 8)
-                {
-                    writer.WriteLine("8 " + point.x + " " + point.y + " " + point.charge);
-                }
-                if (point.sta == 16)
-                {
-                    writer.WriteLine("16 " + point.x + " " + point.y + " " + point.charge);
-                }
+                writer.WriteLine(" " + point.x + " " + point.y + " " + point.charge);
             }
 
             writer.WriteLine("Test: \n" + probs.Count);
@@ -1558,12 +1340,7 @@ namespace Phisic
                 {
                     str = reader.ReadLine();
                     words = str.Split(new char[] { ' ' });
-                    dalk = 0;
                     Point en = new Point(int.Parse(words[1]), int.Parse(words[2]));
-                    if (int.Parse(words[0]) == 16)
-                    {
-                        dalk = 1;
-                    }
                     create_atom(en.X, en.Y, int.Parse(words[3]));
                 }
                 str = reader.ReadLine();
@@ -1604,12 +1381,7 @@ namespace Phisic
                 {
                     str = reader.ReadLine();
                     words = str.Split(new char[] { ' ' });
-                    dalk = 0;
                     Point en = new Point(int.Parse(words[1]), int.Parse(words[2]));
-                    if (int.Parse(words[0]) == 16)
-                    {
-                        dalk = 1;
-                    }
                     create_atom(en.X, en.Y, int.Parse(words[3]));
 
                 }
@@ -1644,14 +1416,7 @@ namespace Phisic
             writer.WriteLine("Atoms: \n" + atoms.Count);
             foreach (Atom point in atoms)
             {
-                if (point.sta == 8)
-                {
-                    writer.WriteLine("8 " + point.x + " " + point.y + " " + point.charge);
-                }
-                if (point.sta == 16)
-                {
-                    writer.WriteLine("16 " + point.x + " " + point.y + " " + point.charge);
-                }
+                writer.WriteLine(point.x + " " + point.y + " " + point.charge);
             }
 
             writer.WriteLine("Test: \n" + probs.Count);
@@ -1671,6 +1436,17 @@ namespace Phisic
         private void checkBox5_CheckedChanged(object sender, EventArgs e)
         {
             E_0 = checkBox5.Checked;
+            paintka();
+        }
+
+        private void clearFillToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            foreach (Atom at in atoms)
+            {
+                at.sta_koeff = 1;
+                at.create_at_els();
+            }
+            fill_curr = 1;
             paintka();
         }
     }
@@ -1755,6 +1531,11 @@ namespace Phisic
     public class Atom
     {
         /// <summary>
+        /// Коеффицент заполнения
+        /// </summary>
+        public int sta_koeff { get; set; } = 1;
+
+        /// <summary>
         /// Координата по Х
         /// </summary>
         public int x { get; set; }
@@ -1767,17 +1548,12 @@ namespace Phisic
         /// <summary>
         /// Модуль заряда атома
         /// </summary>
-        public double charge { get; set; } = 0;
+        public int charge { get; set; } = 0;
 
         /// <summary>
         /// Массив, содержащий привязанные к атому 16 электронов
         /// </summary>
-        public int[] x16 { get; set; } = new int[16];
-
-        /// <summary>
-        /// Массив, содержащий привязанные к атому 8 электронов
-        /// </summary>
-        public int[] x8 { get; set; } = new int[8];
+        public List<El_ch> electrons { get; set; } = new List<El_ch> { };
 
         /// <summary>
         /// Кол-во электронов, привязанных к атому
@@ -1806,12 +1582,15 @@ namespace Phisic
         /// <param name="x">Координата по Х</param>
         /// <param name="y">Координата по Y</param>
         /// <param name="charge">Модуль заряда</param>
-        public Atom(int x, int y, double charge)
+        public Atom(int _x, int _y, int _charge, int _sta_koeff)
         {
-            this.x = x;
-            this.y = y;
-            this.charge = charge;
-            radius = Math.Abs((int)(this.charge)) / 2 + 10;
+            this.x = _x;
+            this.y = _y;
+            this.charge = _charge;
+            this.sta_koeff = _sta_koeff;
+            this.sta = 8 * (int)Math.Sqrt(Math.Abs(_charge));
+            radius = Math.Abs(this.charge) / 2 + 10;
+            create_at_els();
         }
 
         /// <summary>
@@ -1825,6 +1604,26 @@ namespace Phisic
             Vector once = new Vector((double)(el.x - x) / rad, (double)(el.y - y) / rad);
             double force = k * el.charge * charge / (rad * rad);
             return new Vector(once.x * force, once.y * force);
+        }
+
+        /// <summary>
+        /// Добавление электронов атому
+        /// </summary>
+        public void create_at_els()
+        {
+            this.electrons = new List<El_ch> { };
+            double pi = 2 * Math.PI / (sta*sta_koeff);
+            List<double> coeff = new List<double> { };
+            for (int i = 0; i < (sta * sta_koeff); i++)
+            {
+                coeff.Add(Math.Cos(pi * i));
+                coeff.Add(Math.Sin(pi * i));
+            }
+            for (int i = 0; i < (sta * sta_koeff); i++)
+            {
+                El_ch ela = new El_ch(this.x + 30 * coeff[2 * i], this.y + 30 * coeff[2 * i + 1], false);
+                this.electrons.Add(ela);
+            }
         }
     }
 
@@ -1921,7 +1720,7 @@ namespace Phisic
         /// <param name="a">Первый вектор</param>
         /// <param name="b">Второй вектор</param>
         /// <returns>Итоговый вектор</returns>
-        public static Vector operator +(Vector a, Vector b) 
+        public static Vector operator +(Vector a, Vector b)
         {
             return new Vector(a.x + b.x, a.y + b.y);
         }
