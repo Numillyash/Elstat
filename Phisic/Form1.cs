@@ -140,17 +140,6 @@ namespace Phisic
         }
 
         /// <summary>
-        /// Расчет векторной суммы
-        /// </summary>
-        /// <param name="v1">Первый вектор</param>
-        /// <param name="v2">Второй вектор</param>
-        /// <returns>Итоговый вектор</returns>
-        private Vector vsum(Vector v1, Vector v2)
-        {
-            return new Vector(v1.x + v2.x, v1.y + v2.y);
-        }
-
-        /// <summary>
         /// События, происходящие при загрузке окна (не используется)
         /// </summary>
         /// <param name="sender"></param>
@@ -252,7 +241,7 @@ namespace Phisic
         {
             foreach (Atom at in atoms)
             {
-                new_pos = vsum(new_pos, at.forcer(new El_ch(x_now, y_now, false)));
+                new_pos += at.forcer(new El_ch(x_now, y_now, false));
                 double rad = Math.Sqrt((at.x - x_now) * (at.x - x_now) + (at.y - y_now) * (at.y - y_now));
                 if (rad < 5 && at.charge != 0) kekl = true;
             }
@@ -357,7 +346,7 @@ namespace Phisic
 
                         foreach (Atom at in atoms)
                         {
-                            new_pos = vsum(new_pos, at.forcer(el));
+                            new_pos += at.forcer(el);
                             //double rad = Math.Sqrt((at.x - x_now) * (at.x - x_now) + (at.y - y_now) * (at.y - y_now));
                         }
                         double rad = Math.Sqrt(Math.Pow(new_pos.x, 2) + Math.Pow(new_pos.y, 2));
@@ -412,9 +401,10 @@ namespace Phisic
                         all_one_charge += 1;
                     }
                 }
-                // 10 20 30
-                // 20 30 10
-                // 30 10 20
+
+                // Eix = (x-a) * Q / ((x-a)^2+(y-b)^2)^2
+                // Eiy = (y-b) * Q / ((x-a)^2+(y-b)^2)^2
+                // if (Ex^2+Ey^2 < 1e-6) : cool
 
                 int kv_min_x = 800, kv_min_y = 800, kv_max_x = -1, kv_max_y = -1;
                 foreach (Atom at in atoms)
@@ -1925,6 +1915,12 @@ namespace Phisic
             return String.Format("{0:0.000000000000}, {1:0.000000000000}", x, y);
         }
 
+        /// <summary>
+        /// Расчет векторной суммы
+        /// </summary>
+        /// <param name="a">Первый вектор</param>
+        /// <param name="b">Второй вектор</param>
+        /// <returns>Итоговый вектор</returns>
         public static Vector operator +(Vector a, Vector b) 
         {
             return new Vector(a.x + b.x, a.y + b.y);
