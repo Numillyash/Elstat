@@ -830,14 +830,16 @@ namespace Phisic
         /// <param name="e"></param>
         private void toolStripMenuItem2_Click(object sender, EventArgs e)
         {
-            foreach (Atom at in atoms)
+            if (fill_curr < 32)
             {
-                at.sta_koeff *= 2;
-                at.create_at_els();
-                Console.WriteLine("Atom sta = "+at.sta_koeff);            
+                foreach (Atom at in atoms)
+                {
+                    at.sta_koeff *= 2;
+                    at.create_at_els();
+                }
+                fill_curr *= 2;
+                paintka();
             }
-            fill_curr *= 2;
-            paintka();
         }
 
         /// <summary>
@@ -1426,6 +1428,20 @@ namespace Phisic
             }
             fill_curr = 1;
             paintka();
+        }
+
+        private void deMultiplyLinesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (fill_curr > 1)
+            {
+                foreach (Atom at in atoms)
+                {
+                    at.sta_koeff /= 2;
+                    at.create_at_els();
+                }
+                fill_curr /= 2;
+                paintka();
+            }
         }
     }
 
