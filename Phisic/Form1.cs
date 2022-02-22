@@ -1617,7 +1617,7 @@ namespace Phisic
             }
             for (int i = 0; i < (sta * sta_koeff); i++)
             {
-                El_ch ela = new El_ch(this.x + 30 * coeff[2 * i], this.y + 30 * coeff[2 * i + 1], false);
+                El_ch ela = new El_ch(this.x + 10 * coeff[2 * i], this.y + 10 * coeff[2 * i + 1], false);
                 this.electrons.Add(ela);
             }
         }
