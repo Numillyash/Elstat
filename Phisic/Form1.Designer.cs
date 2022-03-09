@@ -40,6 +40,7 @@
             this.clearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fillToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.Fill_Multyple = new System.Windows.Forms.ToolStripMenuItem();
+            this.deMultiplyLinesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.clearFillToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lineWidthToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem6 = new System.Windows.Forms.ToolStripMenuItem();
@@ -82,7 +83,8 @@
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.checkBox5 = new System.Windows.Forms.CheckBox();
-            this.deMultiplyLinesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -110,9 +112,9 @@
             this.clearToolStripMenuItem,
             this.fillToolStripMenuItem,
             this.lineWidthToolStripMenuItem,
-            this.blackThemeToolStripMenuItem,
             this.saveToolStripMenuItem,
-            this.loadToolStripMenuItem});
+            this.loadToolStripMenuItem,
+            this.blackThemeToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(5, 2, 0, 2);
@@ -188,14 +190,21 @@
             // Fill_Multyple
             // 
             this.Fill_Multyple.Name = "Fill_Multyple";
-            this.Fill_Multyple.Size = new System.Drawing.Size(180, 22);
+            this.Fill_Multyple.Size = new System.Drawing.Size(164, 22);
             this.Fill_Multyple.Text = "Multiply lines";
             this.Fill_Multyple.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
+            // 
+            // deMultiplyLinesToolStripMenuItem
+            // 
+            this.deMultiplyLinesToolStripMenuItem.Name = "deMultiplyLinesToolStripMenuItem";
+            this.deMultiplyLinesToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.deMultiplyLinesToolStripMenuItem.Text = "De-Multiply lines";
+            this.deMultiplyLinesToolStripMenuItem.Click += new System.EventHandler(this.deMultiplyLinesToolStripMenuItem_Click);
             // 
             // clearFillToolStripMenuItem
             // 
             this.clearFillToolStripMenuItem.Name = "clearFillToolStripMenuItem";
-            this.clearFillToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.clearFillToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
             this.clearFillToolStripMenuItem.Text = "Clear fill";
             this.clearFillToolStripMenuItem.Click += new System.EventHandler(this.clearFillToolStripMenuItem_Click);
             // 
@@ -214,35 +223,35 @@
             // toolStripMenuItem6
             // 
             this.toolStripMenuItem6.Name = "toolStripMenuItem6";
-            this.toolStripMenuItem6.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem6.Size = new System.Drawing.Size(80, 22);
             this.toolStripMenuItem6.Text = "1";
             this.toolStripMenuItem6.Click += new System.EventHandler(this.toolStripMenuItem6_Click);
             // 
             // toolStripMenuItem7
             // 
             this.toolStripMenuItem7.Name = "toolStripMenuItem7";
-            this.toolStripMenuItem7.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem7.Size = new System.Drawing.Size(80, 22);
             this.toolStripMenuItem7.Text = "2";
             this.toolStripMenuItem7.Click += new System.EventHandler(this.toolStripMenuItem7_Click);
             // 
             // toolStripMenuItem8
             // 
             this.toolStripMenuItem8.Name = "toolStripMenuItem8";
-            this.toolStripMenuItem8.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem8.Size = new System.Drawing.Size(80, 22);
             this.toolStripMenuItem8.Text = "3";
             this.toolStripMenuItem8.Click += new System.EventHandler(this.toolStripMenuItem8_Click);
             // 
             // toolStripMenuItem9
             // 
             this.toolStripMenuItem9.Name = "toolStripMenuItem9";
-            this.toolStripMenuItem9.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem9.Size = new System.Drawing.Size(80, 22);
             this.toolStripMenuItem9.Text = "4";
             this.toolStripMenuItem9.Click += new System.EventHandler(this.toolStripMenuItem9_Click);
             // 
             // toolStripMenuItem10
             // 
             this.toolStripMenuItem10.Name = "toolStripMenuItem10";
-            this.toolStripMenuItem10.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem10.Size = new System.Drawing.Size(80, 22);
             this.toolStripMenuItem10.Text = "5";
             this.toolStripMenuItem10.Click += new System.EventHandler(this.toolStripMenuItem10_Click);
             // 
@@ -251,6 +260,7 @@
             this.blackThemeToolStripMenuItem.Name = "blackThemeToolStripMenuItem";
             this.blackThemeToolStripMenuItem.Size = new System.Drawing.Size(82, 20);
             this.blackThemeToolStripMenuItem.Text = "Dark Theme";
+            this.blackThemeToolStripMenuItem.Visible = false;
             this.blackThemeToolStripMenuItem.Click += new System.EventHandler(this.blackThemeToolStripMenuItem_Click);
             // 
             // saveToolStripMenuItem
@@ -490,7 +500,7 @@
             // checkBox3
             // 
             this.checkBox3.AutoSize = true;
-            this.checkBox3.Location = new System.Drawing.Point(770, 588);
+            this.checkBox3.Location = new System.Drawing.Point(770, 592);
             this.checkBox3.Name = "checkBox3";
             this.checkBox3.Size = new System.Drawing.Size(83, 17);
             this.checkBox3.TabIndex = 25;
@@ -511,7 +521,7 @@
             // checkBox4
             // 
             this.checkBox4.AutoSize = true;
-            this.checkBox4.Location = new System.Drawing.Point(770, 565);
+            this.checkBox4.Location = new System.Drawing.Point(770, 569);
             this.checkBox4.Name = "checkBox4";
             this.checkBox4.Size = new System.Drawing.Size(85, 17);
             this.checkBox4.TabIndex = 27;
@@ -526,7 +536,7 @@
             // checkBox5
             // 
             this.checkBox5.AutoSize = true;
-            this.checkBox5.Location = new System.Drawing.Point(770, 542);
+            this.checkBox5.Location = new System.Drawing.Point(770, 546);
             this.checkBox5.Name = "checkBox5";
             this.checkBox5.Size = new System.Drawing.Size(81, 17);
             this.checkBox5.TabIndex = 28;
@@ -535,17 +545,32 @@
             this.checkBox5.Visible = false;
             this.checkBox5.CheckedChanged += new System.EventHandler(this.checkBox5_CheckedChanged);
             // 
-            // deMultiplyLinesToolStripMenuItem
+            // label10
             // 
-            this.deMultiplyLinesToolStripMenuItem.Name = "deMultiplyLinesToolStripMenuItem";
-            this.deMultiplyLinesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.deMultiplyLinesToolStripMenuItem.Text = "De-Multiply lines";
-            this.deMultiplyLinesToolStripMenuItem.Click += new System.EventHandler(this.deMultiplyLinesToolStripMenuItem_Click);
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(775, 412);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(0, 13);
+            this.label10.TabIndex = 30;
+            this.label10.Click += new System.EventHandler(this.label10_Click);
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.label11.Location = new System.Drawing.Point(770, 390);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(52, 13);
+            this.label11.TabIndex = 29;
+            this.label11.Text = "    charge";
+            this.label11.Click += new System.EventHandler(this.label11_Click);
             // 
             // Form1
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(877, 803);
+            this.Controls.Add(this.label10);
+            this.Controls.Add(this.label11);
             this.Controls.Add(this.checkBox5);
             this.Controls.Add(this.checkBox4);
             this.Controls.Add(this.linkLabel1);
@@ -639,6 +664,8 @@
         private System.Windows.Forms.CheckBox checkBox5;
         private System.Windows.Forms.ToolStripMenuItem clearFillToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem deMultiplyLinesToolStripMenuItem;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label label11;
     }
 }
 

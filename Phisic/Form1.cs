@@ -724,6 +724,7 @@ namespace Phisic
                             selected = atoms.IndexOf(atom);
                             label7.Text = string.Format("{0}", atom.x);
                             label8.Text = string.Format("{0}", 750 - atom.y);
+                            label10.Text = string.Format("{0}", atoms[selected].charge);
                         }
                     }
                     break;
@@ -791,6 +792,7 @@ namespace Phisic
                         {
                             label7.Text = string.Format("{0}", atoms[selected].x);
                             label8.Text = string.Format("{0}", 750 - atoms[selected].y);
+                            label10.Text = string.Format("{0}", atoms[selected].charge);
                             selected_changa(e, selected);
                         }
                         break;
@@ -931,6 +933,7 @@ namespace Phisic
                     atoms[selected].sta = 8 * (int)Math.Sqrt(Math.Abs(cha));
                     atoms[selected].create_at_els();
                     atoms[selected].radius = Math.Abs((int)(atoms[selected].charge)) / 2 + 10;
+                    label10.Text = string.Format("{0}", atoms[selected].charge);
                     paintka();
                 }
             }
@@ -988,10 +991,6 @@ namespace Phisic
             {
                 int x = int.Parse(textBox2.Text);
                 int y = 750 - int.Parse(textBox3.Text);
-                int ch = int.Parse(textBox1.Text);
-
-                if (ch > 100) ch = 100;
-                if (cha < -100) cha = -100;
 
                 create_atom(x, y, cha);
 
@@ -1036,6 +1035,7 @@ namespace Phisic
                 }
                 label7.Text = string.Format("{0}", atoms[selected].x);
                 label8.Text = string.Format("{0}", 750 - atoms[selected].y);
+                label10.Text = string.Format("{0}", atoms[selected].charge);
             }
             paintka();
         }
@@ -1061,6 +1061,7 @@ namespace Phisic
                 }
                 label7.Text = string.Format("{0}", atoms[selected].x);
                 label8.Text = string.Format("{0}", 750 - atoms[selected].y);
+                label10.Text = string.Format("{0}", atoms[selected].charge);
             }
             paintka();
         }
@@ -1444,6 +1445,21 @@ namespace Phisic
                 fill_curr /= 2;
                 paintka();
             }
+        }
+
+        private void label11_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label10_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label9_Click(object sender, EventArgs e)
+        {
+
         }
     }
 

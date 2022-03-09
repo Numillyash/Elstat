@@ -1,7 +1,8 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\Phisic"
   ],
-  "SelectedNode": "\\Phisic.sln",
+  "SelectedNode": "\\Phisic\\Form1.cs",
   "PreviewInSolutionExplorer": false
 }
