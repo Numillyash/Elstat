@@ -722,9 +722,9 @@ namespace Phisic
                         if (rad < 10)
                         {
                             selected = atoms.IndexOf(atom);
-                            label7.Text = string.Format("{0}", atom.x);
-                            label8.Text = string.Format("{0}", 750 - atom.y);
-                            label10.Text = string.Format("{0}", atoms[selected].charge);
+                            textBox11.Text = string.Format("{0}", atom.x);
+                            textBox10.Text = string.Format("{0}", 750 - atom.y);
+                            textBox13.Text = string.Format("{0}", atoms[selected].charge);
                         }
                     }
                     break;
@@ -790,9 +790,9 @@ namespace Phisic
                         }
                         if (selected >= 0)
                         {
-                            label7.Text = string.Format("{0}", atoms[selected].x);
-                            label8.Text = string.Format("{0}", 750 - atoms[selected].y);
-                            label10.Text = string.Format("{0}", atoms[selected].charge);
+                            textBox11.Text = string.Format("{0}", atoms[selected].x);
+                            textBox10.Text = string.Format("{0}", 750 - atoms[selected].y);
+                            textBox13.Text = string.Format("{0}", atoms[selected].charge);
                             selected_changa(e, selected);
                         }
                         break;
@@ -933,7 +933,7 @@ namespace Phisic
                     atoms[selected].sta = 8 * (int)Math.Sqrt(Math.Abs(cha));
                     atoms[selected].create_at_els();
                     atoms[selected].radius = Math.Abs((int)(atoms[selected].charge)) / 2 + 10;
-                    label10.Text = string.Format("{0}", atoms[selected].charge);
+                    textBox13.Text = string.Format("{0}", atoms[selected].charge);
                     paintka();
                 }
             }
@@ -1033,9 +1033,9 @@ namespace Phisic
                 {
                     label4.Text = "Error";
                 }
-                label7.Text = string.Format("{0}", atoms[selected].x);
-                label8.Text = string.Format("{0}", 750 - atoms[selected].y);
-                label10.Text = string.Format("{0}", atoms[selected].charge);
+                textBox11.Text = string.Format("{0}", atoms[selected].x);
+                textBox10.Text = string.Format("{0}", 750 - atoms[selected].y);
+                textBox13.Text = string.Format("{0}", atoms[selected].charge);
             }
             paintka();
         }
@@ -1059,9 +1059,9 @@ namespace Phisic
                 {
                     label4.Text = "Error";
                 }
-                label7.Text = string.Format("{0}", atoms[selected].x);
-                label8.Text = string.Format("{0}", 750 - atoms[selected].y);
-                label10.Text = string.Format("{0}", atoms[selected].charge);
+                textBox11.Text = string.Format("{0}", atoms[selected].x);
+                textBox10.Text = string.Format("{0}", 750 - atoms[selected].y);
+                textBox13.Text = string.Format("{0}", atoms[selected].charge);
             }
             paintka();
         }
@@ -1164,6 +1164,7 @@ namespace Phisic
         /// </summary>
         private void go_black()
         {
+            /*
             this.BackColor = Control.DefaultForeColor;
 
             this.menuStrip1.BackColor = Control.DefaultForeColor;
@@ -1171,7 +1172,7 @@ namespace Phisic
 
             this.label1.ForeColor = Color.White;
             this.label2.ForeColor = Color.White;
-            this.label3.ForeColor = Color.White;
+            //this.label3.ForeColor = Color.White;
             this.label4.ForeColor = Color.White;
             this.label5.ForeColor = Color.White;
             this.label6.ForeColor = Color.White;
@@ -1194,7 +1195,7 @@ namespace Phisic
             this.button7.BackColor = Control.DefaultForeColor;
             this.button7.ForeColor = Color.White;
 
-            this.blackThemeToolStripMenuItem.Text = "White theme";
+            this.blackThemeToolStripMenuItem.Text = "White theme";*/
         }
 
         /// <summary>
@@ -1202,6 +1203,7 @@ namespace Phisic
         /// </summary>
         private void go_white()
         {
+            /*
             this.BackColor = Control.DefaultBackColor;
 
             this.menuStrip1.BackColor = Control.DefaultBackColor;
@@ -1232,7 +1234,7 @@ namespace Phisic
             this.button7.BackColor = Control.DefaultBackColor;
             this.button7.ForeColor = Control.DefaultForeColor;
 
-            this.blackThemeToolStripMenuItem.Text = "Dark theme";
+            this.blackThemeToolStripMenuItem.Text = "Dark theme";*/
         }
 
         /// <summary>
@@ -1458,6 +1460,16 @@ namespace Phisic
         }
 
         private void label9_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox4_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox5_TextChanged(object sender, EventArgs e)
         {
 
         }
