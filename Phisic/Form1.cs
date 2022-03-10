@@ -1473,6 +1473,16 @@ namespace Phisic
         {
 
         }
+
+        private void openFileDialog1_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+
+        }
+
+        private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
+        }
     }
 
     /// <summary>
@@ -1511,26 +1521,24 @@ namespace Phisic
             this.textBox1.Text =
                 "Эта программа позволяет симулировать силовые линии в электростатическом поле "
                 + Environment.NewLine + "Значения кнопок:"
-                + Environment.NewLine + "Create charge - выбор создаваемого элемента или его настройки:"
-                + Environment.NewLine + "\tPositive charge - создает положительный заряд (модуль указан в поле Charge), при зажатии ЛКМ можно перемещать по полю до постановки. Заряд по умолчанию +1"
-                + Environment.NewLine + "\tNegative charge - создает отрицательный заряд (модуль указан в поле Charge), при зажатии ЛКМ можно перемещать по полю до постановки. Заряд по умолчанию -1"
-                + Environment.NewLine + "\tNull charge - создает незаряженное тело, при зажатии ЛКМ можно перемещать по полю до постановки"
-                + Environment.NewLine + "\tTest charge - создает элементарный отрицательный заряд, при зажатии ЛКМ можно перемещать по полю до постановки, также показывает траекторию его полета"
-                + Environment.NewLine + "\tMove and edit - при клике на заряд он выделяется. Выделенный заряд можно перетаскивать по полю и изменять его координаты"
-                + Environment.NewLine + "Clear - очищает все поле"
-                + Environment.NewLine + "Fill - заполняет поле силовыми линиями; чем больше число, тем реже линии"
-                + Environment.NewLine + "Line width - изменяет толщину силовых линий"
-                + Environment.NewLine + "Dark theme - меняет цвет окна и элементов"
-                + Environment.NewLine + "Clear t_ch - очищает поле от тестогого заряда"
-                + Environment.NewLine + "16 lines - из каждого заряда выходит по 16 силовых линий"
-                + Environment.NewLine + "8 lines - из каждого заряда выходит по 8 силовых линий"
-                + Environment.NewLine + "Delete - удаляет выбранный заряд"
-                + Environment.NewLine + "Create charge - создает заряд с заданными зарядом и координатами"
-                + Environment.NewLine + "Coord grid - показывать/не показывать координатную сетку"
-                + Environment.NewLine + "Fiеld tension - показывать/не показывать напряженность поля"
-                + Environment.NewLine + "Deselect - снимает выделение с заряда"
-                + Environment.NewLine + "Allow arrows - добавляет стрелки магнитным линиям"
-                + Environment.NewLine + "Rare arrows - добавляет редкие стрелки магнитным линиям"
+                + Environment.NewLine + "Создать заряд - выбор создаваемого элемента или его настройки:"
+                + Environment.NewLine + "\tПоложительный - создает положительный заряд (модуль указан в поле Charge), при зажатии ЛКМ можно перемещать по полю до постановки. Заряд по умолчанию +1"
+                + Environment.NewLine + "\tОтрицательный - создает отрицательный заряд (модуль указан в поле Charge), при зажатии ЛКМ можно перемещать по полю до постановки. Заряд по умолчанию -1"
+                + Environment.NewLine + "\tНейтральный - создает незаряженное тело, при зажатии ЛКМ можно перемещать по полю до постановки"
+                + Environment.NewLine + "\tПробный - создает элементарный отрицательный заряд, при зажатии ЛКМ можно перемещать по полю до постановки, также показывает траекторию его полета"
+                + Environment.NewLine + "\tИзменить - при клике на заряд он выделяется. Выделенный заряд можно перетаскивать по полю и изменять его координаты"
+                + Environment.NewLine + "Очистка поля - очищает все поле"
+                + Environment.NewLine + "Увеличение кол-ва линий - увеличивает кол-во линий, исходящих из заряда"
+                + Environment.NewLine + "Толщина линий - изменяет толщину силовых линий"
+                //+ Environment.NewLine + "Dark theme - меняет цвет окна и элементов"
+                + Environment.NewLine + "Удалить тестовый заряд - очищает поле от тестогого заряда, если таковой существует"
+                + Environment.NewLine + "Удалить выбранный заряд - удаляет выбранный заряд, если таковой существует"
+                + Environment.NewLine + "Создать заряд - создает заряд с заданными зарядом и координатами"
+                + Environment.NewLine + "Координатная сетка - показывать/не показывать координатную сетку"
+                + Environment.NewLine + "Напряженность поля - показывать/не показывать напряженность поля"
+                + Environment.NewLine + "Снять выделение - снимает выделение с заряда"
+                + Environment.NewLine + "Стрелки - добавляет стрелки магнитным линиям"
+                + Environment.NewLine + "Редкие стрелки - добавляет редкие стрелки магнитным линиям"
                 + Environment.NewLine + "\nСоздатель:"
                 + Environment.NewLine + "Ученик 10-4 класса Президентского ФМЛ №239"
                 + Environment.NewLine + "Улановский Георгий"
@@ -1543,7 +1551,7 @@ namespace Phisic
             // 
             this.ClientSize = new System.Drawing.Size(1024, 512);
             this.Controls.Add(this.textBox1);
-            this.Text = "Instructions";
+            this.Text = "Инструкция";
             this.ResumeLayout(false);
             this.PerformLayout();
         }

@@ -48,13 +48,13 @@
             this.toolStripMenuItem8 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem9 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem10 = new System.Windows.Forms.ToolStripMenuItem();
-            this.blackThemeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.saveAsToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.loadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.loadAsToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.blackThemeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
@@ -122,6 +122,7 @@
             this.menuStrip1.Size = new System.Drawing.Size(877, 24);
             this.menuStrip1.TabIndex = 2;
             this.menuStrip1.Text = "menuStrip1";
+            this.menuStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.menuStrip1_ItemClicked);
             // 
             // лууToolStripMenuItem
             // 
@@ -132,49 +133,49 @@
             this.elcToolStripMenuItem,
             this.moveToolStripMenuItem});
             this.лууToolStripMenuItem.Name = "лууToolStripMenuItem";
-            this.лууToolStripMenuItem.Size = new System.Drawing.Size(82, 20);
-            this.лууToolStripMenuItem.Text = "New charge";
+            this.лууToolStripMenuItem.Size = new System.Drawing.Size(90, 20);
+            this.лууToolStripMenuItem.Text = "Новый заряд";
             // 
             // plusToolStripMenuItem
             // 
             this.plusToolStripMenuItem.Name = "plusToolStripMenuItem";
             this.plusToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.plusToolStripMenuItem.Text = "Positive charge";
+            this.plusToolStripMenuItem.Text = "Положительный";
             this.plusToolStripMenuItem.Click += new System.EventHandler(this.plusToolStripMenuItem_Click);
             // 
             // minusToolStripMenuItem
             // 
             this.minusToolStripMenuItem.Name = "minusToolStripMenuItem";
             this.minusToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.minusToolStripMenuItem.Text = "Negative charge";
+            this.minusToolStripMenuItem.Text = "Отрицательный";
             this.minusToolStripMenuItem.Click += new System.EventHandler(this.minusToolStripMenuItem_Click);
             // 
             // nullChargeToolStripMenuItem
             // 
             this.nullChargeToolStripMenuItem.Name = "nullChargeToolStripMenuItem";
             this.nullChargeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.nullChargeToolStripMenuItem.Text = "Null charge";
+            this.nullChargeToolStripMenuItem.Text = "Нейтральный";
             this.nullChargeToolStripMenuItem.Click += new System.EventHandler(this.nullChargeToolStripMenuItem_Click);
             // 
             // elcToolStripMenuItem
             // 
             this.elcToolStripMenuItem.Name = "elcToolStripMenuItem";
             this.elcToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.elcToolStripMenuItem.Text = "Test  charge";
+            this.elcToolStripMenuItem.Text = "Пробный";
             this.elcToolStripMenuItem.Click += new System.EventHandler(this.elcToolStripMenuItem_Click);
             // 
             // moveToolStripMenuItem
             // 
             this.moveToolStripMenuItem.Name = "moveToolStripMenuItem";
             this.moveToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.moveToolStripMenuItem.Text = "Move and edit";
+            this.moveToolStripMenuItem.Text = "Изменение";
             this.moveToolStripMenuItem.Click += new System.EventHandler(this.moveToolStripMenuItem_Click);
             // 
             // clearToolStripMenuItem
             // 
             this.clearToolStripMenuItem.Name = "clearToolStripMenuItem";
-            this.clearToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
-            this.clearToolStripMenuItem.Text = "Clear";
+            this.clearToolStripMenuItem.Size = new System.Drawing.Size(95, 20);
+            this.clearToolStripMenuItem.Text = "Очистка поля";
             this.clearToolStripMenuItem.Click += new System.EventHandler(this.clearToolStripMenuItem_Click);
             // 
             // fillToolStripMenuItem
@@ -184,29 +185,29 @@
             this.deMultiplyLinesToolStripMenuItem,
             this.clearFillToolStripMenuItem});
             this.fillToolStripMenuItem.Name = "fillToolStripMenuItem";
-            this.fillToolStripMenuItem.Size = new System.Drawing.Size(34, 20);
-            this.fillToolStripMenuItem.Text = "Fill";
+            this.fillToolStripMenuItem.Size = new System.Drawing.Size(163, 20);
+            this.fillToolStripMenuItem.Text = "Увеличение кол-ва линий";
             this.fillToolStripMenuItem.Click += new System.EventHandler(this.fillToolStripMenuItem_Click);
             // 
             // Fill_Multyple
             // 
             this.Fill_Multyple.Name = "Fill_Multyple";
-            this.Fill_Multyple.Size = new System.Drawing.Size(164, 22);
-            this.Fill_Multyple.Text = "Multiply lines";
+            this.Fill_Multyple.Size = new System.Drawing.Size(235, 22);
+            this.Fill_Multyple.Text = "Увиличить в 2 раза";
             this.Fill_Multyple.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
             // 
             // deMultiplyLinesToolStripMenuItem
             // 
             this.deMultiplyLinesToolStripMenuItem.Name = "deMultiplyLinesToolStripMenuItem";
-            this.deMultiplyLinesToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
-            this.deMultiplyLinesToolStripMenuItem.Text = "De-Multiply lines";
+            this.deMultiplyLinesToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
+            this.deMultiplyLinesToolStripMenuItem.Text = "Убрать половину";
             this.deMultiplyLinesToolStripMenuItem.Click += new System.EventHandler(this.deMultiplyLinesToolStripMenuItem_Click);
             // 
             // clearFillToolStripMenuItem
             // 
             this.clearFillToolStripMenuItem.Name = "clearFillToolStripMenuItem";
-            this.clearFillToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
-            this.clearFillToolStripMenuItem.Text = "Clear fill";
+            this.clearFillToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
+            this.clearFillToolStripMenuItem.Text = "Очистить добавочные линии";
             this.clearFillToolStripMenuItem.Click += new System.EventHandler(this.clearFillToolStripMenuItem_Click);
             // 
             // lineWidthToolStripMenuItem
@@ -218,51 +219,43 @@
             this.toolStripMenuItem9,
             this.toolStripMenuItem10});
             this.lineWidthToolStripMenuItem.Name = "lineWidthToolStripMenuItem";
-            this.lineWidthToolStripMenuItem.Size = new System.Drawing.Size(74, 20);
-            this.lineWidthToolStripMenuItem.Text = "Line width";
+            this.lineWidthToolStripMenuItem.Size = new System.Drawing.Size(108, 20);
+            this.lineWidthToolStripMenuItem.Text = "Толщина линий";
             // 
             // toolStripMenuItem6
             // 
             this.toolStripMenuItem6.Name = "toolStripMenuItem6";
-            this.toolStripMenuItem6.Size = new System.Drawing.Size(80, 22);
+            this.toolStripMenuItem6.Size = new System.Drawing.Size(180, 22);
             this.toolStripMenuItem6.Text = "1";
             this.toolStripMenuItem6.Click += new System.EventHandler(this.toolStripMenuItem6_Click);
             // 
             // toolStripMenuItem7
             // 
             this.toolStripMenuItem7.Name = "toolStripMenuItem7";
-            this.toolStripMenuItem7.Size = new System.Drawing.Size(80, 22);
+            this.toolStripMenuItem7.Size = new System.Drawing.Size(180, 22);
             this.toolStripMenuItem7.Text = "2";
             this.toolStripMenuItem7.Click += new System.EventHandler(this.toolStripMenuItem7_Click);
             // 
             // toolStripMenuItem8
             // 
             this.toolStripMenuItem8.Name = "toolStripMenuItem8";
-            this.toolStripMenuItem8.Size = new System.Drawing.Size(80, 22);
+            this.toolStripMenuItem8.Size = new System.Drawing.Size(180, 22);
             this.toolStripMenuItem8.Text = "3";
             this.toolStripMenuItem8.Click += new System.EventHandler(this.toolStripMenuItem8_Click);
             // 
             // toolStripMenuItem9
             // 
             this.toolStripMenuItem9.Name = "toolStripMenuItem9";
-            this.toolStripMenuItem9.Size = new System.Drawing.Size(80, 22);
+            this.toolStripMenuItem9.Size = new System.Drawing.Size(180, 22);
             this.toolStripMenuItem9.Text = "4";
             this.toolStripMenuItem9.Click += new System.EventHandler(this.toolStripMenuItem9_Click);
             // 
             // toolStripMenuItem10
             // 
             this.toolStripMenuItem10.Name = "toolStripMenuItem10";
-            this.toolStripMenuItem10.Size = new System.Drawing.Size(80, 22);
+            this.toolStripMenuItem10.Size = new System.Drawing.Size(180, 22);
             this.toolStripMenuItem10.Text = "5";
             this.toolStripMenuItem10.Click += new System.EventHandler(this.toolStripMenuItem10_Click);
-            // 
-            // blackThemeToolStripMenuItem
-            // 
-            this.blackThemeToolStripMenuItem.Name = "blackThemeToolStripMenuItem";
-            this.blackThemeToolStripMenuItem.Size = new System.Drawing.Size(82, 20);
-            this.blackThemeToolStripMenuItem.Text = "Dark Theme";
-            this.blackThemeToolStripMenuItem.Visible = false;
-            this.blackThemeToolStripMenuItem.Click += new System.EventHandler(this.blackThemeToolStripMenuItem_Click);
             // 
             // saveToolStripMenuItem
             // 
@@ -270,21 +263,21 @@
             this.saveToolStripMenuItem2,
             this.saveAsToolStripMenuItem1});
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(43, 20);
-            this.saveToolStripMenuItem.Text = "Save";
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(86, 20);
+            this.saveToolStripMenuItem.Text = "Сохранение";
             // 
             // saveToolStripMenuItem2
             // 
             this.saveToolStripMenuItem2.Name = "saveToolStripMenuItem2";
-            this.saveToolStripMenuItem2.Size = new System.Drawing.Size(112, 22);
-            this.saveToolStripMenuItem2.Text = "Save";
+            this.saveToolStripMenuItem2.Size = new System.Drawing.Size(221, 22);
+            this.saveToolStripMenuItem2.Text = "Сохранить по-умолчанию";
             this.saveToolStripMenuItem2.Click += new System.EventHandler(this.saveToolStripMenuItem2_Click);
             // 
             // saveAsToolStripMenuItem1
             // 
             this.saveAsToolStripMenuItem1.Name = "saveAsToolStripMenuItem1";
-            this.saveAsToolStripMenuItem1.Size = new System.Drawing.Size(112, 22);
-            this.saveAsToolStripMenuItem1.Text = "Save as";
+            this.saveAsToolStripMenuItem1.Size = new System.Drawing.Size(221, 22);
+            this.saveAsToolStripMenuItem1.Text = "Сохранить как";
             this.saveAsToolStripMenuItem1.Click += new System.EventHandler(this.saveAsToolStripMenuItem1_Click);
             // 
             // loadToolStripMenuItem
@@ -293,22 +286,30 @@
             this.loadToolStripMenuItem2,
             this.loadAsToolStripMenuItem1});
             this.loadToolStripMenuItem.Name = "loadToolStripMenuItem";
-            this.loadToolStripMenuItem.Size = new System.Drawing.Size(45, 20);
-            this.loadToolStripMenuItem.Text = "Load";
+            this.loadToolStripMenuItem.Size = new System.Drawing.Size(67, 20);
+            this.loadToolStripMenuItem.Text = "Загрузка";
             // 
             // loadToolStripMenuItem2
             // 
             this.loadToolStripMenuItem2.Name = "loadToolStripMenuItem2";
-            this.loadToolStripMenuItem2.Size = new System.Drawing.Size(114, 22);
-            this.loadToolStripMenuItem2.Text = "Load";
+            this.loadToolStripMenuItem2.Size = new System.Drawing.Size(216, 22);
+            this.loadToolStripMenuItem2.Text = "Загрузить по-умолчанию";
             this.loadToolStripMenuItem2.Click += new System.EventHandler(this.loadToolStripMenuItem2_Click);
             // 
             // loadAsToolStripMenuItem1
             // 
             this.loadAsToolStripMenuItem1.Name = "loadAsToolStripMenuItem1";
-            this.loadAsToolStripMenuItem1.Size = new System.Drawing.Size(114, 22);
-            this.loadAsToolStripMenuItem1.Text = "Load as";
+            this.loadAsToolStripMenuItem1.Size = new System.Drawing.Size(216, 22);
+            this.loadAsToolStripMenuItem1.Text = "Загрузить как";
             this.loadAsToolStripMenuItem1.Click += new System.EventHandler(this.loadAsToolStripMenuItem1_Click);
+            // 
+            // blackThemeToolStripMenuItem
+            // 
+            this.blackThemeToolStripMenuItem.Name = "blackThemeToolStripMenuItem";
+            this.blackThemeToolStripMenuItem.Size = new System.Drawing.Size(82, 20);
+            this.blackThemeToolStripMenuItem.Text = "Dark Theme";
+            this.blackThemeToolStripMenuItem.Visible = false;
+            this.blackThemeToolStripMenuItem.Click += new System.EventHandler(this.blackThemeToolStripMenuItem_Click);
             // 
             // saveToolStripMenuItem1
             // 
@@ -336,7 +337,7 @@
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(100, 50);
             this.button3.TabIndex = 7;
-            this.button3.Text = "Clear t_ch";
+            this.button3.Text = "Удалить тестовый заряд";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click_1);
             // 
@@ -355,7 +356,7 @@
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(100, 50);
             this.button1.TabIndex = 9;
-            this.button1.Text = "Instructions";
+            this.button1.Text = "Инструкции";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click_1);
             // 
@@ -365,7 +366,7 @@
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(100, 50);
             this.button5.TabIndex = 10;
-            this.button5.Text = "Delete";
+            this.button5.Text = "Удалить выбранный заряд";
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
@@ -393,14 +394,14 @@
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(100, 50);
             this.button6.TabIndex = 16;
-            this.button6.Text = "Create charge";
+            this.button6.Text = "Создать заряд";
             this.button6.UseVisualStyleBackColor = true;
             this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(767, 710);
+            this.label4.Location = new System.Drawing.Point(777, 567);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(0, 13);
             this.label4.TabIndex = 17;
@@ -409,41 +410,41 @@
             // 
             this.checkBox1.Location = new System.Drawing.Point(770, 303);
             this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(100, 20);
+            this.checkBox1.Size = new System.Drawing.Size(100, 33);
             this.checkBox1.TabIndex = 18;
-            this.checkBox1.Text = "Coord. grid";
+            this.checkBox1.Text = "Координатная сетка";
             this.checkBox1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.checkBox1.UseVisualStyleBackColor = true;
             this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
             // button7
             // 
-            this.button7.Location = new System.Drawing.Point(770, 642);
+            this.button7.Location = new System.Drawing.Point(770, 674);
             this.button7.Name = "button7";
             this.button7.Size = new System.Drawing.Size(100, 50);
             this.button7.TabIndex = 23;
-            this.button7.Text = "Deselect";
+            this.button7.Text = "Снять выделение";
             this.button7.UseVisualStyleBackColor = true;
             this.button7.Click += new System.EventHandler(this.button7_Click);
             // 
             // checkBox2
             // 
-            this.checkBox2.Location = new System.Drawing.Point(770, 615);
+            this.checkBox2.Location = new System.Drawing.Point(770, 648);
             this.checkBox2.Name = "checkBox2";
             this.checkBox2.Size = new System.Drawing.Size(100, 20);
             this.checkBox2.TabIndex = 24;
-            this.checkBox2.Text = "Allow arrows";
+            this.checkBox2.Text = "Стрелки";
             this.checkBox2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.checkBox2.UseVisualStyleBackColor = true;
             this.checkBox2.CheckedChanged += new System.EventHandler(this.checkBox2_CheckedChanged);
             // 
             // checkBox3
             // 
-            this.checkBox3.Location = new System.Drawing.Point(770, 592);
+            this.checkBox3.Location = new System.Drawing.Point(770, 609);
             this.checkBox3.Name = "checkBox3";
-            this.checkBox3.Size = new System.Drawing.Size(100, 20);
+            this.checkBox3.Size = new System.Drawing.Size(100, 33);
             this.checkBox3.TabIndex = 25;
-            this.checkBox3.Text = "Rare arrows";
+            this.checkBox3.Text = "Редкие стрелки";
             this.checkBox3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.checkBox3.UseVisualStyleBackColor = true;
             this.checkBox3.CheckedChanged += new System.EventHandler(this.checkBox3_CheckedChanged);
@@ -460,11 +461,11 @@
             // 
             // checkBox4
             // 
-            this.checkBox4.Location = new System.Drawing.Point(770, 569);
+            this.checkBox4.Location = new System.Drawing.Point(770, 583);
             this.checkBox4.Name = "checkBox4";
             this.checkBox4.Size = new System.Drawing.Size(100, 20);
             this.checkBox4.TabIndex = 27;
-            this.checkBox4.Text = "Field tension";
+            this.checkBox4.Text = "Напр. поля";
             this.checkBox4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.checkBox4.UseVisualStyleBackColor = true;
             this.checkBox4.CheckedChanged += new System.EventHandler(this.checkBox4_CheckedChanged);
@@ -472,10 +473,11 @@
             // openFileDialog1
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
+            this.openFileDialog1.FileOk += new System.ComponentModel.CancelEventHandler(this.openFileDialog1_FileOk);
             // 
             // checkBox5
             // 
-            this.checkBox5.Location = new System.Drawing.Point(770, 546);
+            this.checkBox5.Location = new System.Drawing.Point(770, 467);
             this.checkBox5.Name = "checkBox5";
             this.checkBox5.Size = new System.Drawing.Size(100, 20);
             this.checkBox5.TabIndex = 28;
@@ -492,7 +494,7 @@
             this.textBox4.ReadOnly = true;
             this.textBox4.Size = new System.Drawing.Size(100, 20);
             this.textBox4.TabIndex = 31;
-            this.textBox4.Text = "Set charge";
+            this.textBox4.Text = "Модуль заряда";
             this.textBox4.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.textBox4.TextChanged += new System.EventHandler(this.textBox4_TextChanged);
             // 
@@ -519,17 +521,17 @@
             // 
             // textBox7
             // 
-            this.textBox7.Location = new System.Drawing.Point(770, 329);
+            this.textBox7.Location = new System.Drawing.Point(770, 337);
             this.textBox7.Name = "textBox7";
             this.textBox7.ReadOnly = true;
             this.textBox7.Size = new System.Drawing.Size(100, 20);
             this.textBox7.TabIndex = 34;
-            this.textBox7.Text = "Selected coord";
+            this.textBox7.Text = "Координаты";
             this.textBox7.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // textBox8
             // 
-            this.textBox8.Location = new System.Drawing.Point(825, 355);
+            this.textBox8.Location = new System.Drawing.Point(825, 363);
             this.textBox8.Name = "textBox8";
             this.textBox8.ReadOnly = true;
             this.textBox8.Size = new System.Drawing.Size(45, 20);
@@ -539,7 +541,7 @@
             // 
             // textBox9
             // 
-            this.textBox9.Location = new System.Drawing.Point(770, 355);
+            this.textBox9.Location = new System.Drawing.Point(770, 363);
             this.textBox9.Name = "textBox9";
             this.textBox9.ReadOnly = true;
             this.textBox9.Size = new System.Drawing.Size(45, 20);
@@ -549,7 +551,7 @@
             // 
             // textBox10
             // 
-            this.textBox10.Location = new System.Drawing.Point(825, 381);
+            this.textBox10.Location = new System.Drawing.Point(825, 389);
             this.textBox10.Name = "textBox10";
             this.textBox10.ReadOnly = true;
             this.textBox10.Size = new System.Drawing.Size(45, 20);
@@ -558,7 +560,7 @@
             // 
             // textBox11
             // 
-            this.textBox11.Location = new System.Drawing.Point(770, 381);
+            this.textBox11.Location = new System.Drawing.Point(770, 389);
             this.textBox11.Name = "textBox11";
             this.textBox11.ReadOnly = true;
             this.textBox11.Size = new System.Drawing.Size(45, 20);
@@ -567,17 +569,17 @@
             // 
             // textBox12
             // 
-            this.textBox12.Location = new System.Drawing.Point(770, 407);
+            this.textBox12.Location = new System.Drawing.Point(770, 415);
             this.textBox12.Name = "textBox12";
             this.textBox12.ReadOnly = true;
             this.textBox12.Size = new System.Drawing.Size(100, 20);
             this.textBox12.TabIndex = 39;
-            this.textBox12.Text = "Charge";
+            this.textBox12.Text = "Модуль заряда";
             this.textBox12.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // textBox13
             // 
-            this.textBox13.Location = new System.Drawing.Point(770, 433);
+            this.textBox13.Location = new System.Drawing.Point(770, 441);
             this.textBox13.Name = "textBox13";
             this.textBox13.ReadOnly = true;
             this.textBox13.Size = new System.Drawing.Size(100, 20);
@@ -618,7 +620,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "Form1";
-            this.Text = "Electrostatic Field v3.0";
+            this.Text = "Симуляция силовых линий электростатического поля v3.0";
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.menuStrip1.ResumeLayout(false);
