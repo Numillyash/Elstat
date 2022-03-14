@@ -1,5 +1,4 @@
-﻿using TypeOfObjects;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -1798,6 +1797,250 @@ namespace Phisic
             this.x = x;
             this.y = y;
             if (plus) charge = -charge;
+        }
+    }
+    public class Point2
+    {
+        public double x, y;
+
+        public Point2()
+        {
+            x = 0;
+            y = 0;
+        }
+
+        public Point2(double x, double y)
+        {
+            this.x = x;
+            this.y = y;
+        }
+
+        public override string ToString()
+        {
+            return String.Format("({0:0.000}, {1:0.000})", x, y);
+        }
+    }
+    public class Vector2
+    {
+        public double x1 { get; set; }
+
+        public double y1 { get; set; }
+
+        public double x2 { get; set; }
+
+        public double y2 { get; set; }
+
+        public double x { get; set; }
+
+        public double y { get; set; }
+
+        public Vector2()
+        {
+            x1 = 0;
+            x2 = 0;
+            y1 = 0;
+            y2 = 0;
+            x = 0;
+            y = 0;
+        }
+
+        public Vector2(Point2 p1, Point2 p2)
+        {
+            this.x1 = p1.x;
+            this.y1 = p1.y;
+            this.x2 = p2.x;
+            this.y2 = p2.y;
+            x = x2 - x1;
+            y = y2 - y1;
+        }
+
+        public Vector2(double x1, double y1, double x2, double y2)
+        {
+            this.x1 = x1;
+            this.y1 = y1;
+            this.x2 = x2;
+            this.y2 = y2;
+            x = x2 - x1;
+            y = y2 - y1;
+        }
+
+        public Vector2(double x, double y)
+        {
+            x1 = 0;
+            x2 = 0;
+            x2 = x;
+            y2 = y;
+            this.x = x;
+            this.y = y;
+        }
+
+        public override string ToString()
+        {
+            return String.Format("{0:0.000}, {1:0.000}", x, y);
+        }
+
+        public double GetLong()
+        {
+            return Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));
+        }
+
+        public static Vector2 operator +(Vector2 a, Vector2 b)
+        {
+            return new Vector2(a.x1, a.y1, a.x2 + b.x, a.y2 + b.y);
+        }
+
+        public static Vector2 operator -(Vector2 a, Vector2 b)
+        {
+            return new Vector2(a.x1 + b.x, a.y1 + b.y, a.x2, a.y2);
+        }
+
+        public static Vector2 operator -(Vector2 a)
+        {
+            return new Vector2(a.x2, a.y2, a.x1, a.y1);
+        }
+
+        public static Vector2 operator *(Vector2 a, int b)
+        {
+            return new Vector2(a.x * b, a.y * b);
+        }
+
+        public static double operator *(Vector2 a, Vector2 b)
+        {
+            return a.x * b.x + a.y * b.y;
+        }
+
+        public double Angle2(Vector2 vector, Vector2 vector2)
+        {
+            return vector * vector2 / (vector.GetLong() * vector2.GetLong());
+        }
+    }
+    public class Line2
+    {
+        public double a, b, c;
+
+        public Vector2 vector;
+
+        public Line2()
+        {
+            a = 0;
+            b = 0;
+            c = 0;
+            vector = new Vector2();
+        }
+
+        public Line2(Point2 point, Point2 point2)
+        {
+            a = point.y - point2.y;
+            b = point2.x - point.x;
+            c = point.x * point2.y - point2.x * point.y;
+            vector = new Vector2(point, point2);
+        }
+
+        public Line2(double x1, double y1, double x2, double y2)
+        {
+            a = y1 - y2;
+            b = x2 - x1;
+            c = x1 * y2 - x2 * y1;
+            vector = new Vector2(x1, y1, x2, y2);
+        }
+
+        public Line2(double ask, double bsk, double csk)
+        {
+            a = ask;
+            b = bsk;
+            c = csk;
+            vector = new Vector2(b, -a);
+        }
+
+        public double DistanceToPoint(Point2 alpha)
+        {
+            double res = 0;
+            res = Math.Abs(a * alpha.x + b * alpha.y + c) / Math.Sqrt(a * a + b * b);
+            return res;
+        }
+
+        public bool IsParallel(Line2 alpha)
+        {
+            if (Math.Abs(alpha.a * b - alpha.b * a) < 0.001)
+                return true;
+            else
+                return false;
+        }
+
+        public Line2 ParallelLine(Point2 alpha)
+        {
+            Line2 ans = null;
+            ans = new Line2(a, b, -a * alpha.x - b * alpha.y);
+            return ans;
+        }
+
+        public override string ToString()
+        {
+            string answer = "";
+            answer = String.Format("{0:0.00}x", a);
+            if (b >= 0)
+                answer += String.Format(" + {0:0.00}y", b);
+            else
+                answer += String.Format(" - {0:0.00}y", -b);
+            if (c >= 0)
+                answer += String.Format(" + {0:0.00}", c);
+            else
+                answer += String.Format(" - {0:0.00}", -c);
+            answer += " = 0";
+            return answer;
+        }
+
+        public bool Intersection(Line2 Line2, out Point2 Point2)
+        {
+            Point2 = null;
+            bool res = IsParallel(Line2);
+            if (res)
+                return false;
+            else
+            {
+                Point2 = new Point2();
+                Point2.y = (Line2.c * a - c * Line2.a) / (b * Line2.a - Line2.b * a);
+                Point2.x = (-c - b * Point2.y) / a;
+                return true;
+            }
+        }
+
+        public Point2 NearPoint(Point2 Point0)
+        {
+            Point2 Point2 = new Point2();
+            Line2 Line2 = new Line2(b, -a, a * Point0.y - b * Point0.x);
+            Intersection(Line2, out Point2);
+            return Point2;
+        }
+
+        public Line2 PerpendicularLine(Point2 Point20)
+        {
+            return new Line2(b, -a, a * Point20.y - b * Point20.x); ;
+        }
+
+        public void Normalize()
+        {
+            if (c != 0)
+            {
+                a /= c;
+                b /= c;
+                c /= c;
+            }
+            else if (a != 0)
+            {
+                b /= a;
+                a /= a;
+            }
+            else
+                b = 1;
+        }
+    }
+    public class Functions2
+    {
+        
+        public double DisplacementDotLine(Line2 a, Point2 M)
+        {
+            return (Math.Abs(a.a * M.x + a.b * M.y + a.c)) / (Math.Sqrt(a.a * a.a + a.b * a.b));
         }
     }
 }
