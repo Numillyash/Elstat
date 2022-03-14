@@ -37,6 +37,7 @@
             this.nullChargeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.elcToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.moveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.векторПоляToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.clearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fillToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.Fill_Multyple = new System.Windows.Forms.ToolStripMenuItem();
@@ -86,6 +87,8 @@
             this.textBox11 = new System.Windows.Forms.TextBox();
             this.textBox12 = new System.Windows.Forms.TextBox();
             this.textBox13 = new System.Windows.Forms.TextBox();
+            this.textBox14 = new System.Windows.Forms.TextBox();
+            this.textBox15 = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -119,7 +122,7 @@
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(5, 2, 0, 2);
-            this.menuStrip1.Size = new System.Drawing.Size(877, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(894, 24);
             this.menuStrip1.TabIndex = 2;
             this.menuStrip1.Text = "menuStrip1";
             this.menuStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.menuStrip1_ItemClicked);
@@ -131,7 +134,8 @@
             this.minusToolStripMenuItem,
             this.nullChargeToolStripMenuItem,
             this.elcToolStripMenuItem,
-            this.moveToolStripMenuItem});
+            this.moveToolStripMenuItem,
+            this.векторПоляToolStripMenuItem});
             this.лууToolStripMenuItem.Name = "лууToolStripMenuItem";
             this.лууToolStripMenuItem.Size = new System.Drawing.Size(90, 20);
             this.лууToolStripMenuItem.Text = "Новый заряд";
@@ -139,37 +143,45 @@
             // plusToolStripMenuItem
             // 
             this.plusToolStripMenuItem.Name = "plusToolStripMenuItem";
-            this.plusToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.plusToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
             this.plusToolStripMenuItem.Text = "Положительный";
             this.plusToolStripMenuItem.Click += new System.EventHandler(this.plusToolStripMenuItem_Click);
             // 
             // minusToolStripMenuItem
             // 
             this.minusToolStripMenuItem.Name = "minusToolStripMenuItem";
-            this.minusToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.minusToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
             this.minusToolStripMenuItem.Text = "Отрицательный";
             this.minusToolStripMenuItem.Click += new System.EventHandler(this.minusToolStripMenuItem_Click);
             // 
             // nullChargeToolStripMenuItem
             // 
             this.nullChargeToolStripMenuItem.Name = "nullChargeToolStripMenuItem";
-            this.nullChargeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.nullChargeToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
             this.nullChargeToolStripMenuItem.Text = "Нейтральный";
             this.nullChargeToolStripMenuItem.Click += new System.EventHandler(this.nullChargeToolStripMenuItem_Click);
             // 
             // elcToolStripMenuItem
             // 
             this.elcToolStripMenuItem.Name = "elcToolStripMenuItem";
-            this.elcToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.elcToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
             this.elcToolStripMenuItem.Text = "Пробный";
+            this.elcToolStripMenuItem.Visible = false;
             this.elcToolStripMenuItem.Click += new System.EventHandler(this.elcToolStripMenuItem_Click);
             // 
             // moveToolStripMenuItem
             // 
             this.moveToolStripMenuItem.Name = "moveToolStripMenuItem";
-            this.moveToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.moveToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
             this.moveToolStripMenuItem.Text = "Изменение";
             this.moveToolStripMenuItem.Click += new System.EventHandler(this.moveToolStripMenuItem_Click);
+            // 
+            // векторПоляToolStripMenuItem
+            // 
+            this.векторПоляToolStripMenuItem.Name = "векторПоляToolStripMenuItem";
+            this.векторПоляToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
+            this.векторПоляToolStripMenuItem.Text = "Вектор поля";
+            this.векторПоляToolStripMenuItem.Click += new System.EventHandler(this.векторПоляToolStripMenuItem_Click);
             // 
             // clearToolStripMenuItem
             // 
@@ -193,7 +205,7 @@
             // 
             this.Fill_Multyple.Name = "Fill_Multyple";
             this.Fill_Multyple.Size = new System.Drawing.Size(235, 22);
-            this.Fill_Multyple.Text = "Увиличить в 2 раза";
+            this.Fill_Multyple.Text = "Увеличить в 2 раза";
             this.Fill_Multyple.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
             // 
             // deMultiplyLinesToolStripMenuItem
@@ -225,35 +237,35 @@
             // toolStripMenuItem6
             // 
             this.toolStripMenuItem6.Name = "toolStripMenuItem6";
-            this.toolStripMenuItem6.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem6.Size = new System.Drawing.Size(80, 22);
             this.toolStripMenuItem6.Text = "1";
             this.toolStripMenuItem6.Click += new System.EventHandler(this.toolStripMenuItem6_Click);
             // 
             // toolStripMenuItem7
             // 
             this.toolStripMenuItem7.Name = "toolStripMenuItem7";
-            this.toolStripMenuItem7.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem7.Size = new System.Drawing.Size(80, 22);
             this.toolStripMenuItem7.Text = "2";
             this.toolStripMenuItem7.Click += new System.EventHandler(this.toolStripMenuItem7_Click);
             // 
             // toolStripMenuItem8
             // 
             this.toolStripMenuItem8.Name = "toolStripMenuItem8";
-            this.toolStripMenuItem8.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem8.Size = new System.Drawing.Size(80, 22);
             this.toolStripMenuItem8.Text = "3";
             this.toolStripMenuItem8.Click += new System.EventHandler(this.toolStripMenuItem8_Click);
             // 
             // toolStripMenuItem9
             // 
             this.toolStripMenuItem9.Name = "toolStripMenuItem9";
-            this.toolStripMenuItem9.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem9.Size = new System.Drawing.Size(80, 22);
             this.toolStripMenuItem9.Text = "4";
             this.toolStripMenuItem9.Click += new System.EventHandler(this.toolStripMenuItem9_Click);
             // 
             // toolStripMenuItem10
             // 
             this.toolStripMenuItem10.Name = "toolStripMenuItem10";
-            this.toolStripMenuItem10.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem10.Size = new System.Drawing.Size(80, 22);
             this.toolStripMenuItem10.Text = "5";
             this.toolStripMenuItem10.Click += new System.EventHandler(this.toolStripMenuItem10_Click);
             // 
@@ -335,7 +347,7 @@
             // 
             this.button3.Location = new System.Drawing.Point(770, 31);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(100, 50);
+            this.button3.Size = new System.Drawing.Size(112, 50);
             this.button3.TabIndex = 7;
             this.button3.Text = "Удалить тестовый заряд";
             this.button3.UseVisualStyleBackColor = true;
@@ -345,7 +357,7 @@
             // 
             this.textBox1.Location = new System.Drawing.Point(770, 169);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 20);
+            this.textBox1.Size = new System.Drawing.Size(112, 20);
             this.textBox1.TabIndex = 8;
             this.textBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged_1);
@@ -354,7 +366,7 @@
             // 
             this.button1.Location = new System.Drawing.Point(770, 730);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(100, 50);
+            this.button1.Size = new System.Drawing.Size(112, 50);
             this.button1.TabIndex = 9;
             this.button1.Text = "Инструкции";
             this.button1.UseVisualStyleBackColor = true;
@@ -364,7 +376,7 @@
             // 
             this.button5.Location = new System.Drawing.Point(770, 87);
             this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(100, 50);
+            this.button5.Size = new System.Drawing.Size(112, 50);
             this.button5.TabIndex = 10;
             this.button5.Text = "Удалить выбранный заряд";
             this.button5.UseVisualStyleBackColor = true;
@@ -381,7 +393,7 @@
             // 
             // textBox3
             // 
-            this.textBox3.Location = new System.Drawing.Point(825, 221);
+            this.textBox3.Location = new System.Drawing.Point(837, 221);
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(45, 20);
             this.textBox3.TabIndex = 14;
@@ -392,7 +404,7 @@
             // 
             this.button6.Location = new System.Drawing.Point(770, 247);
             this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(100, 50);
+            this.button6.Size = new System.Drawing.Size(112, 50);
             this.button6.TabIndex = 16;
             this.button6.Text = "Создать заряд";
             this.button6.UseVisualStyleBackColor = true;
@@ -410,7 +422,7 @@
             // 
             this.checkBox1.Location = new System.Drawing.Point(770, 303);
             this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(100, 33);
+            this.checkBox1.Size = new System.Drawing.Size(112, 33);
             this.checkBox1.TabIndex = 18;
             this.checkBox1.Text = "Координатная сетка";
             this.checkBox1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -421,7 +433,7 @@
             // 
             this.button7.Location = new System.Drawing.Point(770, 674);
             this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(100, 50);
+            this.button7.Size = new System.Drawing.Size(112, 50);
             this.button7.TabIndex = 23;
             this.button7.Text = "Снять выделение";
             this.button7.UseVisualStyleBackColor = true;
@@ -431,7 +443,7 @@
             // 
             this.checkBox2.Location = new System.Drawing.Point(770, 648);
             this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(100, 20);
+            this.checkBox2.Size = new System.Drawing.Size(112, 20);
             this.checkBox2.TabIndex = 24;
             this.checkBox2.Text = "Стрелки";
             this.checkBox2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -440,9 +452,9 @@
             // 
             // checkBox3
             // 
-            this.checkBox3.Location = new System.Drawing.Point(770, 609);
+            this.checkBox3.Location = new System.Drawing.Point(770, 622);
             this.checkBox3.Name = "checkBox3";
-            this.checkBox3.Size = new System.Drawing.Size(100, 33);
+            this.checkBox3.Size = new System.Drawing.Size(112, 20);
             this.checkBox3.TabIndex = 25;
             this.checkBox3.Text = "Редкие стрелки";
             this.checkBox3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -461,9 +473,9 @@
             // 
             // checkBox4
             // 
-            this.checkBox4.Location = new System.Drawing.Point(770, 583);
+            this.checkBox4.Location = new System.Drawing.Point(770, 596);
             this.checkBox4.Name = "checkBox4";
-            this.checkBox4.Size = new System.Drawing.Size(100, 20);
+            this.checkBox4.Size = new System.Drawing.Size(112, 20);
             this.checkBox4.TabIndex = 27;
             this.checkBox4.Text = "Напр. поля";
             this.checkBox4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -477,14 +489,13 @@
             // 
             // checkBox5
             // 
-            this.checkBox5.Location = new System.Drawing.Point(770, 467);
+            this.checkBox5.Location = new System.Drawing.Point(770, 570);
             this.checkBox5.Name = "checkBox5";
-            this.checkBox5.Size = new System.Drawing.Size(100, 20);
+            this.checkBox5.Size = new System.Drawing.Size(112, 20);
             this.checkBox5.TabIndex = 28;
             this.checkBox5.Text = "Show E = 0";
             this.checkBox5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.checkBox5.UseVisualStyleBackColor = true;
-            this.checkBox5.Visible = false;
             this.checkBox5.CheckedChanged += new System.EventHandler(this.checkBox5_CheckedChanged);
             // 
             // textBox4
@@ -492,7 +503,7 @@
             this.textBox4.Location = new System.Drawing.Point(770, 143);
             this.textBox4.Name = "textBox4";
             this.textBox4.ReadOnly = true;
-            this.textBox4.Size = new System.Drawing.Size(100, 20);
+            this.textBox4.Size = new System.Drawing.Size(112, 20);
             this.textBox4.TabIndex = 31;
             this.textBox4.Text = "Модуль заряда";
             this.textBox4.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -511,7 +522,7 @@
             // 
             // textBox6
             // 
-            this.textBox6.Location = new System.Drawing.Point(825, 195);
+            this.textBox6.Location = new System.Drawing.Point(837, 195);
             this.textBox6.Name = "textBox6";
             this.textBox6.ReadOnly = true;
             this.textBox6.Size = new System.Drawing.Size(45, 20);
@@ -524,14 +535,14 @@
             this.textBox7.Location = new System.Drawing.Point(770, 337);
             this.textBox7.Name = "textBox7";
             this.textBox7.ReadOnly = true;
-            this.textBox7.Size = new System.Drawing.Size(100, 20);
+            this.textBox7.Size = new System.Drawing.Size(112, 20);
             this.textBox7.TabIndex = 34;
             this.textBox7.Text = "Координаты";
             this.textBox7.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // textBox8
             // 
-            this.textBox8.Location = new System.Drawing.Point(825, 363);
+            this.textBox8.Location = new System.Drawing.Point(837, 363);
             this.textBox8.Name = "textBox8";
             this.textBox8.ReadOnly = true;
             this.textBox8.Size = new System.Drawing.Size(45, 20);
@@ -551,7 +562,7 @@
             // 
             // textBox10
             // 
-            this.textBox10.Location = new System.Drawing.Point(825, 389);
+            this.textBox10.Location = new System.Drawing.Point(837, 389);
             this.textBox10.Name = "textBox10";
             this.textBox10.ReadOnly = true;
             this.textBox10.Size = new System.Drawing.Size(45, 20);
@@ -572,9 +583,9 @@
             this.textBox12.Location = new System.Drawing.Point(770, 415);
             this.textBox12.Name = "textBox12";
             this.textBox12.ReadOnly = true;
-            this.textBox12.Size = new System.Drawing.Size(100, 20);
+            this.textBox12.Size = new System.Drawing.Size(112, 20);
             this.textBox12.TabIndex = 39;
-            this.textBox12.Text = "Модуль заряда";
+            this.textBox12.Text = "Модуль заряда (нКл)";
             this.textBox12.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // textBox13
@@ -582,14 +593,38 @@
             this.textBox13.Location = new System.Drawing.Point(770, 441);
             this.textBox13.Name = "textBox13";
             this.textBox13.ReadOnly = true;
-            this.textBox13.Size = new System.Drawing.Size(100, 20);
+            this.textBox13.Size = new System.Drawing.Size(112, 20);
             this.textBox13.TabIndex = 40;
             this.textBox13.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // textBox14
+            // 
+            this.textBox14.Location = new System.Drawing.Point(770, 506);
+            this.textBox14.Name = "textBox14";
+            this.textBox14.ReadOnly = true;
+            this.textBox14.Size = new System.Drawing.Size(112, 20);
+            this.textBox14.TabIndex = 42;
+            this.textBox14.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox14.TextChanged += new System.EventHandler(this.textBox14_TextChanged);
+            // 
+            // textBox15
+            // 
+            this.textBox15.Location = new System.Drawing.Point(770, 467);
+            this.textBox15.Multiline = true;
+            this.textBox15.Name = "textBox15";
+            this.textBox15.ReadOnly = true;
+            this.textBox15.Size = new System.Drawing.Size(112, 33);
+            this.textBox15.TabIndex = 41;
+            this.textBox15.Text = "Напряженность\r\n(В/мм)\r\n";
+            this.textBox15.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox15.TextChanged += new System.EventHandler(this.textBox15_TextChanged);
             // 
             // Form1
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.ClientSize = new System.Drawing.Size(877, 803);
+            this.ClientSize = new System.Drawing.Size(894, 803);
+            this.Controls.Add(this.textBox14);
+            this.Controls.Add(this.textBox15);
             this.Controls.Add(this.textBox13);
             this.Controls.Add(this.textBox12);
             this.Controls.Add(this.textBox10);
@@ -620,7 +655,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "Form1";
-            this.Text = "Симуляция силовых линий электростатического поля v3.0";
+            this.Text = "Симуляция силовых линий электростатического поля v3.1 ГАСУ";
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.menuStrip1.ResumeLayout(false);
@@ -689,6 +724,9 @@
         private System.Windows.Forms.TextBox textBox11;
         private System.Windows.Forms.TextBox textBox12;
         private System.Windows.Forms.TextBox textBox13;
+        private System.Windows.Forms.ToolStripMenuItem векторПоляToolStripMenuItem;
+        private System.Windows.Forms.TextBox textBox14;
+        private System.Windows.Forms.TextBox textBox15;
     }
 }
 

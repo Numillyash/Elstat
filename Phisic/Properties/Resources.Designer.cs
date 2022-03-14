@@ -78,5 +78,15 @@ namespace Phisic.Properties {
                 return ((System.Drawing.Icon)(obj));
             }
         }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
+        public static byte[] TypeOfObjects {
+            get {
+                object obj = ResourceManager.GetObject("TypeOfObjects", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
     }
 }

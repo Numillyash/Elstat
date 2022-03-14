@@ -7,7 +7,7 @@
     <ProjectGuid>{D9A9F981-961F-4585-BCEB-358B55B90E41}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>Phisic</RootNamespace>
-    <AssemblyName>elstat_v3.0</AssemblyName>
+    <AssemblyName>elstat_v3.1_ГАСУ</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -98,6 +98,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Alice.ico" />
+    <None Include="Resources\TypeOfObjects.dll" />
     <Content Include="spider2.ico" />
     <Content Include="Без имени.ico" />
   </ItemGroup>

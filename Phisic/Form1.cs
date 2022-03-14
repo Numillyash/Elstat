@@ -1,4 +1,5 @@
-﻿using System;
+﻿using TypeOfObjects;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -94,7 +95,8 @@ namespace Phisic
             MINUS,
             NEUTRAL,
             PROB,
-            MOVE
+            MOVE,
+            FIELD_VECTOR
         }
 
         /// <summary>
@@ -122,6 +124,7 @@ namespace Phisic
         private readonly Graphics _graphics;
         private Bitmap _bitmap;
 
+        PointF p_field = new PointF();
 
         /// <summary>
         /// Инициализация окна
@@ -161,10 +164,13 @@ namespace Phisic
             {
                 if (!kekl)
                 {
-                    Vector new_pos = new Vector();
+                    Vector2 new_pos = new Vector2();
                     know_new_pos(ref kekl, ref new_pos, x_now, y_now);
                     if (double.IsNaN(new_pos.x) || double.IsNaN(new_pos.y)) break;
-                    Vector rv = new Vector(new_pos.x / Math.Sqrt(new_pos.x * new_pos.x + new_pos.y * new_pos.y), new_pos.y / Math.Sqrt(new_pos.x * new_pos.x + new_pos.y * new_pos.y));
+                    Vector2 rv = new Vector2(
+                        new_pos.x / Math.Sqrt(new_pos.x * new_pos.x + new_pos.y * new_pos.y), // единичный вектор направления
+                        new_pos.y / Math.Sqrt(new_pos.x * new_pos.x + new_pos.y * new_pos.y)
+                        );
                     if (double.IsNaN(rv.x) || double.IsNaN(rv.y)) break;
 
                     draw_arrow(true, new PointF(x_now, y_now), new PointF(x_now + (float)(rv.x * k), y_now + (float)(rv.y * k)));
@@ -191,10 +197,10 @@ namespace Phisic
             {
                 if (!kekl)
                 {
-                    Vector new_pos = new Vector();
+                    Vector2 new_pos = new Vector2();
                     know_new_pos(ref kekl, ref new_pos, x_now, y_now);
                     if (double.IsNaN(new_pos.x) || double.IsNaN(new_pos.y)) break;
-                    Vector rv = new Vector(new_pos.x / Math.Sqrt(new_pos.x * new_pos.x + new_pos.y * new_pos.y), new_pos.y / Math.Sqrt(new_pos.x * new_pos.x + new_pos.y * new_pos.y));
+                    Vector2 rv = new Vector2(new_pos.x / Math.Sqrt(new_pos.x * new_pos.x + new_pos.y * new_pos.y), new_pos.y / Math.Sqrt(new_pos.x * new_pos.x + new_pos.y * new_pos.y));
                     if (double.IsNaN(rv.x) || double.IsNaN(rv.y)) break;
 
                     draw_arrow(false, new PointF(x_now, y_now), new PointF(x_now - (float)(rv.x * k), y_now - (float)(rv.y * k)));
@@ -241,7 +247,7 @@ namespace Phisic
         /// <param name="new_pos">Вектор новых координат</param>
         /// <param name="x_now">Текущая координата по Х</param>
         /// <param name="y_now">Текущая координата по Y</param>
-        private void know_new_pos(ref bool kekl, ref Vector new_pos, float x_now, float y_now)
+        private void know_new_pos(ref bool kekl, ref Vector2 new_pos, float x_now, float y_now)
         {
             foreach (Atom at in atoms)
             {
@@ -271,12 +277,12 @@ namespace Phisic
             {
                 if (!kekl)
                 {
-                    Vector new_pos = new Vector();
+                    Vector2 new_pos = new Vector2();
                     bool d = false;
                     know_new_pos(ref d, ref new_pos, x_now, y_now);
 
                     if (double.IsNaN(new_pos.x) || double.IsNaN(new_pos.y)) break;
-                    Vector rv = new Vector(new_pos.x / Math.Sqrt(new_pos.x * new_pos.x + new_pos.y * new_pos.y), new_pos.y / Math.Sqrt(new_pos.x * new_pos.x + new_pos.y * new_pos.y));
+                    Vector2 rv = new Vector2(new_pos.x / Math.Sqrt(new_pos.x * new_pos.x + new_pos.y * new_pos.y), new_pos.y / Math.Sqrt(new_pos.x * new_pos.x + new_pos.y * new_pos.y));
                     if (double.IsNaN(rv.x) || double.IsNaN(rv.y)) break;
 
                     float a = x_now, b = y_now;
@@ -312,11 +318,11 @@ namespace Phisic
                 bool kekl = false;
                 if (!kekl)
                 {
-                    Vector new_pos = new Vector();
+                    Vector2 new_pos = new Vector2();
                     bool d = false;
                     know_new_pos(ref d, ref new_pos, x_now, y_now);
                     if (double.IsNaN(new_pos.x) || double.IsNaN(new_pos.y)) continue;
-                    Vector rv = new Vector(new_pos.x / Math.Sqrt(new_pos.x * new_pos.x + new_pos.y * new_pos.y), new_pos.y / Math.Sqrt(new_pos.x * new_pos.x + new_pos.y * new_pos.y));
+                    Vector2 rv = new Vector2(new_pos.x / Math.Sqrt(new_pos.x * new_pos.x + new_pos.y * new_pos.y), new_pos.y / Math.Sqrt(new_pos.x * new_pos.x + new_pos.y * new_pos.y));
                     if (double.IsNaN(rv.x) || double.IsNaN(rv.y)) continue;
 
                     x_now += (float)(rv.x * k2 * k2);
@@ -333,7 +339,7 @@ namespace Phisic
         /// </summary>
         private void phisica3()
         {
-            double k = 1.045;
+            double k = 1.043;
             Brush brush = new SolidBrush(Color.Red);
 
             Brush brush_bl = new SolidBrush(Color.Black);
@@ -349,20 +355,20 @@ namespace Phisic
                     {
                         El_ch el = new El_ch(i, j, false);
 
-                        Vector new_pos = new Vector();
+                        Vector2 new_pos = new Vector2();
 
                         foreach (Atom at in atoms)
                         {
                             new_pos += at.forcer(el);
                             //double rad = Math.Sqrt((at.x - x_now) * (at.x - x_now) + (at.y - y_now) * (at.y - y_now));
                         }
-                        double rad = Math.Sqrt(Math.Pow(new_pos.x, 2) + Math.Pow(new_pos.y, 2));
+                        double rad = new_pos.GetLong()*1000;
                         if (!double.IsNaN(rad) && !double.IsInfinity(rad))
                         {
-                            if (Math.Log(rad, k) >= 255)
+                            double lg = Math.Log(rad, k);
+                            if (lg >= 255)
                             {
                                 _graphics.FillRectangle(new SolidBrush(Color.FromArgb(255, 255, 255)), new Rectangle(i, j, 1, 1));
-
                             }
                             else if (Math.Log(rad, k) <= 0)
                             {
@@ -370,7 +376,7 @@ namespace Phisic
                             }
                             else
                             {
-                                _graphics.FillRectangle(new SolidBrush(Color.FromArgb((int)(Math.Log(rad, k)), (int)(Math.Log(rad, k)), (int)(Math.Log(rad, k)))), new Rectangle(i, j, 1, 1));
+                                _graphics.FillRectangle(new SolidBrush(Color.FromArgb((int)lg, (int)lg, (int)lg)), new Rectangle(i, j, 1, 1));
                             }
                         }
                     }
@@ -402,55 +408,55 @@ namespace Phisic
                     {
                         all_one_charge += 0;
                     }
-                    else
+                    else if(atom.charge > 0)  
                     {
                         all_one_charge += 1;
+                    }
+                    else
+                    {
+                        all_one_charge += 2;
                     }
                 }
 
                 // Eix = (x-a) * Q / ((x-a)^2+(y-b)^2)^2
                 // Eiy = (y-b) * Q / ((x-a)^2+(y-b)^2)^2
                 // if (Ex^2+Ey^2 < 1e-6) : cool
-
-                int kv_min_x = 800, kv_min_y = 800, kv_max_x = -1, kv_max_y = -1;
-                foreach (Atom at in atoms)
-                {
-                    if (at.x > kv_max_x)
-                        kv_max_x = at.x;
-                    if (at.x < kv_min_x)
-                        kv_min_x = at.x;
-                    if (at.y > kv_max_y)
-                        kv_max_y = at.y;
-                    if (at.y < kv_min_y)
-                        kv_min_y = at.y;
-                }
-
+                Functions2 f = new Functions2();
                 if (all_one_charge == 0 || all_one_charge == atoms.Count)
                 {
-                    double e_x = -10, e_y = -10;
-                    int e_0_rad = 10;
-                    for (e_x = kv_min_x; e_x < kv_max_x; e_x += 0.1)
+                    if (atoms.Count == 2)
                     {
-                        for (e_y = kv_min_y; e_y < kv_max_y; e_y += 0.1)
+                        double kv_min_x = Math.Min(atoms[0].x, atoms[1].x), kv_min_y = Math.Min(atoms[0].y, atoms[1].y);
+                        double kv_max_x = Math.Max(atoms[0].x, atoms[1].x), kv_max_y = Math.Max(atoms[0].y, atoms[1].y);
+                        double e_x = -10, e_y = -10;
+                        int e_0_rad = 10;
+                        Line2 line2 = new Line2(atoms[0].x, atoms[0].y, atoms[1].x, atoms[1].y);
+                        for (e_x = kv_min_x; e_x < kv_max_x; e_x += 0.1)
                         {
-                            El_ch el_Ch = new El_ch(e_x, e_y, false);
-                            Vector summ = new Vector(0, 0);
-                            foreach (Atom at in atoms)
+                            for (e_y = kv_min_y; e_y < kv_max_y; e_y += 0.1)
                             {
-                                summ += at.forcer(el_Ch);
-                            }
-                            if (Math.Abs(summ.GetLong()) <= 0.1)
-                            {
-                                if (atoms.Count > 1)
+                                Point2 point2 = new Point2(e_x, e_y);
+                                if (f.DisplacementDotLine(line2, point2) < 5)
                                 {
-                                    Brush brush = new SolidBrush(Color.Purple);
-                                    _graphics.FillEllipse(brush, new Rectangle((int)e_x - e_0_rad / 2, (int)e_y - e_0_rad / 2, e_0_rad, e_0_rad));
+                                    El_ch el_Ch = new El_ch(e_x, e_y, false);
+                                    Vector2 summ = new Vector2(0, 0);
+                                    foreach (Atom at in atoms)
+                                    {
+                                        summ += at.forcer(el_Ch);
+                                    }
+                                    if (Math.Abs(summ.GetLong()) <= 1e-9)
+                                    {
+                                        if (atoms.Count > 1)
+                                        {
+                                            Brush brush = new SolidBrush(Color.Purple);
+                                            _graphics.FillEllipse(brush, new Rectangle((int)e_x - e_0_rad / 2, (int)e_y - e_0_rad / 2, e_0_rad, e_0_rad));
+                                        }
+                                        Console.WriteLine(e_x + " " + e_y + " " + summ);
+                                    }
                                 }
-                                Console.WriteLine(e_x + " " + e_y + " " + summ);
                             }
                         }
                     }
-
 
                 }
             }
@@ -598,6 +604,8 @@ namespace Phisic
                 phisica2();
             }
             phisica_E_0();
+            if(type == Type.FIELD_VECTOR)
+                paint_field_vector(p_field);
             Refresh();
         }
 
@@ -732,9 +740,31 @@ namespace Phisic
                     dow = true;
                     create_atom(e.X, e.Y, 0);
                     break;
+                case Type.FIELD_VECTOR:
+                    dow = true;
+                    p_field = new PointF(e.X, e.Y);
+                    break;
                 default: break;
             }
             paintka();
+        }
+
+        private void paint_field_vector(PointF e)
+        {
+            El_ch el_Ch = new El_ch(e.X, e.Y, false);
+            Vector2 summ = new Vector2(0, 0);
+            foreach (Atom at in atoms)
+            {
+                summ += at.forcer(el_Ch);
+            }
+            textBox14.Text =string.Format("{0}", summ.GetLong());
+            summ *= 100;
+            Pen pen = new Pen(Color.Purple, 3);
+            pen.EndCap = System.Drawing.Drawing2D.LineCap.ArrowAnchor;
+            PointF p1 = new PointF(e.X, e.Y);
+            PointF p2 = new PointF(e.X+(float)summ.x, e.Y+ (float)summ.y);
+            //Console.WriteLine(p1 + " " + p2);
+            _graphics.DrawLine(pen, p1, p2);
         }
 
         /// <summary>
@@ -798,6 +828,9 @@ namespace Phisic
                         break;
                     case Type.NEUTRAL:
                         changer_atom(e);
+                        break;
+                    case Type.FIELD_VECTOR:
+                        p_field = new PointF(e.X, e.Y);
                         break;
                     default: break;
                 }
@@ -1483,6 +1516,21 @@ namespace Phisic
         {
 
         }
+
+        private void векторПоляToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            type = Type.FIELD_VECTOR;
+        }
+
+        private void textBox15_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox14_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 
     /// <summary>
@@ -1578,7 +1626,7 @@ namespace Phisic
         public int y { get; set; }
 
         /// <summary>
-        /// Модуль заряда атома
+        /// Модуль заряда атома, в Кулонах
         /// </summary>
         public int charge { get; set; } = 0;
 
@@ -1597,7 +1645,10 @@ namespace Phisic
         /// </summary>
         public int radius { get; set; } = 10;
 
-        const int k = 9000000;
+        /// <summary>
+        /// Коеффицент пропорциональности
+        /// </summary>
+        const long k = 9000;// * (long)(1e9);
 
         /// <summary>
         /// Инициализация пустого атома
@@ -1630,12 +1681,16 @@ namespace Phisic
         /// </summary>
         /// <param name="el">Обьект пробного заряда</param>
         /// <returns>Итоговый вектор силы</returns>
-        public Vector forcer(El_ch el)
+        public Vector2 forcer(El_ch el)
         {
+            // расстояние до атома
             double rad = Math.Sqrt((el.x - x) * (el.x - x) + (el.y - y) * (el.y - y));
-            Vector once = new Vector((double)(el.x - x) / rad, (double)(el.y - y) / rad);
+            // Единичный вектор напрвления "атом - электрон"
+            Vector2 once = new Vector2((double)(el.x - x) / rad, (double)(el.y - y) / rad);
+            // Сила: заряд атома * заряд электрона * коеффицент / расстояние^2
             double force = k * el.charge * charge / (rad * rad);
-            return new Vector(once.x * force, once.y * force);
+
+            return new Vector2(once.x * force, once.y * force);
         }
 
         /// <summary>
@@ -1675,7 +1730,7 @@ namespace Phisic
         public double y { get; set; }
 
         /// <summary>
-        /// Модуль заряда електрона. По умолчанию 1
+        /// Модуль заряда електрона в кулонах. По умолчанию 1
         /// </summary>
         public double charge { get; set; } = 1;
 
@@ -1699,67 +1754,6 @@ namespace Phisic
             this.x = x;
             this.y = y;
             if (plus) charge = -charge;
-        }
-    }
-
-    /// <summary>
-    /// Вектор (имеет только длину проекций на оси X и Y)
-    /// </summary>
-    public class Vector
-    {
-        /// <summary>
-        /// Координата по Х
-        /// </summary>
-        public double x { get; set; }
-
-        /// <summary>
-        /// Координата по Y
-        /// </summary>
-        public double y { get; set; }
-
-        /// <summary>
-        /// Инициализация нуль-вектора
-        /// </summary>
-        public Vector()
-        {
-            x = 0;
-            y = 0;
-        }
-
-        /// <summary>
-        /// Инициализация вектора с заданной длиной вдоль осей X и Y
-        /// </summary>
-        /// <param name="x">Длина вдоль (или против) оси Х</param>
-        /// <param name="y">Длина вдоль (или против) оси Y</param>
-        public Vector(double x, double y)
-        {
-            this.x = x;
-            this.y = y;
-        }
-
-        /// <summary>
-        /// Вывод значений длины вектора вдоль осей
-        /// </summary>
-        /// <returns>Строка с 2-мя занчениями - длина вдоль осей Х и Y</returns>
-        public override string ToString()
-        {
-            return String.Format("{0:0.000000000000}, {1:0.000000000000}", x, y);
-        }
-
-        /// <summary>
-        /// Расчет векторной суммы
-        /// </summary>
-        /// <param name="a">Первый вектор</param>
-        /// <param name="b">Второй вектор</param>
-        /// <returns>Итоговый вектор</returns>
-        public static Vector operator +(Vector a, Vector b)
-        {
-            return new Vector(a.x + b.x, a.y + b.y);
-        }
-
-        public double GetLong()
-        {
-            return Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));
         }
     }
 
