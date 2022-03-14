@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
+using System.Reflection;
+using System.Linq;
 
 /*
  * В программе используются переобозначения для упрощения обьяснения кода
@@ -131,6 +133,19 @@ namespace Phisic
         /// </summary>
         public Form1()
         {
+            AppDomain.CurrentDomain.AssemblyResolve += (sender, bargs) =>
+            {
+                String dllName = new AssemblyName(bargs.Name).Name + ".dll";
+                var assem = Assembly.GetExecutingAssembly();
+                String resourceName = assem.GetManifestResourceNames().FirstOrDefault(rn => rn.EndsWith(dllName));
+                if (resourceName == null) return null; // Not found, maybe another handler will find it
+                using (var stream = assem.GetManifestResourceStream(resourceName))
+                {
+                    Byte[] assemblyData = new Byte[stream.Length];
+                    stream.Read(assemblyData, 0, assemblyData.Length);
+                    return Assembly.Load(assemblyData);
+                }
+            };
             InitializeComponent();
             icon = this.Icon;
             _bitmap = new Bitmap(1920, 1080);
