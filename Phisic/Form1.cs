@@ -1537,78 +1537,6 @@ namespace Phisic
     }
 
     /// <summary>
-    /// Окно с инструкциями
-    /// </summary>
-    public partial class Form2 : Form
-    {
-        private TextBox textBox1;
-
-        /// <summary>
-        /// Инициализация формы
-        /// </summary>
-        public Form2()
-        {
-            this.Icon = Properties.Resources.spider2;
-            InitializeComponent();
-        }
-
-        /// <summary>
-        /// Инициализация компонентов формы
-        /// </summary>
-        private void InitializeComponent()
-        {
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.SuspendLayout();
-            // 
-            // textBox1
-            // 
-            this.textBox1.AcceptsReturn = true;
-            this.textBox1.AcceptsTab = true;
-            this.textBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBox1.Multiline = true;
-            this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBox1.Enabled = true;
-            this.textBox1.ReadOnly = true;
-            this.textBox1.Text =
-                "Эта программа позволяет симулировать силовые линии в электростатическом поле "
-                + Environment.NewLine + "Значения кнопок:"
-                + Environment.NewLine + "Создать заряд - выбор создаваемого элемента или его настройки:"
-                + Environment.NewLine + "\tПоложительный - создает положительный заряд (модуль указан в поле Charge), при зажатии ЛКМ можно перемещать по полю до постановки. Заряд по умолчанию +1"
-                + Environment.NewLine + "\tОтрицательный - создает отрицательный заряд (модуль указан в поле Charge), при зажатии ЛКМ можно перемещать по полю до постановки. Заряд по умолчанию -1"
-                + Environment.NewLine + "\tНейтральный - создает незаряженное тело, при зажатии ЛКМ можно перемещать по полю до постановки"
-                + Environment.NewLine + "\tПробный - создает элементарный отрицательный заряд, при зажатии ЛКМ можно перемещать по полю до постановки, также показывает траекторию его полета"
-                + Environment.NewLine + "\tИзменить - при клике на заряд он выделяется. Выделенный заряд можно перетаскивать по полю и изменять его координаты"
-                + Environment.NewLine + "Очистка поля - очищает все поле"
-                + Environment.NewLine + "Увеличение кол-ва линий - увеличивает кол-во линий, исходящих из заряда"
-                + Environment.NewLine + "Толщина линий - изменяет толщину силовых линий"
-                //+ Environment.NewLine + "Dark theme - меняет цвет окна и элементов"
-                + Environment.NewLine + "Удалить тестовый заряд - очищает поле от тестогого заряда, если таковой существует"
-                + Environment.NewLine + "Удалить выбранный заряд - удаляет выбранный заряд, если таковой существует"
-                + Environment.NewLine + "Создать заряд - создает заряд с заданными зарядом и координатами"
-                + Environment.NewLine + "Координатная сетка - показывать/не показывать координатную сетку"
-                + Environment.NewLine + "Напряженность поля - показывать/не показывать напряженность поля"
-                + Environment.NewLine + "Снять выделение - снимает выделение с заряда"
-                + Environment.NewLine + "Стрелки - добавляет стрелки магнитным линиям"
-                + Environment.NewLine + "Редкие стрелки - добавляет редкие стрелки магнитным линиям"
-                + Environment.NewLine + "\nСоздатель:"
-                + Environment.NewLine + "Ученик 10-4 класса Президентского ФМЛ №239"
-                + Environment.NewLine + "Улановский Георгий"
-                + Environment.NewLine + "\nНаучный руководитель:"
-                + Environment.NewLine + "Учитель физики Президентского ФМЛ №239"
-                + Environment.NewLine + "Гурьянов Иван Анатольевич"
-                ;
-            // 
-            // Form1
-            // 
-            this.ClientSize = new System.Drawing.Size(1024, 512);
-            this.Controls.Add(this.textBox1);
-            this.Text = "Инструкция";
-            this.ResumeLayout(false);
-            this.PerformLayout();
-        }
-    }
-
-    /// <summary>
     /// Класс для обьявления зарядов на поле
     /// </summary>
     public class Atom
@@ -1803,6 +1731,7 @@ namespace Phisic
             if (plus) charge = -charge;
         }
     }
+
     public class Point2
     {
         public double x, y;

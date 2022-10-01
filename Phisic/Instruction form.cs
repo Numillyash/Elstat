@@ -16,8 +16,6 @@ namespace Phisic
         {
             InitializeComponent();
             Properties.Settings.Default.isInstructionFromAddaed = true;
-
-
         }
 
         private void Form3_Load(object sender, EventArgs e)
@@ -33,6 +31,11 @@ namespace Phisic
         private void InstructionForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             Properties.Settings.Default.isInstructionFromAddaed = false;
+        }
+
+        private void richTextBox1_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
