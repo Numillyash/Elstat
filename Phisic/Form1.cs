@@ -980,7 +980,11 @@ namespace Phisic
         /// <param name="e"></param>
         private void button1_Click_1(object sender, EventArgs e)
         {
-            (new Form2()).Show();
+            if (Properties.Settings.Default.isInstructionFromAddaed == false)
+            {
+                InstructionForm instructionForm = new InstructionForm();
+                instructionForm.Show();
+            }
         }
 
         /// <summary>

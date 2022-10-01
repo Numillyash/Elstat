@@ -93,3 +93,14 @@ C:\Users\ulgeo\OneDrive\Desktop\Поделки\InfoNotNow\Elstat\Phisic\bin\Rele
 C:\Users\ulgeo\OneDrive\Desktop\Поделки\InfoNotNow\Elstat\Phisic\bin\Release\elstat_v3.1_GASU.pdb
 C:\Users\ulgeo\OneDrive\Desktop\Поделки\InfoNotNow\Elstat\Phisic\obj\Release\elstat_v3.1_GASU.exe
 C:\Users\ulgeo\OneDrive\Desktop\Поделки\InfoNotNow\Elstat\Phisic\obj\Release\elstat_v3.1_GASU.pdb
+C:\Users\ulgeo\Source\Repos\Numillyash\Elstat\Phisic\bin\Release\elstat_v3.1_GASU.exe.config
+C:\Users\ulgeo\Source\Repos\Numillyash\Elstat\Phisic\bin\Release\elstat_v3.1_GASU.exe
+C:\Users\ulgeo\Source\Repos\Numillyash\Elstat\Phisic\bin\Release\elstat_v3.1_GASU.pdb
+C:\Users\ulgeo\Source\Repos\Numillyash\Elstat\Phisic\obj\Release\Phisic.csproj.AssemblyReference.cache
+C:\Users\ulgeo\Source\Repos\Numillyash\Elstat\Phisic\obj\Release\Phisic.Form1.resources
+C:\Users\ulgeo\Source\Repos\Numillyash\Elstat\Phisic\obj\Release\Phisic.Properties.Resources.resources
+C:\Users\ulgeo\Source\Repos\Numillyash\Elstat\Phisic\obj\Release\Phisic.csproj.GenerateResource.cache
+C:\Users\ulgeo\Source\Repos\Numillyash\Elstat\Phisic\obj\Release\Phisic.csproj.CoreCompileInputs.cache
+C:\Users\ulgeo\Source\Repos\Numillyash\Elstat\Phisic\obj\Release\elstat_v3.1_GASU.exe
+C:\Users\ulgeo\Source\Repos\Numillyash\Elstat\Phisic\obj\Release\elstat_v3.1_GASU.pdb
+C:\Users\ulgeo\Source\Repos\Numillyash\Elstat\Phisic\obj\Release\Phisic.InstructionForm.resources
