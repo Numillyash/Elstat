@@ -5,6 +5,9 @@ using System.IO;
 using System.Windows.Forms;
 using System.Reflection;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Diagnostics;
 
 /*
  * В программе используются переобозначения для упрощения обьяснения кода
@@ -21,6 +24,8 @@ namespace Phisic
     public partial class Form1 : Form
     {
         public Icon icon;
+
+        public delegate void MyDelegate(Atom at);
 
         //Флаги
 
@@ -42,12 +47,12 @@ namespace Phisic
         /// <summary>
         /// Флаг, отвечающий за рисовку стрелок направлений СЛ
         /// </summary>
-        bool arrows = false;
+        static bool arrows = false;
 
         /// <summary>
         /// Флаг, отвечающий за уменьшение кол-ва стрелок на линии
         /// </summary>
-        bool rare = false;
+        static bool rare = false;
 
         /// <summary>
         /// Флаг, отвечающий за отрисовку точек исхода СЛ
@@ -69,12 +74,7 @@ namespace Phisic
         /// <summary>
         /// Толщина линий
         /// </summary>
-        int width = 1;
-
-        /// <summary>
-        /// Переменная для подсчета времени рисования стрелок
-        /// </summary>
-        int kal = 1;
+        static int width = 1;
 
         /// <summary>
         /// Номер выбранного атома
@@ -110,7 +110,7 @@ namespace Phisic
         /// <summary>
         /// Список зарядов
         /// </summary>
-        List<Atom> atoms = new List<Atom> { };
+        static List<Atom> atoms = new List<Atom> { };
 
         /// <summary>
         /// Список пробных зарядов
@@ -122,8 +122,8 @@ namespace Phisic
         /// <summary>
         /// Переменная для вызова событий графики
         /// </summary>
-        private readonly Graphics _graphics;
-        private Bitmap _bitmap;
+        static private Bitmap _bitmap = new Bitmap(1920, 1080);
+        static private readonly Graphics _graphics = Graphics.FromImage(_bitmap);
 
         PointF p_field = new PointF();
 
@@ -147,8 +147,6 @@ namespace Phisic
             };
             InitializeComponent();
             icon = this.Icon;
-            _bitmap = new Bitmap(1920, 1080);
-            _graphics = Graphics.FromImage(_bitmap);
             pictureBox1.Image = _bitmap;
             _graphics.Clear(Color.White);
             paintka();
@@ -172,8 +170,9 @@ namespace Phisic
         /// <param name="kekl">Продолжать/нет рисование</param>
         /// <param name="x_now">Текущая координата по Х</param>
         /// <param name="y_now">Текущая координата по Y</param>
-        private void drawer_line1(int dk, float k, bool kekl, float x_now, float y_now)
+        static private void drawer_line1(int dk, float k, bool kekl, float x_now, float y_now)
         {
+            int kal = 0;
             for (int i = 0; i < dk; i++)
             {
                 if (!kekl)
@@ -187,7 +186,7 @@ namespace Phisic
                         );
                     if (double.IsNaN(rv.x) || double.IsNaN(rv.y)) break;
 
-                    draw_arrow(true, new PointF(x_now, y_now), new PointF(x_now + (float)(rv.x * k), y_now + (float)(rv.y * k)));
+                    draw_arrow(true, new PointF(x_now, y_now), new PointF(x_now + (float)(rv.x * k), y_now + (float)(rv.y * k)), ref kal);
                     kal++;
                     x_now += (float)(rv.x * k);
                     y_now += (float)(rv.y * k);
@@ -205,8 +204,9 @@ namespace Phisic
         /// <param name="kekl">Продолжать/нет рисование</param>
         /// <param name="x_now">Текущая координата по Х</param>
         /// <param name="y_now">Текущая координата по Y</param>
-        private void drawer_line2(int dk, float k, bool kekl, float x_now, float y_now)
+        static private void drawer_line2(int dk, float k, bool kekl, float x_now, float y_now)
         {
+            int kal = 0;
             for (int i = 0; i < dk; i++)
             {
                 if (!kekl)
@@ -217,7 +217,7 @@ namespace Phisic
                     Vector2 rv = new Vector2(new_pos.x / Math.Sqrt(new_pos.x * new_pos.x + new_pos.y * new_pos.y), new_pos.y / Math.Sqrt(new_pos.x * new_pos.x + new_pos.y * new_pos.y));
                     if (double.IsNaN(rv.x) || double.IsNaN(rv.y)) break;
 
-                    draw_arrow(false, new PointF(x_now, y_now), new PointF(x_now - (float)(rv.x * k), y_now - (float)(rv.y * k)));
+                    draw_arrow(false, new PointF(x_now, y_now), new PointF(x_now - (float)(rv.x * k), y_now - (float)(rv.y * k)), ref kal);
                     kal++;
                     x_now -= (float)(rv.x * k);
                     y_now -= (float)(rv.y * k);
@@ -227,31 +227,42 @@ namespace Phisic
             }
         }
 
+        static private void atomPhisicsThread(Object obj)
+        {
+            Atom at = (Atom)obj;
+            int k = 1;
+            int dk = 5000;
+
+            foreach (El_ch el in at.electrons)
+            {
+                float x_now = (float)el.x;
+                float y_now = (float)el.y;
+                bool kekl = false;
+                drawer_line1(dk, k, kekl, x_now, y_now);
+                x_now = (float)el.x;
+                y_now = (float)el.y;
+                kekl = false;
+                drawer_line2(dk, k, kekl, x_now, y_now);
+                
+            }
+        }
+
         /// <summary>
         /// Расчет силовых линий
         /// </summary>
         private void phisica()
         {
-            int k = 1;
-            kal = 1;
-            int dk = 5000;
+            Stopwatch stopWatch = new Stopwatch();
+            stopWatch.Start();
 
-            foreach (Atom at in atoms)
-            {
-                foreach (El_ch el in at.electrons)
-                {
-                    float x_now = (float)el.x;
-                    float y_now = (float)el.y;
-                    bool kekl = false;
-                    drawer_line1(dk, k, kekl, x_now, y_now);
-                    x_now = (float)el.x;
-                    y_now = (float)el.y;
-                    kekl = false;
-                    drawer_line2(dk, k, kekl, x_now, y_now);
-                    draw_at();
-                }
+            Parallel.ForEach(atoms, item => atomPhisicsThread(item));
 
-            }
+            stopWatch.Stop();
+            TimeSpan ts = stopWatch.Elapsed;
+            Console.WriteLine("RunTime " + String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
+                        ts.Hours, ts.Minutes, ts.Seconds,
+                        ts.Milliseconds / 10));
+            draw_at();
         }
 
         /// <summary>
@@ -261,7 +272,7 @@ namespace Phisic
         /// <param name="new_pos">Вектор новых координат</param>
         /// <param name="x_now">Текущая координата по Х</param>
         /// <param name="y_now">Текущая координата по Y</param>
-        private void know_new_pos(ref bool kekl, ref Vector2 new_pos, float x_now, float y_now)
+        static private void know_new_pos(ref bool kekl, ref Vector2 new_pos, float x_now, float y_now)
         {
             foreach (Atom at in atoms)
             {
@@ -271,6 +282,8 @@ namespace Phisic
             }
             if ((Math.Abs(x_now) >= 1500) || (Math.Abs(y_now) >= 1500)) kekl = true;
         }
+
+        static object locker = new object();
 
         /// <summary>
         /// Отрисовка траектории полета пробного заряда (вспомогательная функция)
@@ -305,8 +318,12 @@ namespace Phisic
                     x_old = a;
                     y_old = b;
 
-                    _graphics.FillEllipse(brush_bl, new RectangleF(x_now - 2, y_now - 2, 4, 4));
-                    _graphics.DrawLine(new Pen(brush_y), new PointF(x_old, y_old), new PointF(x_now, y_now));
+
+                    //chart1.Dispatcher.Invoke(new Action(() => { chart1.Series[0].Points.AddXY(x, y); }));
+                    
+                        _graphics.FillEllipse(brush_bl, new RectangleF(x_now - 2, y_now - 2, 4, 4));
+                        _graphics.DrawLine(new Pen(brush_y), new PointF(x_old, y_old), new PointF(x_now, y_now));
+                    
                 }
                 else
                     break;
@@ -481,7 +498,7 @@ namespace Phisic
         /// </summary>
         /// <param name="tr">На конце или на начале</param>
         /// <param name="pen">Кисть</param>
-        private void start_end(bool tr, ref Pen pen)
+        static private void start_end(bool tr, ref Pen pen)
         {
             if (tr)
                 pen.EndCap = System.Drawing.Drawing2D.LineCap.ArrowAnchor;
@@ -495,7 +512,7 @@ namespace Phisic
         /// <param name="tr">На конце или на начале</param>
         /// <param name="p1">Точка начала</param>
         /// <param name="p2">Точка конца</param>
-        private void draw_arrow(bool tr, PointF p1, PointF p2)
+        static private void draw_arrow(bool tr, PointF p1, PointF p2, ref int kal)
         {
             Pen pen = new Pen(Color.Green, width);
             if (arrows)
@@ -511,13 +528,16 @@ namespace Phisic
                     kal = 1;
                 }
             }
-            _graphics.DrawLine(pen, p1, p2);
+            lock (locker)
+            {
+                _graphics.DrawLine(pen, p1, p2);
+            }
         }
 
         /// <summary>
         /// Отрисовка всех атомов
         /// </summary>
-        private void draw_at()
+        static private void draw_at()
         {
             Brush brush = new SolidBrush(Color.Red);
             Brush brush_b = new SolidBrush(Color.Blue);
@@ -1376,8 +1396,10 @@ namespace Phisic
                 {
                     str = reader.ReadLine();
                     words = str.Split(new char[] { ' ' });
-                    Point en = new Point(int.Parse(words[1]), int.Parse(words[2]));
-                    create_atom(en.X, en.Y, int.Parse(words[3]));
+                    Point en = new Point(int.Parse(words[0]), int.Parse(words[1]));
+                    create_atom(en.X, en.Y, int.Parse(words[2]));
+                    Console.WriteLine(atoms.Count);
+
                 }
                 str = reader.ReadLine();
                 str = reader.ReadLine();
@@ -1417,8 +1439,8 @@ namespace Phisic
                 {
                     str = reader.ReadLine();
                     words = str.Split(new char[] { ' ' });
-                    Point en = new Point(int.Parse(words[1]), int.Parse(words[2]));
-                    create_atom(en.X, en.Y, int.Parse(words[3]));
+                    Point en = new Point(int.Parse(words[0]), int.Parse(words[1]));
+                    create_atom(en.X, en.Y, int.Parse(words[2]));
 
                 }
                 str = reader.ReadLine();

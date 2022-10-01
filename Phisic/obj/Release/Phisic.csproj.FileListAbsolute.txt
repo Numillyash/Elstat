@@ -104,3 +104,7 @@ C:\Users\ulgeo\Source\Repos\Numillyash\Elstat\Phisic\obj\Release\Phisic.csproj.C
 C:\Users\ulgeo\Source\Repos\Numillyash\Elstat\Phisic\obj\Release\elstat_v3.1_GASU.exe
 C:\Users\ulgeo\Source\Repos\Numillyash\Elstat\Phisic\obj\Release\elstat_v3.1_GASU.pdb
 C:\Users\ulgeo\Source\Repos\Numillyash\Elstat\Phisic\obj\Release\Phisic.InstructionForm.resources
+C:\Users\ulgeo\source\repos\Numillyash\Elstat\Phisic\bin\Release\OpenTK.dll
+C:\Users\ulgeo\source\repos\Numillyash\Elstat\Phisic\bin\Release\OpenTK.pdb
+C:\Users\ulgeo\source\repos\Numillyash\Elstat\Phisic\bin\Release\OpenTK.xml
+C:\Users\ulgeo\source\repos\Numillyash\Elstat\Phisic\obj\Release\Phisic.csproj.CopyComplete
