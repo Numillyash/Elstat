@@ -232,6 +232,8 @@ namespace Phisic
             Atom at = (Atom)obj;
             int k = 1;
             int dk = 5000;
+            Stopwatch stopWatch = new Stopwatch();
+            stopWatch.Start();
 
             foreach (El_ch el in at.electrons)
             {
@@ -1435,6 +1437,8 @@ namespace Phisic
                 string str = reader.ReadLine();
                 String[] words = str.Split(new char[] { ' ' });
                 int kolvo = int.Parse(words[0]);
+
+                Console.WriteLine("test");
                 for (int i = 0; i < kolvo; i++)
                 {
                     str = reader.ReadLine();
@@ -1442,7 +1446,7 @@ namespace Phisic
                     Point en = new Point(int.Parse(words[0]), int.Parse(words[1]));
                     create_atom(en.X, en.Y, int.Parse(words[2]));
 
-                }
+                Console.WriteLine("test");
                 str = reader.ReadLine();
                 str = reader.ReadLine();
                 words = str.Split(new char[] { ' ' });
@@ -1455,7 +1459,11 @@ namespace Phisic
                     probs.Add(new Prob(int.Parse(words[0]), int.Parse(words[1]), true));
 
                 }
+
+                Console.WriteLine("test");
                 paintka();
+
+                Console.WriteLine("test");
                 reader.Close();
             }
         }
