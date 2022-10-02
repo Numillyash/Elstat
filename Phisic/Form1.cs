@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using System.Drawing.Drawing2D;
 
 /*
  * В программе используются переобозначения для упрощения обьяснения кода
@@ -241,14 +242,23 @@ namespace Phisic
 
                 lock (locker)
                 {
+                    GraphicsPath path = new GraphicsPath();
+                    Pen pen = new Pen(Color.Green, width);
+
+                    path.StartFigure();
+
+                    
                     foreach (var pair in firstLine)
                     {
-                        _graphics.DrawLine(pair.Item3, pair.Item1, pair.Item2);
+                        path.AddLine(pair.Item1, pair.Item2);
                     }
+                    _graphics.DrawPath(pen, path);
+                    path = new GraphicsPath();
                     foreach (var pair in secondLine)
                     {
-                        _graphics.DrawLine(pair.Item3, pair.Item1, pair.Item2);
+                        path.AddLine(pair.Item1, pair.Item2);
                     }
+                    _graphics.DrawPath(pen, path);
                 }
             }
         }
