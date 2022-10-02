@@ -233,7 +233,7 @@ namespace Phisic
                 y_now = (float)el.y;
                 kekl = false;
                 drawer_line2(dk, k, kekl, x_now, y_now);
-                
+
             }
         }
 
@@ -250,6 +250,8 @@ namespace Phisic
             {
                 atomPhisicsThread(atom);
             }
+
+            // TODO: поменять отрисовку. возможно быстрее ставить один пиксель
 
             // 400-500
             // Parallel.ForEach(atoms, item => atomPhisicsThread(item));
@@ -317,10 +319,10 @@ namespace Phisic
 
 
                     //chart1.Dispatcher.Invoke(new Action(() => { chart1.Series[0].Points.AddXY(x, y); }));
-                    
-                        _graphics.FillEllipse(brush_bl, new RectangleF(x_now - 2, y_now - 2, 4, 4));
-                        _graphics.DrawLine(new Pen(brush_y), new PointF(x_old, y_old), new PointF(x_now, y_now));
-                    
+
+                    _graphics.FillEllipse(brush_bl, new RectangleF(x_now - 2, y_now - 2, 4, 4));
+                    _graphics.DrawLine(new Pen(brush_y), new PointF(x_old, y_old), new PointF(x_now, y_now));
+
                 }
                 else
                     break;
@@ -381,23 +383,23 @@ namespace Phisic
             if (tent)
             {
                 Color nowColor;
-                for (int i = 0; i < 800; i+=1)
+                for (int i = 0; i < 800; i += 1)
                 {
-                    for (int j = 0; j < 800; j+=1)
+                    for (int j = 0; j < 800; j += 1)
                     {
                         El_ch el = new El_ch(i, j, false);
 
                         Vector2 new_pos = new Vector2();
-
+                        // TODO: засечь время здесь и посчитать что долгое
                         foreach (Atom at in atoms)
                         {
                             new_pos += at.forcer(el);
                             //double rad = Math.Sqrt((at.x - x_now) * (at.x - x_now) + (at.y - y_now) * (at.y - y_now));
                         }
-                        double rad = new_pos.GetLong()*1000;
+                        double rad = new_pos.GetLong() * 1000;
                         if (!double.IsNaN(rad) && !double.IsInfinity(rad))
                         {
-                            
+
                             double lg = Math.Log(rad, k);
                             if (lg >= 255)
                             {
@@ -412,6 +414,7 @@ namespace Phisic
                                 nowColor = Color.FromArgb((int)lg, (int)lg, (int)lg);
                             }
                             //_graphics.FillRectangle(new SolidBrush(nowColor), new Rectangle(i, j, 1, 1));
+                            
                             _bitmap.SetPixel(i, j, nowColor);
                         }
                     }
@@ -445,7 +448,7 @@ namespace Phisic
                     {
                         all_one_charge += 0;
                     }
-                    else if(atom.charge > 0)  
+                    else if (atom.charge > 0)
                     {
                         all_one_charge += 1;
                     }
@@ -644,7 +647,7 @@ namespace Phisic
                 phisica2();
             }
             phisica_E_0();
-            if(type == Type.FIELD_VECTOR)
+            if (type == Type.FIELD_VECTOR)
                 paint_field_vector(p_field);
 
 
@@ -808,12 +811,12 @@ namespace Phisic
             {
                 summ += at.forcer(el_Ch);
             }
-            textBox14.Text =string.Format("{0}", summ.GetLong());
+            textBox14.Text = string.Format("{0}", summ.GetLong());
             summ *= 100;
             Pen pen = new Pen(Color.Purple, 3);
             pen.EndCap = System.Drawing.Drawing2D.LineCap.ArrowAnchor;
             PointF p1 = new PointF(e.X, e.Y);
-            PointF p2 = new PointF(e.X+(float)summ.x, e.Y+ (float)summ.y);
+            PointF p2 = new PointF(e.X + (float)summ.x, e.Y + (float)summ.y);
             //Console.WriteLine(p1 + " " + p2);
             _graphics.DrawLine(pen, p1, p2);
         }
@@ -906,7 +909,7 @@ namespace Phisic
         /// <param name="e"></param>
         private void toolStripMenuItem3_Click(object sender, EventArgs e)
         {
-            
+
         }
 
         /// <summary>
@@ -935,7 +938,7 @@ namespace Phisic
         /// <param name="e"></param>
         private void toolStripMenuItem4_Click(object sender, EventArgs e)
         {
-            
+
         }
 
         /// <summary>
@@ -945,7 +948,7 @@ namespace Phisic
         /// <param name="e"></param>
         private void toolStripMenuItem5_Click(object sender, EventArgs e)
         {
-           
+
         }
 
         /// <summary>
@@ -1684,7 +1687,7 @@ namespace Phisic
         public void create_at_els()
         {
             this.electrons = new List<El_ch> { };
-            double pi = 2 * Math.PI / (sta*sta_koeff);
+            double pi = 2 * Math.PI / (sta * sta_koeff);
             List<double> coeff = new List<double> { };
             for (int i = 0; i < (sta * sta_koeff); i++)
             {
@@ -2024,7 +2027,7 @@ namespace Phisic
     }
     public class Functions2
     {
-        
+
         public double DisplacementDotLine(Line2 a, Point2 M)
         {
             return (Math.Abs(a.a * M.x + a.b * M.y + a.c)) / (Math.Sqrt(a.a * a.a + a.b * a.b));
