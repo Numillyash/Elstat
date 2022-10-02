@@ -132,24 +132,12 @@ namespace Phisic
         /// </summary>
         public Form1()
         {
-            AppDomain.CurrentDomain.AssemblyResolve += (sender, bargs) =>
-            {
-                String dllName = new AssemblyName(bargs.Name).Name + ".dll";
-                var assem = Assembly.GetExecutingAssembly();
-                String resourceName = assem.GetManifestResourceNames().FirstOrDefault(rn => rn.EndsWith(dllName));
-                if (resourceName == null) return null; // Not found, maybe another handler will find it
-                using (var stream = assem.GetManifestResourceStream(resourceName))
-                {
-                    Byte[] assemblyData = new Byte[stream.Length];
-                    stream.Read(assemblyData, 0, assemblyData.Length);
-                    return Assembly.Load(assemblyData);
-                }
-            };
             InitializeComponent();
             icon = this.Icon;
             pictureBox1.Image = _bitmap;
             _graphics.Clear(Color.White);
             paintka();
+            SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint | ControlStyles.OptimizedDoubleBuffer, true);
         }
 
         /// <summary>
@@ -257,13 +245,20 @@ namespace Phisic
             Stopwatch stopWatch = new Stopwatch();
             stopWatch.Start();
 
-            Parallel.ForEach(atoms, item => atomPhisicsThread(item));
+            // 300-500
+            foreach (Atom atom in atoms)
+            {
+                atomPhisicsThread(atom);
+            }
+
+            // 400-500
+            // Parallel.ForEach(atoms, item => atomPhisicsThread(item));
 
             stopWatch.Stop();
             TimeSpan ts = stopWatch.Elapsed;
-            Console.WriteLine("RunTime " + String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
+            Console.WriteLine("RunTime for atoms calculations " + String.Format("{0:00}:{1:00}:{2:00}.{3:000}",
                         ts.Hours, ts.Minutes, ts.Seconds,
-                        ts.Milliseconds / 10));
+                        ts.Milliseconds));
             draw_at();
         }
 
@@ -431,9 +426,9 @@ namespace Phisic
 
             stopWatch.Stop();
             TimeSpan ts = stopWatch.Elapsed;
-            Console.WriteLine("RunTime napr" + String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
+            Console.WriteLine("RunTime napr " + String.Format("{0:00}:{1:00}:{2:00}.{3:000}",
                         ts.Hours, ts.Minutes, ts.Seconds,
-                        ts.Milliseconds / 10));
+                        ts.Milliseconds));
         }
 
         /// <summary>
@@ -651,7 +646,18 @@ namespace Phisic
             phisica_E_0();
             if(type == Type.FIELD_VECTOR)
                 paint_field_vector(p_field);
+
+
+            Stopwatch stopWatch = new Stopwatch();
+            stopWatch.Start();
+
             Refresh();
+
+            stopWatch.Stop();
+            TimeSpan ts = stopWatch.Elapsed;
+            Console.WriteLine("RunTime for refresh " + String.Format("{0:00}:{1:00}:{2:00}.{3:000}",
+                        ts.Hours, ts.Minutes, ts.Seconds,
+                        ts.Milliseconds));
         }
 
         /// <summary>
@@ -1375,7 +1381,6 @@ namespace Phisic
                 writer.WriteLine(" " + point.x + " " + point.y + " " + point.charge);
             }
 
-            writer.WriteLine("Test: \n" + probs.Count);
             foreach (Prob point in probs)
             {
                 writer.WriteLine(point.x + " " + point.y);
@@ -1407,8 +1412,8 @@ namespace Phisic
                 {
                     str = reader.ReadLine();
                     words = str.Split(new char[] { ' ' });
-                    Point en = new Point(int.Parse(words[0]), int.Parse(words[1]));
-                    create_atom(en.X, en.Y, int.Parse(words[2]));
+                    Point en = new Point(int.Parse(words[1]), int.Parse(words[2]));
+                    create_atom(en.X, en.Y, int.Parse(words[3]));
                     Console.WriteLine(atoms.Count);
 
                 }
@@ -1447,7 +1452,6 @@ namespace Phisic
                 String[] words = str.Split(new char[] { ' ' });
                 int kolvo = int.Parse(words[0]);
 
-                Console.WriteLine("test");
                 for (int i = 0; i < kolvo; i++)
                 {
                     str = reader.ReadLine();
@@ -1455,7 +1459,6 @@ namespace Phisic
                     Point en = new Point(int.Parse(words[1]), int.Parse(words[2]));
                     create_atom(en.X, en.Y, int.Parse(words[3]));
                 }
-                Console.WriteLine("test");
                 str = reader.ReadLine();
                 str = reader.ReadLine();
                 words = str.Split(new char[] { ' ' });
@@ -1469,10 +1472,7 @@ namespace Phisic
 
                 }
 
-                Console.WriteLine("test");
                 paintka();
-
-                Console.WriteLine("test");
                 reader.Close();
             }
         }
