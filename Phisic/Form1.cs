@@ -1445,7 +1445,7 @@ namespace Phisic
                     words = str.Split(new char[] { ' ' });
                     Point en = new Point(int.Parse(words[0]), int.Parse(words[1]));
                     create_atom(en.X, en.Y, int.Parse(words[2]));
-
+                }
                 Console.WriteLine("test");
                 str = reader.ReadLine();
                 str = reader.ReadLine();
