@@ -108,3 +108,10 @@ C:\Users\ulgeo\source\repos\Numillyash\Elstat\Phisic\bin\Release\OpenTK.dll
 C:\Users\ulgeo\source\repos\Numillyash\Elstat\Phisic\bin\Release\OpenTK.pdb
 C:\Users\ulgeo\source\repos\Numillyash\Elstat\Phisic\bin\Release\OpenTK.xml
 C:\Users\ulgeo\source\repos\Numillyash\Elstat\Phisic\obj\Release\Phisic.csproj.CopyComplete
+C:\Users\ulgeo\source\repos\Numillyash\Elstat\Phisic\bin\Release\SharpGL.dll
+C:\Users\ulgeo\source\repos\Numillyash\Elstat\Phisic\bin\Release\SharpGL.SceneGraph.dll
+C:\Users\ulgeo\source\repos\Numillyash\Elstat\Phisic\bin\Release\SharpGL.WinForms.dll
+C:\Users\ulgeo\source\repos\Numillyash\Elstat\Phisic\bin\Release\System.Drawing.Common.dll
+C:\Users\ulgeo\source\repos\Numillyash\Elstat\Phisic\bin\Release\SharpGL.xml
+C:\Users\ulgeo\source\repos\Numillyash\Elstat\Phisic\bin\Release\SharpGL.SceneGraph.xml
+C:\Users\ulgeo\source\repos\Numillyash\Elstat\Phisic\bin\Release\SharpGL.WinForms.xml

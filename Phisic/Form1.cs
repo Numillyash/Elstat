@@ -127,6 +127,7 @@ namespace Phisic
 
         PointF p_field = new PointF();
 
+        static object locker = new object();
         /// <summary>
         /// Инициализация окна
         /// </summary>
@@ -138,6 +139,7 @@ namespace Phisic
             _graphics.Clear(Color.White);
             paintka();
             SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint | ControlStyles.OptimizedDoubleBuffer, true);
+
         }
 
         /// <summary>
@@ -158,7 +160,7 @@ namespace Phisic
         /// <param name="kekl">Продолжать/нет рисование</param>
         /// <param name="x_now">Текущая координата по Х</param>
         /// <param name="y_now">Текущая координата по Y</param>
-        static private void drawer_line1(int dk, float k, bool kekl, float x_now, float y_now)
+        static private void drawer_line1(int dk, float k, bool kekl, float x_now, float y_now, List<Tuple<PointF, PointF, Pen>> line)
         {
             int kal = 0;
             for (int i = 0; i < dk; i++)
@@ -174,7 +176,7 @@ namespace Phisic
                         );
                     if (double.IsNaN(rv.x) || double.IsNaN(rv.y)) break;
 
-                    draw_arrow(true, new PointF(x_now, y_now), new PointF(x_now + (float)(rv.x * k), y_now + (float)(rv.y * k)), ref kal);
+                    draw_arrow(true, new PointF(x_now, y_now), new PointF(x_now + (float)(rv.x * k), y_now + (float)(rv.y * k)), ref kal, line);
                     kal++;
                     x_now += (float)(rv.x * k);
                     y_now += (float)(rv.y * k);
@@ -192,7 +194,7 @@ namespace Phisic
         /// <param name="kekl">Продолжать/нет рисование</param>
         /// <param name="x_now">Текущая координата по Х</param>
         /// <param name="y_now">Текущая координата по Y</param>
-        static private void drawer_line2(int dk, float k, bool kekl, float x_now, float y_now)
+        static private void drawer_line2(int dk, float k, bool kekl, float x_now, float y_now, List<Tuple<PointF, PointF, Pen>> line)
         {
             int kal = 0;
             for (int i = 0; i < dk; i++)
@@ -205,7 +207,7 @@ namespace Phisic
                     Vector2 rv = new Vector2(new_pos.x / Math.Sqrt(new_pos.x * new_pos.x + new_pos.y * new_pos.y), new_pos.y / Math.Sqrt(new_pos.x * new_pos.x + new_pos.y * new_pos.y));
                     if (double.IsNaN(rv.x) || double.IsNaN(rv.y)) break;
 
-                    draw_arrow(false, new PointF(x_now, y_now), new PointF(x_now - (float)(rv.x * k), y_now - (float)(rv.y * k)), ref kal);
+                    draw_arrow(false, new PointF(x_now, y_now), new PointF(x_now - (float)(rv.x * k), y_now - (float)(rv.y * k)), ref kal, line);
                     kal++;
                     x_now -= (float)(rv.x * k);
                     y_now -= (float)(rv.y * k);
@@ -225,15 +227,29 @@ namespace Phisic
 
             foreach (El_ch el in at.electrons)
             {
+                List<Tuple<PointF, PointF, Pen>> firstLine = new List<Tuple<PointF, PointF, Pen>> { };
+                List<Tuple<PointF, PointF, Pen>> secondLine = new List<Tuple<PointF, PointF, Pen>> { };
+
                 float x_now = (float)el.x;
                 float y_now = (float)el.y;
                 bool kekl = false;
-                drawer_line1(dk, k, kekl, x_now, y_now);
+                drawer_line1(dk, k, kekl, x_now, y_now, firstLine);
                 x_now = (float)el.x;
                 y_now = (float)el.y;
                 kekl = false;
-                drawer_line2(dk, k, kekl, x_now, y_now);
+                drawer_line2(dk, k, kekl, x_now, y_now, secondLine);
 
+                lock (locker)
+                {
+                    foreach (var pair in firstLine)
+                    {
+                        _graphics.DrawLine(pair.Item3, pair.Item1, pair.Item2);
+                    }
+                    foreach (var pair in secondLine)
+                    {
+                        _graphics.DrawLine(pair.Item3, pair.Item1, pair.Item2);
+                    }
+                }
             }
         }
 
@@ -254,7 +270,7 @@ namespace Phisic
             // TODO: поменять отрисовку. возможно быстрее ставить один пиксель
 
             // 400-500
-            // Parallel.ForEach(atoms, item => atomPhisicsThread(item));
+            //Parallel.ForEach(atoms, item => atomPhisicsThread(item));
 
             stopWatch.Stop();
             TimeSpan ts = stopWatch.Elapsed;
@@ -281,8 +297,6 @@ namespace Phisic
             }
             if ((Math.Abs(x_now) >= 1500) || (Math.Abs(y_now) >= 1500)) kekl = true;
         }
-
-        static object locker = new object();
 
         /// <summary>
         /// Отрисовка траектории полета пробного заряда (вспомогательная функция)
@@ -414,7 +428,7 @@ namespace Phisic
                                 nowColor = Color.FromArgb((int)lg, (int)lg, (int)lg);
                             }
                             //_graphics.FillRectangle(new SolidBrush(nowColor), new Rectangle(i, j, 1, 1));
-                            
+
                             _bitmap.SetPixel(i, j, nowColor);
                         }
                     }
@@ -521,7 +535,7 @@ namespace Phisic
         /// <param name="tr">На конце или на начале</param>
         /// <param name="p1">Точка начала</param>
         /// <param name="p2">Точка конца</param>
-        static private void draw_arrow(bool tr, PointF p1, PointF p2, ref int kal)
+        static private void draw_arrow(bool tr, PointF p1, PointF p2, ref int kal, List<Tuple<PointF, PointF, Pen>> line)
         {
             Pen pen = new Pen(Color.Green, width);
             if (arrows)
@@ -537,10 +551,9 @@ namespace Phisic
                     kal = 1;
                 }
             }
-            lock (locker)
-            {
-                _graphics.DrawLine(pen, p1, p2);
-            }
+            line.Add(Tuple.Create(p1, p2, pen));
+            //_graphics.DrawLine(pen, p1, p2);
+
         }
 
         /// <summary>
