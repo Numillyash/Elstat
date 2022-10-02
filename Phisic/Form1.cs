@@ -33,12 +33,12 @@ namespace Phisic
         /// <summary>
         /// Флаг, отвечающий за отрисовку "напряженности" поля
         /// </summary>
-        bool tent = false;
+        bool isNeedToCountTension = false;
 
         /// <summary>
         /// Флаг, отвечающий за отрисовку точки "нулевой напряженности" поля
         /// </summary>
-        bool E_0 = false;
+        bool isCountingZeroTension = false;
 
         /// <summary>
         /// Флаг, отвечающий за темную тему
@@ -48,12 +48,12 @@ namespace Phisic
         /// <summary>
         /// Флаг, отвечающий за рисовку стрелок направлений СЛ
         /// </summary>
-        static bool arrows = false;
+        static bool isDrawingArrows = false;
 
         /// <summary>
         /// Флаг, отвечающий за уменьшение кол-ва стрелок на линии
         /// </summary>
-        static bool rare = false;
+        static bool areArrowsRare = false;
 
         /// <summary>
         /// Флаг, отвечающий за отрисовку точек исхода СЛ
@@ -63,12 +63,12 @@ namespace Phisic
         /// <summary>
         /// Флаг, отвечающий за рисовку координатной сетки
         /// </summary>
-        bool coor = false;
+        bool isDrawingCoordinateGrid = false;
 
         /// <summary>
         /// Флаг, отвечающий за нажатие кнопки мыши
         /// </summary>
-        bool dow = false;
+        bool isMouseDowned = false;
 
         //Целочисленные переменные
 
@@ -80,31 +80,31 @@ namespace Phisic
         /// <summary>
         /// Номер выбранного атома
         /// </summary>
-        int selected = -1;
+        int selectedAtomIndex = -1;
 
         /// <summary>
         /// Размер поля для функции заполнения линиями
         /// </summary>
-        int fill_curr = 1;
+        int linesMultiplier = 1;
 
         /// <summary>
         /// Тип заряда (+,-,0,пробный)
         /// </summary>
-        Type type = Type.PLUS;
+        Type currentTypeOfFunction = Type.Positive;
         enum Type
         {
-            PLUS,
-            MINUS,
-            NEUTRAL,
-            PROB,
-            MOVE,
-            FIELD_VECTOR
+            Positive,
+            Negative,
+            Neutral,
+            Trial,
+            Moving,
+            TensityVector
         }
 
         /// <summary>
         /// Изначальный заряд
         /// </summary>
-        int cha = 1;
+        int currentCharge = 1;
 
         //Списки
 
@@ -116,7 +116,7 @@ namespace Phisic
         /// <summary>
         /// Список пробных зарядов
         /// </summary>
-        List<Prob> probs = new List<Prob> { };
+        List<Trial> trialAtoms = new List<Trial> { };
 
         //Другие значения
 
@@ -126,7 +126,7 @@ namespace Phisic
         static private Bitmap _bitmap = new Bitmap(1920, 1080);
         static private readonly Graphics _graphics = Graphics.FromImage(_bitmap);
 
-        PointF p_field = new PointF();
+        PointF tensityTrialVectorCoordinates = new PointF();
 
         static object locker = new object();
         /// <summary>
@@ -138,7 +138,7 @@ namespace Phisic
             icon = this.Icon;
             pictureBox1.Image = _bitmap;
             _graphics.Clear(Color.White);
-            paintka();
+            RenderPicture();
             SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint | ControlStyles.OptimizedDoubleBuffer, true);
 
         }
@@ -156,31 +156,31 @@ namespace Phisic
         /// <summary>
         /// Рисование линии в сторону отрицательного заряда
         /// </summary>
-        /// <param name="dk">Кол-во итераций в цикле</param>
-        /// <param name="k">Коеффицент погрешности</param>
-        /// <param name="kekl">Продолжать/нет рисование</param>
-        /// <param name="x_now">Текущая координата по Х</param>
-        /// <param name="y_now">Текущая координата по Y</param>
-        static private void drawer_line1(int dk, float k, bool kekl, float x_now, float y_now, List<Tuple<PointF, PointF, Pen>> line)
+        /// <param name="iterationsNumber">Кол-во итераций в цикле</param>
+        /// <param name="inaccuracy">Коеффицент погрешности</param>
+        /// <param name="isKeepDrawing">Продолжать/нет рисование</param>
+        /// <param name="xNow">Текущая координата по Х</param>
+        /// <param name="yNow">Текущая координата по Y</param>
+        static private void GetToNegativeLine(int iterationsNumber, float inaccuracy, bool isKeepDrawing, float xNow, float yNow, List<Tuple<PointF, PointF, Pen>> line)
         {
-            int kal = 0;
-            for (int i = 0; i < dk; i++)
+            int numberNotArrowed = 0;
+            for (int i = 0; i < iterationsNumber; i++)
             {
-                if (!kekl)
+                if (!isKeepDrawing)
                 {
-                    Vector2 new_pos = new Vector2();
-                    know_new_pos(ref kekl, ref new_pos, x_now, y_now);
-                    if (double.IsNaN(new_pos.x) || double.IsNaN(new_pos.y)) break;
+                    Vector2 newPosition = new Vector2();
+                    GetNewPosition(ref isKeepDrawing, ref newPosition, xNow, yNow);
+                    if (double.IsNaN(newPosition.x) || double.IsNaN(newPosition.y)) break;
                     Vector2 rv = new Vector2(
-                        new_pos.x / Math.Sqrt(new_pos.x * new_pos.x + new_pos.y * new_pos.y), // единичный вектор направления
-                        new_pos.y / Math.Sqrt(new_pos.x * new_pos.x + new_pos.y * new_pos.y)
+                        newPosition.x / Math.Sqrt(newPosition.x * newPosition.x + newPosition.y * newPosition.y), // единичный вектор направления
+                        newPosition.y / Math.Sqrt(newPosition.x * newPosition.x + newPosition.y * newPosition.y)
                         );
                     if (double.IsNaN(rv.x) || double.IsNaN(rv.y)) break;
 
-                    draw_arrow(true, new PointF(x_now, y_now), new PointF(x_now + (float)(rv.x * k), y_now + (float)(rv.y * k)), ref kal, line);
-                    kal++;
-                    x_now += (float)(rv.x * k);
-                    y_now += (float)(rv.y * k);
+                    AddArrowToLine(true, new PointF(xNow, yNow), new PointF(xNow + (float)(rv.x * inaccuracy), yNow + (float)(rv.y * inaccuracy)), ref numberNotArrowed, line);
+                    numberNotArrowed++;
+                    xNow += (float)(rv.x * inaccuracy);
+                    yNow += (float)(rv.y * inaccuracy);
                 }
                 else
                     break;
@@ -190,55 +190,58 @@ namespace Phisic
         /// <summary>
         /// Рисование линии в сторону положительного заряда
         /// </summary>
-        /// <param name="dk">Кол-во итераций в цикле</param>
-        /// <param name="k">Коеффицент погрешности</param>
-        /// <param name="kekl">Продолжать/нет рисование</param>
-        /// <param name="x_now">Текущая координата по Х</param>
-        /// <param name="y_now">Текущая координата по Y</param>
-        static private void drawer_line2(int dk, float k, bool kekl, float x_now, float y_now, List<Tuple<PointF, PointF, Pen>> line)
+        /// <param name="iterationsNumber">Кол-во итераций в цикле</param>
+        /// <param name="inaccuracy">Коеффицент погрешности</param>
+        /// <param name="isKeepDrawing">Продолжать/нет рисование</param>
+        /// <param name="xNow">Текущая координата по Х</param>
+        /// <param name="yNow">Текущая координата по Y</param>
+        static private void GetToPositiveLine(int iterationsNumber, float inaccuracy, bool isKeepDrawing, float xNow, float yNow, List<Tuple<PointF, PointF, Pen>> line)
         {
-            int kal = 0;
-            for (int i = 0; i < dk; i++)
+            int numberNotArrowed = 0;
+            for (int i = 0; i < iterationsNumber; i++)
             {
-                if (!kekl)
+                if (!isKeepDrawing)
                 {
-                    Vector2 new_pos = new Vector2();
-                    know_new_pos(ref kekl, ref new_pos, x_now, y_now);
-                    if (double.IsNaN(new_pos.x) || double.IsNaN(new_pos.y)) break;
-                    Vector2 rv = new Vector2(new_pos.x / Math.Sqrt(new_pos.x * new_pos.x + new_pos.y * new_pos.y), new_pos.y / Math.Sqrt(new_pos.x * new_pos.x + new_pos.y * new_pos.y));
+                    Vector2 newPosition = new Vector2();
+                    GetNewPosition(ref isKeepDrawing, ref newPosition, xNow, yNow);
+                    if (double.IsNaN(newPosition.x) || double.IsNaN(newPosition.y)) break;
+                    Vector2 rv = new Vector2(newPosition.x / Math.Sqrt(newPosition.x * newPosition.x + newPosition.y * newPosition.y), newPosition.y / Math.Sqrt(newPosition.x * newPosition.x + newPosition.y * newPosition.y));
                     if (double.IsNaN(rv.x) || double.IsNaN(rv.y)) break;
 
-                    draw_arrow(false, new PointF(x_now, y_now), new PointF(x_now - (float)(rv.x * k), y_now - (float)(rv.y * k)), ref kal, line);
-                    kal++;
-                    x_now -= (float)(rv.x * k);
-                    y_now -= (float)(rv.y * k);
+                    AddArrowToLine(false, new PointF(xNow, yNow), new PointF(xNow - (float)(rv.x * inaccuracy), yNow - (float)(rv.y * inaccuracy)), ref numberNotArrowed, line);
+                    numberNotArrowed++;
+                    xNow -= (float)(rv.x * inaccuracy);
+                    yNow -= (float)(rv.y * inaccuracy);
                 }
                 else
                     break;
             }
         }
 
-        static private void atomPhisicsThread(Object obj)
+        static private void AtomPhisicsThread(Object obj)
         {
             Atom at = (Atom)obj;
-            int k = 1;
-            int dk = 5000;
+            int inaccuracy = 1;
+            int iterationsNumber = 5000;
             Stopwatch stopWatch = new Stopwatch();
             stopWatch.Start();
 
-            foreach (El_ch el in at.electrons)
+            foreach (ElementaryCharge el in at.electrons)
             {
                 List<Tuple<PointF, PointF, Pen>> firstLine = new List<Tuple<PointF, PointF, Pen>> { };
                 List<Tuple<PointF, PointF, Pen>> secondLine = new List<Tuple<PointF, PointF, Pen>> { };
 
-                float x_now = (float)el.x;
-                float y_now = (float)el.y;
-                bool kekl = false;
-                drawer_line1(dk, k, kekl, x_now, y_now, firstLine);
-                x_now = (float)el.x;
-                y_now = (float)el.y;
-                kekl = false;
-                drawer_line2(dk, k, kekl, x_now, y_now, secondLine);
+                // TODO: не останавливать расчет после какой-то координаты, а просто не записывать его в линию. таким образом нужно создавать две линии
+
+                // TODO: заменить now на pointf
+                float xNow = (float)el.x;
+                float yNow = (float)el.y;
+                bool isKeepDrawing = false;
+                GetToNegativeLine(iterationsNumber, inaccuracy, isKeepDrawing, xNow, yNow, firstLine);
+                xNow = (float)el.x;
+                yNow = (float)el.y;
+                isKeepDrawing = false;
+                GetToPositiveLine(iterationsNumber, inaccuracy, isKeepDrawing, xNow, yNow, secondLine);
 
                 lock (locker)
                 {
@@ -246,7 +249,6 @@ namespace Phisic
                     Pen pen = new Pen(Color.Green, width);
 
                     path.StartFigure();
-
                     
                     foreach (var pair in firstLine)
                     {
@@ -266,7 +268,7 @@ namespace Phisic
         /// <summary>
         /// Расчет силовых линий
         /// </summary>
-        private void phisica()
+        private void CountMainLinesPhisics()
         {
             Stopwatch stopWatch = new Stopwatch();
             stopWatch.Start();
@@ -274,7 +276,7 @@ namespace Phisic
             // 300-500
             foreach (Atom atom in atoms)
             {
-                atomPhisicsThread(atom);
+                AtomPhisicsThread(atom);
             }
 
             // TODO: поменять отрисовку. возможно быстрее ставить один пиксель
@@ -287,65 +289,62 @@ namespace Phisic
             Console.WriteLine("RunTime for atoms calculations " + String.Format("{0:00}:{1:00}:{2:00}.{3:000}",
                         ts.Hours, ts.Minutes, ts.Seconds,
                         ts.Milliseconds));
-            draw_at();
+            DrawAtoms();
         }
 
         /// <summary>
         /// Расчет нового положения
         /// </summary>
-        /// <param name="kekl">Продолжать/нет рисование</param>
-        /// <param name="new_pos">Вектор новых координат</param>
-        /// <param name="x_now">Текущая координата по Х</param>
-        /// <param name="y_now">Текущая координата по Y</param>
-        static private void know_new_pos(ref bool kekl, ref Vector2 new_pos, float x_now, float y_now)
+        /// <param name="isKeepDrawing">Продолжать/нет рисование</param>
+        /// <param name="newPosition">Вектор новых координат</param>
+        /// <param name="xNow">Текущая координата по Х</param>
+        /// <param name="yNow">Текущая координата по Y</param>
+        static private void GetNewPosition(ref bool isKeepDrawing, ref Vector2 newPosition, float xNow, float yNow)
         {
             foreach (Atom at in atoms)
             {
-                new_pos += at.forcer(new El_ch(x_now, y_now, false));
-                double rad = Math.Sqrt((at.x - x_now) * (at.x - x_now) + (at.y - y_now) * (at.y - y_now));
-                if (rad < 5 && at.charge != 0) kekl = true;
+                newPosition += at.getForceInPosition(new ElementaryCharge(xNow, yNow, false));
+                double distanceToAtom = Math.Sqrt((at.x - xNow) * (at.x - xNow) + (at.y - yNow) * (at.y - yNow));
+                if (distanceToAtom < 5 && at.charge != 0) isKeepDrawing = true;
             }
-            if ((Math.Abs(x_now) >= 1500) || (Math.Abs(y_now) >= 1500)) kekl = true;
+            if ((Math.Abs(xNow) >= 1500) || (Math.Abs(yNow) >= 1500)) isKeepDrawing = true;
         }
 
         /// <summary>
         /// Отрисовка траектории полета пробного заряда (вспомогательная функция)
         /// </summary>
-        /// <param name="dk">Кол-во итераций в цикле</param>
-        /// <param name="k2">Коеффицент погрешности</param>
-        /// <param name="x_now">Текущая координата по Х</param>
-        /// <param name="y_now">Текущая координата по Y</param>
-        /// <param name="kekl">Продолжать/нет рисование</param>
-        /// <param name="x_old">Старая координата по Х</param>
-        /// <param name="y_old">Старая координата по Y</param>
-        private void check(int dk, float k2, float x_now, float y_now, bool kekl, float x_old, float y_old)
+        /// <param name="iterationsNumber">Кол-во итераций в цикле</param>
+        /// <param name="inaccuracy">Коеффицент погрешности</param>
+        /// <param name="xNow">Текущая координата по Х</param>
+        /// <param name="yNow">Текущая координата по Y</param>
+        /// <param name="isKeepDrawing">Продолжать/нет рисование</param>
+        /// <param name="xPrev">Старая координата по Х</param>
+        /// <param name="yPrev">Старая координата по Y</param>
+        private void GetTrialLine(int iterationsNumber, float inaccuracy, float xNow, float yNow, bool isKeepDrawing, float xPrev, float yPrev)
         {
-            Brush brush_bl = new SolidBrush(Color.Black);
-            Brush brush_y = new SolidBrush(Color.Yellow);
+            Brush brushBlack = new SolidBrush(Color.Black);
+            Brush brushYellow = new SolidBrush(Color.Yellow);
 
-            for (int i = 1; i < dk; i++)
+            for (int i = 1; i < iterationsNumber; i++)
             {
-                if (!kekl)
+                if (!isKeepDrawing)
                 {
-                    Vector2 new_pos = new Vector2();
-                    bool d = false;
-                    know_new_pos(ref d, ref new_pos, x_now, y_now);
+                    Vector2 newPosition = new Vector2();
+                    bool d = false; // just need to work
+                    GetNewPosition(ref d, ref newPosition, xNow, yNow);
 
-                    if (double.IsNaN(new_pos.x) || double.IsNaN(new_pos.y)) break;
-                    Vector2 rv = new Vector2(new_pos.x / Math.Sqrt(new_pos.x * new_pos.x + new_pos.y * new_pos.y), new_pos.y / Math.Sqrt(new_pos.x * new_pos.x + new_pos.y * new_pos.y));
+                    if (double.IsNaN(newPosition.x) || double.IsNaN(newPosition.y)) break;
+                    Vector2 rv = new Vector2(newPosition.x / Math.Sqrt(newPosition.x * newPosition.x + newPosition.y * newPosition.y), newPosition.y / Math.Sqrt(newPosition.x * newPosition.x + newPosition.y * newPosition.y));
                     if (double.IsNaN(rv.x) || double.IsNaN(rv.y)) break;
 
-                    float a = x_now, b = y_now;
-                    x_now = (float)(2 * x_now - x_old + rv.x * k2 * k2);
-                    y_now = (float)(2 * y_now - y_old + rv.y * k2 * k2);
-                    x_old = a;
-                    y_old = b;
+                    float a = xNow, b = yNow;
+                    xNow = (float)(2 * xNow - xPrev + rv.x * inaccuracy * inaccuracy);
+                    yNow = (float)(2 * yNow - yPrev + rv.y * inaccuracy * inaccuracy);
+                    xPrev = a;
+                    yPrev = b;
 
-
-                    //chart1.Dispatcher.Invoke(new Action(() => { chart1.Series[0].Points.AddXY(x, y); }));
-
-                    _graphics.FillEllipse(brush_bl, new RectangleF(x_now - 2, y_now - 2, 4, 4));
-                    _graphics.DrawLine(new Pen(brush_y), new PointF(x_old, y_old), new PointF(x_now, y_now));
+                    _graphics.FillEllipse(brushBlack, new RectangleF(xNow - 2, yNow - 2, 4, 4));
+                    _graphics.DrawLine(new Pen(brushYellow), new PointF(xPrev, yPrev), new PointF(xNow, yNow));
 
                 }
                 else
@@ -356,90 +355,82 @@ namespace Phisic
         /// <summary>
         /// Отрисовка траектории полета пробного заряда
         /// </summary>
-        private void phisica2()
+        private void CountTrialLinePhisics()
         {
-            float k2 = 1;
-            int dk = 300;
-            Brush brush_bl = new SolidBrush(Color.Black);
-            Brush brush_y = new SolidBrush(Color.Yellow);
+            float inaccuracy = 1;
+            int iterarionsNumber = 300;
+            Brush brushBlack = new SolidBrush(Color.Black);
+            Brush brushYellow = new SolidBrush(Color.Yellow);
 
-            foreach (Prob el in probs)
+            foreach (Trial el in trialAtoms)
             {
-                float x_now = (float)el.x;
-                float y_now = (float)el.y;
-                float x_old = x_now;
-                float y_old = y_now;
-                bool kekl = false;
-                if (!kekl)
+                float xNow = (float)el.x;
+                float yNow = (float)el.y;
+                float xPrev = xNow;
+                float yPrev = yNow;
+                bool isKeepDrawing = false;
+                if (!isKeepDrawing)
                 {
-                    Vector2 new_pos = new Vector2();
+                    Vector2 newPosition = new Vector2();
                     bool d = false;
-                    know_new_pos(ref d, ref new_pos, x_now, y_now);
-                    if (double.IsNaN(new_pos.x) || double.IsNaN(new_pos.y)) continue;
-                    Vector2 rv = new Vector2(new_pos.x / Math.Sqrt(new_pos.x * new_pos.x + new_pos.y * new_pos.y), new_pos.y / Math.Sqrt(new_pos.x * new_pos.x + new_pos.y * new_pos.y));
+                    GetNewPosition(ref d, ref newPosition, xNow, yNow);
+                    if (double.IsNaN(newPosition.x) || double.IsNaN(newPosition.y)) continue;
+                    Vector2 rv = new Vector2(newPosition.x / Math.Sqrt(newPosition.x * newPosition.x + newPosition.y * newPosition.y), newPosition.y / Math.Sqrt(newPosition.x * newPosition.x + newPosition.y * newPosition.y));
                     if (double.IsNaN(rv.x) || double.IsNaN(rv.y)) continue;
 
-                    x_now += (float)(rv.x * k2 * k2);
-                    y_now += (float)(rv.y * k2 * k2);
-                    _graphics.FillEllipse(brush_bl, new RectangleF(x_now - 2, y_now - 2, 4, 4));
-                    _graphics.DrawLine(new Pen(brush_y), new PointF(x_old, y_old), new PointF(x_now, y_now));
+                    xNow += (float)(rv.x * inaccuracy * inaccuracy);
+                    yNow += (float)(rv.y * inaccuracy * inaccuracy);
+                    _graphics.FillEllipse(brushBlack, new RectangleF(xNow - 2, yNow - 2, 4, 4));
+                    _graphics.DrawLine(new Pen(brushYellow), new PointF(xPrev, yPrev), new PointF(xNow, yNow));
                 }
-                check(dk, k2, x_now, y_now, kekl, x_old, y_old);
+                GetTrialLine(iterarionsNumber, inaccuracy, xNow, yNow, isKeepDrawing, xPrev, yPrev);
             }
         }
 
         /// <summary>
         /// Расчет напряженности поля
         /// </summary>
-        private void phisica3()
+        private void CountFieldTension()
         {
             Stopwatch stopWatch = new Stopwatch();
             stopWatch.Start();
 
-            double k = 1.043;
-            Brush brush = new SolidBrush(Color.Red);
-
-            Brush brush_bl = new SolidBrush(Color.Black);
-            Brush brush_b = new SolidBrush(Color.Blue);
-            Brush brush_y = new SolidBrush(Color.Yellow);
-            Brush brush_g = new SolidBrush(Color.Green);
-
-            if (tent)
+            double logariphmDegree = 1.043;
+            if (isNeedToCountTension)
             {
-                Color nowColor;
-                for (int i = 0; i < 800; i += 1)
+                Color currentColor;
+                for (int x = 0; x < 800; x += 1)
                 {
-                    for (int j = 0; j < 800; j += 1)
+                    for (int y = 0; y < 800; y += 1)
                     {
-                        El_ch el = new El_ch(i, j, false);
+                        ElementaryCharge el = new ElementaryCharge(x, y, false);
 
-                        Vector2 new_pos = new Vector2();
+                        Vector2 newPosition = new Vector2();
                         // TODO: засечь время здесь и посчитать что долгое
                         foreach (Atom at in atoms)
                         {
-                            new_pos += at.forcer(el);
+                            newPosition += at.getForceInPosition(el);
                             //double rad = Math.Sqrt((at.x - x_now) * (at.x - x_now) + (at.y - y_now) * (at.y - y_now));
                         }
-                        double rad = new_pos.GetLong() * 1000;
+                        double rad = newPosition.GetLong() * 1000;
                         if (!double.IsNaN(rad) && !double.IsInfinity(rad))
                         {
-
-                            double lg = Math.Log(rad, k);
+                            double lg = Math.Log(rad, logariphmDegree);
                             if (lg >= 255)
                             {
-                                nowColor = Color.FromArgb(255, 255, 255);
+                                currentColor = Color.FromArgb(255, 255, 255);
                             }
-                            else if (Math.Log(rad, k) <= 0)
+                            else if (lg <= 0)
                             {
-                                nowColor = Color.FromArgb((int)rad, (int)rad, (int)rad);
+                                currentColor = Color.FromArgb((int)rad, (int)rad, (int)rad);
                             }
                             else
                             {
-                                nowColor = Color.FromArgb((int)lg, (int)lg, (int)lg);
+                                currentColor = Color.FromArgb((int)lg, (int)lg, (int)lg);
                             }
                             //_graphics.FillRectangle(new SolidBrush(nowColor), new Rectangle(i, j, 1, 1));
 
-                            _bitmap.SetPixel(i, j, nowColor);
+                            _bitmap.SetPixel(x, y, currentColor);
                         }
                     }
                 }
@@ -448,8 +439,7 @@ namespace Phisic
 
             pictureBox1.Image = _bitmap;
 
-            draw_at();
-
+            DrawAtoms();
 
             stopWatch.Stop();
             TimeSpan ts = stopWatch.Elapsed;
@@ -459,26 +449,26 @@ namespace Phisic
         }
 
         /// <summary>
-        /// Расчет точки нулевой напряженности поля (не используется)
+        /// Расчет точки нулевой напряженности поля
         /// </summary>
-        private void phisica_E_0()
+        private void CountZeroTension()
         {
-            if (E_0)
+            if (isCountingZeroTension)
             {
-                int all_one_charge = 0;
+                int atomsChargeState = 0;
                 foreach (Atom atom in atoms)
                 {
                     if (atom.charge < 0)
                     {
-                        all_one_charge += 0;
+                        atomsChargeState += 0;
                     }
                     else if (atom.charge > 0)
                     {
-                        all_one_charge += 1;
+                        atomsChargeState += 1;
                     }
                     else
                     {
-                        all_one_charge += 2;
+                        atomsChargeState += 2;
                     }
                 }
 
@@ -486,36 +476,36 @@ namespace Phisic
                 // Eiy = (y-b) * Q / ((x-a)^2+(y-b)^2)^2
                 // if (Ex^2+Ey^2 < 1e-6) : cool
                 Functions2 f = new Functions2();
-                if (all_one_charge == 0 || all_one_charge == atoms.Count)
+                if (atomsChargeState == 0 || atomsChargeState == atoms.Count)
                 {
                     if (atoms.Count == 2)
                     {
-                        double kv_min_x = Math.Min(atoms[0].x, atoms[1].x), kv_min_y = Math.Min(atoms[0].y, atoms[1].y);
-                        double kv_max_x = Math.Max(atoms[0].x, atoms[1].x), kv_max_y = Math.Max(atoms[0].y, atoms[1].y);
+                        double squareLeftUpX = Math.Min(atoms[0].x, atoms[1].x), squareLeftUpY = Math.Min(atoms[0].y, atoms[1].y);
+                        double squareRightDownX = Math.Max(atoms[0].x, atoms[1].x), squareRightDownY = Math.Max(atoms[0].y, atoms[1].y);
                         double e_x = -10, e_y = -10;
                         int e_0_rad = 10;
                         Line2 line2 = new Line2(atoms[0].x, atoms[0].y, atoms[1].x, atoms[1].y);
-                        for (e_x = kv_min_x; e_x < kv_max_x; e_x += 0.1)
+                        for (e_x = squareLeftUpX; e_x < squareRightDownX; e_x += 0.1)
                         {
-                            for (e_y = kv_min_y; e_y < kv_max_y; e_y += 0.1)
+                            for (e_y = squareLeftUpY; e_y < squareRightDownY; e_y += 0.1)
                             {
-                                Point2 point2 = new Point2(e_x, e_y);
-                                if (f.DisplacementDotLine(line2, point2) < 5)
+                                Point2 currentPoint = new Point2(e_x, e_y);
+                                if (f.DisplacementDotLine(line2, currentPoint) < 5)
                                 {
-                                    El_ch el_Ch = new El_ch(e_x, e_y, false);
-                                    Vector2 summ = new Vector2(0, 0);
+                                    ElementaryCharge el_Ch = new ElementaryCharge(e_x, e_y, false);
+                                    Vector2 summaryForceVector = new Vector2(0, 0);
                                     foreach (Atom at in atoms)
                                     {
-                                        summ += at.forcer(el_Ch);
+                                        summaryForceVector += at.getForceInPosition(el_Ch);
                                     }
-                                    if (Math.Abs(summ.GetLong()) <= 1e-9)
+                                    if (Math.Abs(summaryForceVector.GetLong()) <= 1e-9)
                                     {
                                         if (atoms.Count > 1)
                                         {
                                             Brush brush = new SolidBrush(Color.Purple);
                                             _graphics.FillEllipse(brush, new Rectangle((int)e_x - e_0_rad / 2, (int)e_y - e_0_rad / 2, e_0_rad, e_0_rad));
                                         }
-                                        Console.WriteLine(e_x + " " + e_y + " " + summ);
+                                        Console.WriteLine(e_x + " " + e_y + " " + summaryForceVector);
                                     }
                                 }
                             }
@@ -531,37 +521,37 @@ namespace Phisic
         /// </summary>
         /// <param name="tr">На конце или на начале</param>
         /// <param name="pen">Кисть</param>
-        static private void start_end(bool tr, ref Pen pen)
+        static private void ChooseArrowDirection(bool tr, ref Pen pen)
         {
             if (tr)
-                pen.EndCap = System.Drawing.Drawing2D.LineCap.ArrowAnchor;
+                pen.EndCap = LineCap.ArrowAnchor;
             else
-                pen.StartCap = System.Drawing.Drawing2D.LineCap.ArrowAnchor;
+                pen.StartCap = LineCap.ArrowAnchor;
         }
 
         /// <summary>
         /// Рисование линий и стрелок на них
         /// </summary>
-        /// <param name="tr">На конце или на начале</param>
-        /// <param name="p1">Точка начала</param>
-        /// <param name="p2">Точка конца</param>
-        static private void draw_arrow(bool tr, PointF p1, PointF p2, ref int kal, List<Tuple<PointF, PointF, Pen>> line)
+        /// <param name="isStartArrow">На конце или на начале</param>
+        /// <param name="startPoint">Точка начала</param>
+        /// <param name="endPoint">Точка конца</param>
+        static private void AddArrowToLine(bool isStartArrow, PointF startPoint, PointF endPoint, ref int numberNotArrowed, List<Tuple<PointF, PointF, Pen>> resultLine)
         {
             Pen pen = new Pen(Color.Green, width);
-            if (arrows)
+            if (isDrawingArrows)
             {
-                if (rare && kal == 75)
+                if (areArrowsRare && numberNotArrowed == 75)
                 {
-                    start_end(tr, ref pen);
-                    kal = 1;
+                    ChooseArrowDirection(isStartArrow, ref pen);
+                    numberNotArrowed = 1;
                 }
-                else if (!rare && kal % 15 == 0)
+                else if (!areArrowsRare && numberNotArrowed % 15 == 0)
                 {
-                    start_end(tr, ref pen);
-                    kal = 1;
+                    ChooseArrowDirection(isStartArrow, ref pen);
+                    numberNotArrowed = 1;
                 }
             }
-            line.Add(Tuple.Create(p1, p2, pen));
+            resultLine.Add(Tuple.Create(startPoint, endPoint, pen));
             //_graphics.DrawLine(pen, p1, p2);
 
         }
@@ -569,7 +559,7 @@ namespace Phisic
         /// <summary>
         /// Отрисовка всех атомов
         /// </summary>
-        static private void draw_at()
+        static private void DrawAtoms()
         {
             Brush brush = new SolidBrush(Color.Red);
             Brush brush_b = new SolidBrush(Color.Blue);
@@ -588,16 +578,15 @@ namespace Phisic
         /// <summary>
         /// Отрисовка всех электронов
         /// </summary>
-        private void draw_el()
+        private void DrawElementaryCharges()
         {
             if (drawer)
             {
                 Brush brush_b = new SolidBrush(Color.Blue);
                 foreach (Atom at in atoms)
                 {
-                    foreach (El_ch el in at.electrons)
+                    foreach (ElementaryCharge el in at.electrons)
                         _graphics.FillEllipse(brush_b, new Rectangle((int)(el.x - 2), (int)(el.y - 2), 4, 4));
-
                 }
             }
         }
@@ -605,73 +594,73 @@ namespace Phisic
         /// <summary>
         /// Отрисовка координатной сетки
         /// </summary>
-        private void draw_coor()
+        private void DrawCoordinateGrid()
         {
-            Brush brush_bl = new SolidBrush(Color.Black);
-            if (coor)
+            Brush brushBlue = new SolidBrush(Color.Black);
+            if (isDrawingCoordinateGrid)
             {
-                _graphics.FillRectangle(brush_bl, new Rectangle(0, 748, 750, 2));
-                _graphics.FillRectangle(brush_bl, new Rectangle(0, 0, 2, 750));
+                _graphics.FillRectangle(brushBlue, new Rectangle(0, 748, 750, 2));
+                _graphics.FillRectangle(brushBlue, new Rectangle(0, 0, 2, 750));
                 for (int i = 0; i < 750; i += 50)
                 {
                     for (int j = 0; j < 750; j += 50)
                     {
-                        _graphics.FillRectangle(brush_bl, new Rectangle(i - 1, j - 1, 2, 2));
-                        _graphics.FillRectangle(brush_bl, new Rectangle(i - 1, j - 1, 2, 2));
+                        _graphics.FillRectangle(brushBlue, new Rectangle(i - 1, j - 1, 2, 2));
+                        _graphics.FillRectangle(brushBlue, new Rectangle(i - 1, j - 1, 2, 2));
                     }
-                    _graphics.FillRectangle(brush_bl, new Rectangle(i - 1, 745, 2, 5));
+                    _graphics.FillRectangle(brushBlue, new Rectangle(i - 1, 745, 2, 5));
                     if (i == 50)
                     {
-                        _graphics.DrawString(string.Format("{0}", i), new Font(this.Font, FontStyle.Bold), brush_bl, new Point(i - 9, 732));
+                        _graphics.DrawString(string.Format("{0}", i), new Font(this.Font, FontStyle.Bold), brushBlue, new Point(i - 9, 732));
                     }
-                    else _graphics.DrawString(string.Format("{0}", i), new Font(this.Font, FontStyle.Bold), brush_bl, new Point(i - 13, 732));
+                    else _graphics.DrawString(string.Format("{0}", i), new Font(this.Font, FontStyle.Bold), brushBlue, new Point(i - 13, 732));
                 }
                 for (int i = 700; i > 0; i -= 50)
                 {
-                    _graphics.FillRectangle(brush_bl, new Rectangle(0, i - 1, 5, 2));
+                    _graphics.FillRectangle(brushBlue, new Rectangle(0, i - 1, 5, 2));
                     if (i == 700)
                     {
-                        _graphics.DrawString(string.Format("{0}", i), new Font(this.Font, FontStyle.Bold), brush_bl, new Point(4, (750 - i) - 6));
+                        _graphics.DrawString(string.Format("{0}", i), new Font(this.Font, FontStyle.Bold), brushBlue, new Point(4, (750 - i) - 6));
                     }
-                    else _graphics.DrawString(string.Format("{0}", i), new Font(this.Font, FontStyle.Bold), brush_bl, new Point(4, (750 - i) - 6));
+                    else _graphics.DrawString(string.Format("{0}", i), new Font(this.Font, FontStyle.Bold), brushBlue, new Point(4, (750 - i) - 6));
 
                 }
-                _graphics.DrawString(string.Format("x"), new Font(this.Font, FontStyle.Bold), brush_bl, new Point(737, 732));
-                _graphics.DrawString(string.Format("y"), new Font(this.Font, FontStyle.Bold), brush_bl, new Point(6, 4));
-                _graphics.DrawLine(new Pen(brush_bl), new Point(0, 750), new Point(5, 745));
-                _graphics.DrawLine(new Pen(brush_bl), new Point(1, 750), new Point(6, 745));
-                _graphics.DrawLine(new Pen(brush_bl), new Point(2, 750), new Point(7, 745));
-                _graphics.DrawLine(new Pen(brush_bl), new Point(0, 749), new Point(5, 744));
-                _graphics.DrawLine(new Pen(brush_bl), new Point(0, 748), new Point(5, 743));
-                _graphics.DrawString(string.Format("0"), new Font(this.Font, FontStyle.Bold), brush_bl, new Point(4, 732));
+                _graphics.DrawString(string.Format("x"), new Font(this.Font, FontStyle.Bold), brushBlue, new Point(737, 732));
+                _graphics.DrawString(string.Format("y"), new Font(this.Font, FontStyle.Bold), brushBlue, new Point(6, 4));
+                _graphics.DrawLine(new Pen(brushBlue), new Point(0, 750), new Point(5, 745));
+                _graphics.DrawLine(new Pen(brushBlue), new Point(1, 750), new Point(6, 745));
+                _graphics.DrawLine(new Pen(brushBlue), new Point(2, 750), new Point(7, 745));
+                _graphics.DrawLine(new Pen(brushBlue), new Point(0, 749), new Point(5, 744));
+                _graphics.DrawLine(new Pen(brushBlue), new Point(0, 748), new Point(5, 743));
+                _graphics.DrawString(string.Format("0"), new Font(this.Font, FontStyle.Bold), brushBlue, new Point(4, 732));
             }
         }
 
         /// <summary>
         /// Перерисовка поля
         /// </summary>
-        private void paintka()
+        private void RenderPicture()
         {
             _graphics.Clear(Color.White);
 
-            draw_at();
-            draw_el();
-            draw_coor();
-            if (selected >= 0)
+            DrawAtoms();
+            DrawElementaryCharges();
+            DrawCoordinateGrid();
+            if (selectedAtomIndex >= 0)
             {
-                _graphics.DrawEllipse(new Pen(Color.Purple, 2), new Rectangle(atoms[selected].x - atoms[selected].radius / 2 - 2, atoms[selected].y - atoms[selected].radius / 2 - 2, atoms[selected].radius + 4, atoms[selected].radius + 4));
+                _graphics.DrawEllipse(new Pen(Color.Purple, 2), new Rectangle(atoms[selectedAtomIndex].x - atoms[selectedAtomIndex].radius / 2 - 2, atoms[selectedAtomIndex].y - atoms[selectedAtomIndex].radius / 2 - 2, atoms[selectedAtomIndex].radius + 4, atoms[selectedAtomIndex].radius + 4));
             }
 
-            if (tent)
-                phisica3();
+            if (isNeedToCountTension)
+                CountFieldTension();
             else
             {
-                phisica();
-                phisica2();
+                CountMainLinesPhisics();
+                CountTrialLinePhisics();
             }
-            phisica_E_0();
-            if (type == Type.FIELD_VECTOR)
-                paint_field_vector(p_field);
+            CountZeroTension();
+            if (currentTypeOfFunction == Type.TensityVector)
+                DrawTensityVector(tensityTrialVectorCoordinates);
 
 
             Stopwatch stopWatch = new Stopwatch();
@@ -691,23 +680,23 @@ namespace Phisic
         /// </summary>
         /// <param name="x">Координата по Х</param>
         /// <param name="y">Координата по Y</param>
-        /// <param name="ch">Модуль заряда</param>
-        private void create_atom(int x, int y, int ch)
+        /// <param name="atomCharge">Модуль заряда</param>
+        private void CreateAtom(int x, int y, int atomCharge)
         {
-            Atom at = new Atom(x, y, ch, fill_curr);
+            Atom at = new Atom(x, y, atomCharge, linesMultiplier);
             atoms.Add(at);
         }
 
         /// <summary>
         /// Очистка поля
         /// </summary>
-        private void clear()
+        private void ClearField()
         {
-            type = Type.PLUS;
+            currentTypeOfFunction = Type.Positive;
             atoms = new List<Atom> { };
-            probs = new List<Prob> { };
-            selected = -1;
-            paintka();
+            trialAtoms = new List<Trial> { };
+            selectedAtomIndex = -1;
+            RenderPicture();
         }
 
         /// <summary>
@@ -737,9 +726,9 @@ namespace Phisic
         /// <param name="e"></param>
         private void minusToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            selected = -1;
-            paintka();
-            type = Type.MINUS;
+            selectedAtomIndex = -1;
+            RenderPicture();
+            currentTypeOfFunction = Type.Negative;
         }
 
         /// <summary>
@@ -749,21 +738,21 @@ namespace Phisic
         /// <param name="e"></param>
         private void plusToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            selected = -1;
-            type = Type.PLUS;
-            paintka();
+            selectedAtomIndex = -1;
+            currentTypeOfFunction = Type.Positive;
+            RenderPicture();
         }
 
         /// <summary>
-        /// Выбор електрона (не используется)
+        /// Выбор пробного заряда
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void elcToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            selected = -1;
-            type = Type.PROB;
-            paintka();
+            selectedAtomIndex = -1;
+            currentTypeOfFunction = Type.Trial;
+            RenderPicture();
         }
 
         /// <summary>
@@ -773,7 +762,7 @@ namespace Phisic
         /// <param name="e"></param>
         private void clearToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            clear();
+            ClearField();
         }
 
         /// <summary>
@@ -783,63 +772,63 @@ namespace Phisic
         /// <param name="e"></param>
         private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
         {
-            probs = new List<Prob> { };
-            dow = true;
-            selected = -1;
-            switch (type)
+            trialAtoms = new List<Trial> { };
+            isMouseDowned = true;
+            selectedAtomIndex = -1;
+            switch (currentTypeOfFunction)
             {
-                case Type.PLUS:
-                    dow = true;
-                    create_atom(e.X, e.Y, Math.Abs(cha));
+                case Type.Positive:
+                    isMouseDowned = true;
+                    CreateAtom(e.X, e.Y, Math.Abs(currentCharge));
                     break;
-                case Type.MINUS:
-                    dow = true;
-                    create_atom(e.X, e.Y, -Math.Abs(cha));
+                case Type.Negative:
+                    isMouseDowned = true;
+                    CreateAtom(e.X, e.Y, -Math.Abs(currentCharge));
                     break;
-                case Type.PROB:
-                    Prob el = new Prob(e.X, e.Y, false);
-                    probs.Add(el);
+                case Type.Trial:
+                    Trial el = new Trial(e.X, e.Y, false);
+                    trialAtoms.Add(el);
                     break;
-                case Type.MOVE:
+                case Type.Moving:
                     foreach (Atom atom in atoms)
                     {
                         double rad = Math.Sqrt((atom.x - e.X) * (atom.x - e.X) + (atom.y - e.Y) * (atom.y - e.Y));
                         if (rad < 10)
                         {
-                            selected = atoms.IndexOf(atom);
+                            selectedAtomIndex = atoms.IndexOf(atom);
                             textBox11.Text = string.Format("{0}", atom.x);
                             textBox10.Text = string.Format("{0}", 750 - atom.y);
-                            textBox13.Text = string.Format("{0}", atoms[selected].charge);
+                            textBox13.Text = string.Format("{0}", atoms[selectedAtomIndex].charge);
                         }
                     }
                     break;
-                case Type.NEUTRAL:
-                    dow = true;
-                    create_atom(e.X, e.Y, 0);
+                case Type.Neutral:
+                    isMouseDowned = true;
+                    CreateAtom(e.X, e.Y, 0);
                     break;
-                case Type.FIELD_VECTOR:
-                    dow = true;
-                    p_field = new PointF(e.X, e.Y);
+                case Type.TensityVector:
+                    isMouseDowned = true;
+                    tensityTrialVectorCoordinates = new PointF(e.X, e.Y);
                     break;
                 default: break;
             }
-            paintka();
+            RenderPicture();
         }
 
-        private void paint_field_vector(PointF e)
+        private void DrawTensityVector(PointF e)
         {
-            El_ch el_Ch = new El_ch(e.X, e.Y, false);
-            Vector2 summ = new Vector2(0, 0);
+            ElementaryCharge elemCharge = new ElementaryCharge(e.X, e.Y, false);
+            Vector2 summaryForce = new Vector2(0, 0);
             foreach (Atom at in atoms)
             {
-                summ += at.forcer(el_Ch);
+                summaryForce += at.getForceInPosition(elemCharge);
             }
-            textBox14.Text = string.Format("{0}", summ.GetLong());
-            summ *= 100;
+            textBox14.Text = string.Format("{0}", summaryForce.GetLong());
+            summaryForce *= 100;
             Pen pen = new Pen(Color.Purple, 3);
             pen.EndCap = System.Drawing.Drawing2D.LineCap.ArrowAnchor;
             PointF p1 = new PointF(e.X, e.Y);
-            PointF p2 = new PointF(e.X + (float)summ.x, e.Y + (float)summ.y);
+            PointF p2 = new PointF(e.X + (float)summaryForce.x, e.Y + (float)summaryForce.y);
             //Console.WriteLine(p1 + " " + p2);
             _graphics.DrawLine(pen, p1, p2);
         }
@@ -848,23 +837,23 @@ namespace Phisic
         /// Смена положения атома и его електронов
         /// </summary>
         /// <param name="e"></param>
-        private void changer_atom(MouseEventArgs e)
+        private void changeAtomPosition(MouseEventArgs e)
         {
             atoms[atoms.Count - 1].x = e.X;
             atoms[atoms.Count - 1].y = e.Y;
-            atoms[atoms.Count - 1].create_at_els();
+            atoms[atoms.Count - 1].createAtomElemCharges();
         }
 
         /// <summary>
         /// Смена положения выделенного атома и его електронов
         /// </summary>
         /// <param name="e"></param>
-        private void selected_changa(MouseEventArgs e, int selected)
+        private void changeSelectedAtomPosition(MouseEventArgs e, int selectedAtomIndex)
         {
-            atoms[selected].x = e.X;
-            atoms[selected].y = e.Y;
+            atoms[selectedAtomIndex].x = e.X;
+            atoms[selectedAtomIndex].y = e.Y;
 
-            atoms[selected].create_at_els();
+            atoms[selectedAtomIndex].createAtomElemCharges();
         }
 
         /// <summary>
@@ -874,44 +863,44 @@ namespace Phisic
         /// <param name="e"></param>
         private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
         {
-            if (dow)
+            if (isMouseDowned)
             {
-                switch (type)
+                switch (currentTypeOfFunction)
                 {
-                    case Type.PLUS:
-                        changer_atom(e);
+                    case Type.Positive:
+                        changeAtomPosition(e);
                         break;
-                    case Type.MINUS:
-                        changer_atom(e);
+                    case Type.Negative:
+                        changeAtomPosition(e);
                         break;
-                    case Type.PROB:
-                        probs[probs.Count - 1] = new Prob(e.X, e.Y, false);
+                    case Type.Trial:
+                        trialAtoms[trialAtoms.Count - 1] = new Trial(e.X, e.Y, false);
                         break;
-                    case Type.MOVE:
-                        selected = -1;
+                    case Type.Moving:
+                        selectedAtomIndex = -1;
                         foreach (Atom atom in atoms)
                         {
                             double rad = Math.Sqrt((atom.x - e.X) * (atom.x - e.X) + (atom.y - e.Y) * (atom.y - e.Y));
                             if (rad < 10)
-                                selected = atoms.IndexOf(atom);
+                                selectedAtomIndex = atoms.IndexOf(atom);
                         }
-                        if (selected >= 0)
+                        if (selectedAtomIndex >= 0)
                         {
-                            textBox11.Text = string.Format("{0}", atoms[selected].x);
-                            textBox10.Text = string.Format("{0}", 750 - atoms[selected].y);
-                            textBox13.Text = string.Format("{0}", atoms[selected].charge);
-                            selected_changa(e, selected);
+                            textBox11.Text = string.Format("{0}", atoms[selectedAtomIndex].x);
+                            textBox10.Text = string.Format("{0}", 750 - atoms[selectedAtomIndex].y);
+                            textBox13.Text = string.Format("{0}", atoms[selectedAtomIndex].charge);
+                            changeSelectedAtomPosition(e, selectedAtomIndex);
                         }
                         break;
-                    case Type.NEUTRAL:
-                        changer_atom(e);
+                    case Type.Neutral:
+                        changeAtomPosition(e);
                         break;
-                    case Type.FIELD_VECTOR:
-                        p_field = new PointF(e.X, e.Y);
+                    case Type.TensityVector:
+                        tensityTrialVectorCoordinates = new PointF(e.X, e.Y);
                         break;
                     default: break;
                 }
-                paintka();
+                RenderPicture();
             }
         }
 
@@ -922,7 +911,7 @@ namespace Phisic
         /// <param name="e"></param>
         private void pictureBox1_MouseUp(object sender, MouseEventArgs e)
         {
-            dow = false;
+            isMouseDowned = false;
         }
 
         /// <summary>
@@ -942,15 +931,15 @@ namespace Phisic
         /// <param name="e"></param>
         private void toolStripMenuItem2_Click(object sender, EventArgs e)
         {
-            if (fill_curr < 16)
+            if (linesMultiplier < 16)
             {
                 foreach (Atom at in atoms)
                 {
-                    at.sta_koeff *= 2;
-                    at.create_at_els();
+                    at.linesMultiplierCounter *= 2;
+                    at.createAtomElemCharges();
                 }
-                fill_curr *= 2;
-                paintka();
+                linesMultiplier *= 2;
+                RenderPicture();
             }
         }
 
@@ -974,6 +963,7 @@ namespace Phisic
 
         }
 
+        // TODO: not using
         /// <summary>
         /// Назначение 8 линий исходящих из заряда
         /// </summary>
@@ -984,6 +974,7 @@ namespace Phisic
             //dalk = 8;
         }
 
+        // TODO: not using
         /// <summary>
         /// Назначение 16 линий исходящих из заряда
         /// </summary>
@@ -994,6 +985,7 @@ namespace Phisic
             //dalk = 16;
         }
 
+        // TODO: not using
         /// <summary>
         /// Назначение 0 линий исходящих из заряда
         /// </summary>
@@ -1011,8 +1003,8 @@ namespace Phisic
         /// <param name="e"></param>
         private void button3_Click_1(object sender, EventArgs e)
         {
-            probs = new List<Prob> { };
-            paintka();
+            trialAtoms = new List<Trial> { };
+            RenderPicture();
         }
 
         /// <summary>
@@ -1022,7 +1014,7 @@ namespace Phisic
         /// <param name="e"></param>
         private void moveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            type = Type.MOVE;
+            currentTypeOfFunction = Type.Moving;
         }
 
         /// <summary>
@@ -1034,17 +1026,17 @@ namespace Phisic
         {
             try
             {
-                cha = (int.Parse(textBox1.Text));
-                if (cha > 16) cha = 16;
-                if (cha < -16) cha = -16;
-                if (selected >= 0)
+                currentCharge = (int.Parse(textBox1.Text));
+                if (currentCharge > 16) currentCharge = 16;
+                if (currentCharge < -16) currentCharge = -16;
+                if (selectedAtomIndex >= 0)
                 {
-                    atoms[selected].charge = cha;
-                    atoms[selected].sta = 8 * (int)Math.Sqrt(Math.Abs(cha));
-                    atoms[selected].create_at_els();
-                    atoms[selected].radius = Math.Abs((int)(atoms[selected].charge)) / 2 + 10;
-                    textBox13.Text = string.Format("{0}", atoms[selected].charge);
-                    paintka();
+                    atoms[selectedAtomIndex].charge = currentCharge;
+                    atoms[selectedAtomIndex].elemChargesCount = 8 * (int)Math.Sqrt(Math.Abs(currentCharge));
+                    atoms[selectedAtomIndex].createAtomElemCharges();
+                    atoms[selectedAtomIndex].radius = Math.Abs((int)(atoms[selectedAtomIndex].charge)) / 2 + 10;
+                    textBox13.Text = string.Format("{0}", atoms[selectedAtomIndex].charge);
+                    RenderPicture();
                 }
             }
             catch
@@ -1072,9 +1064,9 @@ namespace Phisic
         /// <param name="e"></param>
         private void nullChargeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            selected = -1;
-            type = Type.NEUTRAL;
-            paintka();
+            selectedAtomIndex = -1;
+            currentTypeOfFunction = Type.Neutral;
+            RenderPicture();
         }
 
         /// <summary>
@@ -1084,12 +1076,12 @@ namespace Phisic
         /// <param name="e"></param>
         private void button5_Click(object sender, EventArgs e)
         {
-            if (selected >= 0)
+            if (selectedAtomIndex >= 0)
             {
-                atoms.RemoveAt(selected);
+                atoms.RemoveAt(selectedAtomIndex);
             }
-            selected = -1;
-            paintka();
+            selectedAtomIndex = -1;
+            RenderPicture();
         }
 
         /// <summary>
@@ -1099,17 +1091,17 @@ namespace Phisic
         /// <param name="e"></param>
         private void button6_Click(object sender, EventArgs e)
         {
-            probs = new List<Prob> { };
-            selected = -1;
+            trialAtoms = new List<Trial> { };
+            selectedAtomIndex = -1;
             try
             {
                 int x = int.Parse(textBox2.Text);
                 int y = 750 - int.Parse(textBox3.Text);
 
-                create_atom(x, y, cha);
+                CreateAtom(x, y, currentCharge);
 
                 label4.Text = "";
-                paintka();
+                RenderPicture();
             }
             catch
             {
@@ -1124,8 +1116,8 @@ namespace Phisic
         /// <param name="e"></param>
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
-            coor = checkBox1.Checked;
-            paintka();
+            isDrawingCoordinateGrid = checkBox1.Checked;
+            RenderPicture();
         }
 
         /// <summary>
@@ -1135,23 +1127,23 @@ namespace Phisic
         /// <param name="e"></param>
         private void textBox2_TextChanged(object sender, EventArgs e)
         {
-            if (selected >= 0)
+            if (selectedAtomIndex >= 0)
             {
                 try
                 {
-                    atoms[selected].x = int.Parse(textBox2.Text);
-                    atoms[selected].create_at_els();
+                    atoms[selectedAtomIndex].x = int.Parse(textBox2.Text);
+                    atoms[selectedAtomIndex].createAtomElemCharges();
                     label4.Text = "";
                 }
                 catch
                 {
                     label4.Text = "Error";
                 }
-                textBox11.Text = string.Format("{0}", atoms[selected].x);
-                textBox10.Text = string.Format("{0}", 750 - atoms[selected].y);
-                textBox13.Text = string.Format("{0}", atoms[selected].charge);
+                textBox11.Text = string.Format("{0}", atoms[selectedAtomIndex].x);
+                textBox10.Text = string.Format("{0}", 750 - atoms[selectedAtomIndex].y);
+                textBox13.Text = string.Format("{0}", atoms[selectedAtomIndex].charge);
             }
-            paintka();
+            RenderPicture();
         }
 
         /// <summary>
@@ -1161,23 +1153,23 @@ namespace Phisic
         /// <param name="e"></param>
         private void textBox3_TextChanged(object sender, EventArgs e)
         {
-            if (selected >= 0)
+            if (selectedAtomIndex >= 0)
             {
                 try
                 {
-                    atoms[selected].y = 750 - int.Parse(textBox3.Text);
-                    atoms[selected].create_at_els();
+                    atoms[selectedAtomIndex].y = 750 - int.Parse(textBox3.Text);
+                    atoms[selectedAtomIndex].createAtomElemCharges();
                     label4.Text = "";
                 }
                 catch
                 {
                     label4.Text = "Error";
                 }
-                textBox11.Text = string.Format("{0}", atoms[selected].x);
-                textBox10.Text = string.Format("{0}", 750 - atoms[selected].y);
-                textBox13.Text = string.Format("{0}", atoms[selected].charge);
+                textBox11.Text = string.Format("{0}", atoms[selectedAtomIndex].x);
+                textBox10.Text = string.Format("{0}", 750 - atoms[selectedAtomIndex].y);
+                textBox13.Text = string.Format("{0}", atoms[selectedAtomIndex].charge);
             }
-            paintka();
+            RenderPicture();
         }
 
         /// <summary>
@@ -1187,8 +1179,8 @@ namespace Phisic
         /// <param name="e"></param>
         private void button7_Click(object sender, EventArgs e)
         {
-            selected = -1;
-            paintka();
+            selectedAtomIndex = -1;
+            RenderPicture();
         }
 
         /// <summary>
@@ -1198,10 +1190,11 @@ namespace Phisic
         /// <param name="e"></param>
         private void checkBox2_CheckedChanged(object sender, EventArgs e)
         {
-            arrows = checkBox2.Checked;
-            paintka();
+            isDrawingArrows = checkBox2.Checked;
+            RenderPicture();
         }
 
+        // TODO: записать толщины линии в енум
         /// <summary>
         /// Изменение толщины линии
         /// </summary>
@@ -1210,7 +1203,7 @@ namespace Phisic
         private void toolStripMenuItem6_Click(object sender, EventArgs e)
         {
             width = 1;
-            paintka();
+            RenderPicture();
         }
 
         /// <summary>
@@ -1221,7 +1214,7 @@ namespace Phisic
         private void toolStripMenuItem7_Click(object sender, EventArgs e)
         {
             width = 2;
-            paintka();
+            RenderPicture();
         }
 
         /// <summary>
@@ -1232,7 +1225,7 @@ namespace Phisic
         private void toolStripMenuItem8_Click(object sender, EventArgs e)
         {
             width = 3;
-            paintka();
+            RenderPicture();
         }
 
         /// <summary>
@@ -1243,7 +1236,7 @@ namespace Phisic
         private void toolStripMenuItem9_Click(object sender, EventArgs e)
         {
             width = 4;
-            paintka();
+            RenderPicture();
         }
 
         /// <summary>
@@ -1254,7 +1247,7 @@ namespace Phisic
         private void toolStripMenuItem10_Click(object sender, EventArgs e)
         {
             width = 5;
-            paintka();
+            RenderPicture();
         }
 
         /// <summary>
@@ -1264,93 +1257,16 @@ namespace Phisic
         /// <param name="e"></param>
         private void checkBox3_CheckedChanged(object sender, EventArgs e)
         {
-            rare = checkBox3.Checked;
-            if (!arrows && rare)
+            areArrowsRare = checkBox3.Checked;
+            if (!isDrawingArrows && areArrowsRare)
             {
-                arrows = true;
+                isDrawingArrows = true;
                 checkBox2.Checked = true;
             }
-            paintka();
+            RenderPicture();
         }
 
-        /// <summary>
-        /// Включить темную тему
-        /// </summary>
-        private void go_black()
-        {
-            /*
-            this.BackColor = Control.DefaultForeColor;
-
-            this.menuStrip1.BackColor = Control.DefaultForeColor;
-            this.menuStrip1.ForeColor = Color.White;
-
-            this.label1.ForeColor = Color.White;
-            this.label2.ForeColor = Color.White;
-            //this.label3.ForeColor = Color.White;
-            this.label4.ForeColor = Color.White;
-            this.label5.ForeColor = Color.White;
-            this.label6.ForeColor = Color.White;
-            this.label7.ForeColor = Color.White;
-            this.label8.ForeColor = Color.White;
-
-            this.checkBox1.ForeColor = Color.White;
-            this.checkBox2.ForeColor = Color.White;
-            this.checkBox3.ForeColor = Color.White;
-            this.checkBox4.ForeColor = Color.White;
-
-            this.button1.BackColor = Control.DefaultForeColor;
-            this.button1.ForeColor = Color.White;
-            this.button3.BackColor = Control.DefaultForeColor;
-            this.button3.ForeColor = Color.White;
-            this.button5.BackColor = Control.DefaultForeColor;
-            this.button5.ForeColor = Color.White;
-            this.button6.BackColor = Control.DefaultForeColor;
-            this.button6.ForeColor = Color.White;
-            this.button7.BackColor = Control.DefaultForeColor;
-            this.button7.ForeColor = Color.White;
-
-            this.blackThemeToolStripMenuItem.Text = "White theme";*/
-        }
-
-        /// <summary>
-        /// Включить светлую тему
-        /// </summary>
-        private void go_white()
-        {
-            /*
-            this.BackColor = Control.DefaultBackColor;
-
-            this.menuStrip1.BackColor = Control.DefaultBackColor;
-            this.menuStrip1.ForeColor = Control.DefaultForeColor;
-
-            this.label1.ForeColor = Control.DefaultForeColor;
-            this.label2.ForeColor = Control.DefaultForeColor;
-            this.label3.ForeColor = Control.DefaultForeColor;
-            this.label4.ForeColor = Control.DefaultForeColor;
-            this.label5.ForeColor = Control.DefaultForeColor;
-            this.label6.ForeColor = Control.DefaultForeColor;
-            this.label7.ForeColor = Control.DefaultForeColor;
-            this.label8.ForeColor = Control.DefaultForeColor;
-
-            this.checkBox1.ForeColor = Control.DefaultForeColor;
-            this.checkBox2.ForeColor = Control.DefaultForeColor;
-            this.checkBox3.ForeColor = Control.DefaultForeColor;
-            this.checkBox4.ForeColor = Control.DefaultForeColor;
-
-            this.button1.BackColor = Control.DefaultBackColor;
-            this.button1.ForeColor = Control.DefaultForeColor;
-            this.button3.BackColor = Control.DefaultBackColor;
-            this.button3.ForeColor = Control.DefaultForeColor;
-            this.button5.BackColor = Control.DefaultBackColor;
-            this.button5.ForeColor = Control.DefaultForeColor;
-            this.button6.BackColor = Control.DefaultBackColor;
-            this.button6.ForeColor = Control.DefaultForeColor;
-            this.button7.BackColor = Control.DefaultBackColor;
-            this.button7.ForeColor = Control.DefaultForeColor;
-
-            this.blackThemeToolStripMenuItem.Text = "Dark theme";*/
-        }
-
+        // TODO: not using
         /// <summary>
         /// Включить/выключить темную тему
         /// </summary>
@@ -1358,30 +1274,20 @@ namespace Phisic
         /// <param name="e"></param>
         private void blackThemeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (black)
-            {
-                go_white();
-            }
-            else
-            {
-                go_black();
-            }
-            black = !black;
-
-            paintka();
         }
 
         /// <summary>
-        /// Показ/не показ "напряженности" (не используется)
+        /// Показ/не показ "напряженности"
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void checkBox4_CheckedChanged(object sender, EventArgs e)
         {
-            tent = checkBox4.Checked;
-            paintka();
+            isNeedToCountTension = checkBox4.Checked;
+            RenderPicture();
         }
 
+        // TODO: not using
         /// <summary>
         /// (не используется)
         /// </summary>
@@ -1392,6 +1298,7 @@ namespace Phisic
 
         }
 
+        // TODO: исправить формат сохранения. В идеале на json
         /// <summary>
         /// Сохранение в файл по умолчанию
         /// </summary>
@@ -1407,7 +1314,7 @@ namespace Phisic
                 writer.WriteLine(" " + point.x + " " + point.y + " " + point.charge);
             }
 
-            foreach (Prob point in probs)
+            foreach (Trial point in trialAtoms)
             {
                 writer.WriteLine(point.x + " " + point.y);
             }
@@ -1426,7 +1333,7 @@ namespace Phisic
                 return;
             if (System.IO.File.Exists(openFileDialog1.FileName))
             {
-                clear();
+                ClearField();
                 StreamReader reader = new StreamReader(openFileDialog1.FileName);
 
                 reader.ReadLine();
@@ -1439,7 +1346,7 @@ namespace Phisic
                     str = reader.ReadLine();
                     words = str.Split(new char[] { ' ' });
                     Point en = new Point(int.Parse(words[1]), int.Parse(words[2]));
-                    create_atom(en.X, en.Y, int.Parse(words[3]));
+                    CreateAtom(en.X, en.Y, int.Parse(words[3]));
                     Console.WriteLine(atoms.Count);
 
                 }
@@ -1452,10 +1359,10 @@ namespace Phisic
                     str = reader.ReadLine();
                     words = str.Split(new char[] { ' ' });
 
-                    probs.Add(new Prob(int.Parse(words[0]), int.Parse(words[1]), true));
+                    trialAtoms.Add(new Trial(int.Parse(words[0]), int.Parse(words[1]), true));
 
                 }
-                paintka();
+                RenderPicture();
                 reader.Close();
             }
         }
@@ -1469,7 +1376,7 @@ namespace Phisic
         {
             if (System.IO.File.Exists("save.txt"))
             {
-                clear();
+                ClearField();
                 StreamReader reader = new StreamReader("save.txt");
 
                 reader.ReadLine();
@@ -1483,7 +1390,7 @@ namespace Phisic
                     str = reader.ReadLine();
                     words = str.Split(new char[] { ' ' });
                     Point en = new Point(int.Parse(words[1]), int.Parse(words[2]));
-                    create_atom(en.X, en.Y, int.Parse(words[3]));
+                    CreateAtom(en.X, en.Y, int.Parse(words[3]));
                 }
                 str = reader.ReadLine();
                 str = reader.ReadLine();
@@ -1494,11 +1401,11 @@ namespace Phisic
                     str = reader.ReadLine();
                     words = str.Split(new char[] { ' ' });
 
-                    probs.Add(new Prob(int.Parse(words[0]), int.Parse(words[1]), true));
+                    trialAtoms.Add(new Trial(int.Parse(words[0]), int.Parse(words[1]), true));
 
                 }
 
-                paintka();
+                RenderPicture();
                 reader.Close();
             }
         }
@@ -1520,8 +1427,8 @@ namespace Phisic
                 writer.WriteLine(point.x + " " + point.y + " " + point.charge);
             }
 
-            writer.WriteLine("Test: \n" + probs.Count);
-            foreach (Prob point in probs)
+            writer.WriteLine("Test: \n" + trialAtoms.Count);
+            foreach (Trial point in trialAtoms)
             {
                 writer.WriteLine(point.x + " " + point.y);
             }
@@ -1536,35 +1443,36 @@ namespace Phisic
         /// <param name="e"></param>
         private void checkBox5_CheckedChanged(object sender, EventArgs e)
         {
-            E_0 = checkBox5.Checked;
-            paintka();
+            isCountingZeroTension = checkBox5.Checked;
+            RenderPicture();
         }
 
         private void clearFillToolStripMenuItem_Click(object sender, EventArgs e)
         {
             foreach (Atom at in atoms)
             {
-                at.sta_koeff = 1;
-                at.create_at_els();
+                at.linesMultiplierCounter = 1;
+                at.createAtomElemCharges();
             }
-            fill_curr = 1;
-            paintka();
+            linesMultiplier = 1;
+            RenderPicture();
         }
 
         private void deMultiplyLinesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (fill_curr > 1)
+            if (linesMultiplier > 1)
             {
                 foreach (Atom at in atoms)
                 {
-                    at.sta_koeff /= 2;
-                    at.create_at_els();
+                    at.linesMultiplierCounter /= 2;
+                    at.createAtomElemCharges();
                 }
-                fill_curr /= 2;
-                paintka();
+                linesMultiplier /= 2;
+                RenderPicture();
             }
         }
 
+        // TODO: not using
         private void label11_Click(object sender, EventArgs e)
         {
 
@@ -1600,11 +1508,13 @@ namespace Phisic
 
         }
 
+        // TODO: исправить название функции
         private void векторПоляToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            type = Type.FIELD_VECTOR;
+            currentTypeOfFunction = Type.TensityVector;
         }
 
+        // TODO: not using
         private void textBox15_TextChanged(object sender, EventArgs e)
         {
 
@@ -1624,7 +1534,7 @@ namespace Phisic
         /// <summary>
         /// Коеффицент заполнения
         /// </summary>
-        public int sta_koeff { get; set; } = 1;
+        public int linesMultiplierCounter { get; set; } = 1;
 
         /// <summary>
         /// Координата по Х
@@ -1642,14 +1552,14 @@ namespace Phisic
         public int charge { get; set; } = 0;
 
         /// <summary>
-        /// Массив, содержащий привязанные к атому 16 электронов
+        /// Массив, содержащий привязанные к атому электроны
         /// </summary>
-        public List<El_ch> electrons { get; set; } = new List<El_ch> { };
+        public List<ElementaryCharge> electrons { get; set; } = new List<ElementaryCharge> { };
 
         /// <summary>
         /// Кол-во электронов, привязанных к атому
         /// </summary>
-        public int sta { get; set; } = 8;
+        public int elemChargesCount { get; set; } = 8;
 
         /// <summary>
         /// Радиус атома
@@ -1659,7 +1569,7 @@ namespace Phisic
         /// <summary>
         /// Коеффицент пропорциональности
         /// </summary>
-        const long k = 9000;// * (long)(1e9);
+        const long proportionalCoefficent = 9000;// * (long)(1e9);
 
         /// <summary>
         /// Инициализация пустого атома
@@ -1681,10 +1591,10 @@ namespace Phisic
             this.x = _x;
             this.y = _y;
             this.charge = _charge;
-            this.sta_koeff = _sta_koeff;
-            this.sta = 8 * (int)Math.Sqrt(Math.Abs(_charge));
+            this.linesMultiplierCounter = _sta_koeff;
+            this.elemChargesCount = 8 * (int)Math.Sqrt(Math.Abs(_charge));
             radius = Math.Abs(this.charge) / 2 + 10;
-            create_at_els();
+            createAtomElemCharges();
         }
 
         /// <summary>
@@ -1692,34 +1602,34 @@ namespace Phisic
         /// </summary>
         /// <param name="el">Обьект пробного заряда</param>
         /// <returns>Итоговый вектор силы</returns>
-        public Vector2 forcer(El_ch el)
+        public Vector2 getForceInPosition(ElementaryCharge el)
         {
             // расстояние до атома
-            double rad = Math.Sqrt((el.x - x) * (el.x - x) + (el.y - y) * (el.y - y));
+            double distanceToAtom = Math.Sqrt((el.x - x) * (el.x - x) + (el.y - y) * (el.y - y));
             // Единичный вектор напрвления "атом - электрон"
-            Vector2 once = new Vector2((double)(el.x - x) / rad, (double)(el.y - y) / rad);
+            Vector2 unitForceVector = new Vector2((double)(el.x - x) / distanceToAtom, (double)(el.y - y) / distanceToAtom);
             // Сила: заряд атома * заряд электрона * коеффицент / расстояние^2
-            double force = k * el.charge * charge / (rad * rad);
+            double force = proportionalCoefficent * el.charge * charge / (distanceToAtom * distanceToAtom);
 
-            return new Vector2(once.x * force, once.y * force);
+            return new Vector2(unitForceVector.x * force, unitForceVector.y * force);
         }
 
         /// <summary>
         /// Добавление электронов атому
         /// </summary>
-        public void create_at_els()
+        public void createAtomElemCharges()
         {
-            this.electrons = new List<El_ch> { };
-            double pi = 2 * Math.PI / (sta * sta_koeff);
-            List<double> coeff = new List<double> { };
-            for (int i = 0; i < (sta * sta_koeff); i++)
+            this.electrons = new List<ElementaryCharge> { };
+            double pi = 2 * Math.PI / (elemChargesCount * linesMultiplierCounter);
+            List<double> triginometryAngleCoefficents = new List<double> { };
+            for (int i = 0; i < (elemChargesCount * linesMultiplierCounter); i++)
             {
-                coeff.Add(Math.Cos(pi * i));
-                coeff.Add(Math.Sin(pi * i));
+                triginometryAngleCoefficents.Add(Math.Cos(pi * i));
+                triginometryAngleCoefficents.Add(Math.Sin(pi * i));
             }
-            for (int i = 0; i < (sta * sta_koeff); i++)
+            for (int i = 0; i < (elemChargesCount * linesMultiplierCounter); i++)
             {
-                El_ch ela = new El_ch(this.x + 10 * coeff[2 * i], this.y + 10 * coeff[2 * i + 1], false);
+                ElementaryCharge ela = new ElementaryCharge(this.x + 10 * triginometryAngleCoefficents[2 * i], this.y + 10 * triginometryAngleCoefficents[2 * i + 1], false);
                 this.electrons.Add(ela);
             }
         }
@@ -1728,7 +1638,7 @@ namespace Phisic
     /// <summary>
     /// Класс описывающий электрон на поле
     /// </summary>
-    public class El_ch
+    public class ElementaryCharge
     {
         /// <summary>
         /// Координата по Х
@@ -1748,7 +1658,7 @@ namespace Phisic
         /// <summary>
         /// Инициализация пустого электрона
         /// </summary>
-        public El_ch()
+        public ElementaryCharge()
         {
             x = 0;
             y = 0;
@@ -1759,19 +1669,19 @@ namespace Phisic
         /// </summary>
         /// <param name="x">Координата по Х</param>
         /// <param name="y">Координата по Y</param>
-        /// <param name="plus">Знак заряда</param>
-        public El_ch(double x, double y, bool plus)
+        /// <param name="isPositive">Знак заряда</param>
+        public ElementaryCharge(double x, double y, bool isPositive)
         {
             this.x = x;
             this.y = y;
-            if (plus) charge = -charge;
+            if (isPositive) charge = -charge;
         }
     }
 
     /// <summary>
     /// Класс описывающий пробный електрон на поле
     /// </summary>
-    public class Prob
+    public class Trial
     {
         /// <summary>
         /// Координата по Х
@@ -1792,7 +1702,7 @@ namespace Phisic
         /// <summary>
         /// Инициализация пустого пробного электрона
         /// </summary>
-        public Prob()
+        public Trial()
         {
             x = 0;
             y = 0;
@@ -1804,7 +1714,7 @@ namespace Phisic
         /// <param name="x">Координата по Х</param>
         /// <param name="y">Координата по Y</param>
         /// <param name="plus">Знак заряда</param>
-        public Prob(double x, double y, bool plus)
+        public Trial(double x, double y, bool plus)
         {
             this.x = x;
             this.y = y;
@@ -2050,7 +1960,6 @@ namespace Phisic
     }
     public class Functions2
     {
-
         public double DisplacementDotLine(Line2 a, Point2 M)
         {
             return (Math.Abs(a.a * M.x + a.b * M.y + a.c)) / (Math.Sqrt(a.a * a.a + a.b * a.b));
