@@ -372,6 +372,9 @@ namespace Phisic
         /// </summary>
         private void phisica3()
         {
+            Stopwatch stopWatch = new Stopwatch();
+            stopWatch.Start();
+
             double k = 1.043;
             Brush brush = new SolidBrush(Color.Red);
 
@@ -382,9 +385,10 @@ namespace Phisic
 
             if (tent)
             {
-                for (int i = 0; i < 800; i++)
+                Color nowColor;
+                for (int i = 0; i < 800; i+=1)
                 {
-                    for (int j = 0; j < 800; j++)
+                    for (int j = 0; j < 800; j+=1)
                     {
                         El_ch el = new El_ch(i, j, false);
 
@@ -398,33 +402,38 @@ namespace Phisic
                         double rad = new_pos.GetLong()*1000;
                         if (!double.IsNaN(rad) && !double.IsInfinity(rad))
                         {
+                            
                             double lg = Math.Log(rad, k);
                             if (lg >= 255)
                             {
-                                _graphics.FillRectangle(new SolidBrush(Color.FromArgb(255, 255, 255)), new Rectangle(i, j, 1, 1));
+                                nowColor = Color.FromArgb(255, 255, 255);
                             }
                             else if (Math.Log(rad, k) <= 0)
                             {
-                                _graphics.FillRectangle(new SolidBrush(Color.FromArgb((int)rad, (int)rad, (int)rad)), new Rectangle(i, j, 1, 1));
+                                nowColor = Color.FromArgb((int)rad, (int)rad, (int)rad);
                             }
                             else
                             {
-                                _graphics.FillRectangle(new SolidBrush(Color.FromArgb((int)lg, (int)lg, (int)lg)), new Rectangle(i, j, 1, 1));
+                                nowColor = Color.FromArgb((int)lg, (int)lg, (int)lg);
                             }
+                            //_graphics.FillRectangle(new SolidBrush(nowColor), new Rectangle(i, j, 1, 1));
+                            _bitmap.SetPixel(i, j, nowColor);
                         }
                     }
                 }
 
             }
-            foreach (Atom at in atoms)
-            {
-                if (at.charge > 0)
-                    _graphics.FillEllipse(brush, new Rectangle(at.x - at.radius / 2, at.y - at.radius / 2, at.radius, at.radius));
-                if (at.charge == 0)
-                    _graphics.FillEllipse(brush_bl, new Rectangle(at.x - at.radius / 2, at.y - at.radius / 2, at.radius, at.radius));
-                if (at.charge < 0)
-                    _graphics.FillEllipse(brush_b, new Rectangle(at.x - at.radius / 2, at.y - at.radius / 2, at.radius, at.radius));
-            }
+
+            pictureBox1.Image = _bitmap;
+
+            draw_at();
+
+
+            stopWatch.Stop();
+            TimeSpan ts = stopWatch.Elapsed;
+            Console.WriteLine("RunTime napr" + String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
+                        ts.Hours, ts.Minutes, ts.Seconds,
+                        ts.Milliseconds / 10));
         }
 
         /// <summary>
@@ -1443,8 +1452,8 @@ namespace Phisic
                 {
                     str = reader.ReadLine();
                     words = str.Split(new char[] { ' ' });
-                    Point en = new Point(int.Parse(words[0]), int.Parse(words[1]));
-                    create_atom(en.X, en.Y, int.Parse(words[2]));
+                    Point en = new Point(int.Parse(words[1]), int.Parse(words[2]));
+                    create_atom(en.X, en.Y, int.Parse(words[3]));
                 }
                 Console.WriteLine("test");
                 str = reader.ReadLine();
