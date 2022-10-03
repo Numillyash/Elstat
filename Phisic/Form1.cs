@@ -232,9 +232,6 @@ namespace Phisic
                 List<Tuple<PointF, PointF, Pen>> firstLine = new List<Tuple<PointF, PointF, Pen>> { };
                 List<Tuple<PointF, PointF, Pen>> secondLine = new List<Tuple<PointF, PointF, Pen>> { };
 
-                // TODO: не останавливать расчет после какой-то координаты, а просто не записывать его в линию. таким образом нужно создавать две линии
-
-                // TODO: заменить now на pointf
                 float xNow = (float)el.x;
                 float yNow = (float)el.y;
                 bool isKeepDrawing = false;
@@ -250,7 +247,7 @@ namespace Phisic
                     Pen pen = new Pen(Color.Green, width);
 
                     path.StartFigure();
-                    
+
                     foreach (var pair in firstLine)
                     {
                         path.AddLine(pair.Item1, pair.Item2);
@@ -698,26 +695,6 @@ namespace Phisic
             trialAtoms = new List<Trial> { };
             selectedAtomIndex = -1;
             RenderPicture();
-        }
-
-        /// <summary>
-        /// Обработка клика (не используется)
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void pictureBox1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        /// <summary>
-        /// Обработка клика (не используется)
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void pictureBox1_MouseClick(object sender, MouseEventArgs e)
-        {
-
         }
 
         /// <summary>
@@ -1244,7 +1221,34 @@ namespace Phisic
             RenderPicture();
         }
 
-        // TODO: исправить формат сохранения. В идеале на json
+        // TODO: Исправить формат сохранения на JSON
+
+        /// <summary>
+        /// Сохранение в файл
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void saveAsToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            if (saveFileDialog1.ShowDialog() == DialogResult.Cancel)
+                return;
+            StreamWriter writer = new StreamWriter(saveFileDialog1.FileName);
+
+            writer.WriteLine("Atoms: \n" + atoms.Count);
+            foreach (Atom point in atoms)
+            {
+                writer.WriteLine(point.x + " " + point.y + " " + point.charge);
+            }
+
+            writer.WriteLine("Test: \n" + trialAtoms.Count);
+            foreach (Trial point in trialAtoms)
+            {
+                writer.WriteLine(point.x + " " + point.y);
+            }
+
+            writer.Close();
+        }
+
         /// <summary>
         /// Сохранение в файл по умолчанию
         /// </summary>
@@ -1257,9 +1261,10 @@ namespace Phisic
             writer.WriteLine("Atoms: \n" + atoms.Count);
             foreach (Atom point in atoms)
             {
-                writer.WriteLine(" " + point.x + " " + point.y + " " + point.charge);
+                writer.WriteLine(point.x + " " + point.y + " " + point.charge);
             }
 
+            writer.WriteLine("Test: \n" + trialAtoms.Count);
             foreach (Trial point in trialAtoms)
             {
                 writer.WriteLine(point.x + " " + point.y);
@@ -1291,8 +1296,8 @@ namespace Phisic
                 {
                     str = reader.ReadLine();
                     words = str.Split(new char[] { ' ' });
-                    Point en = new Point(int.Parse(words[1]), int.Parse(words[2]));
-                    CreateAtom(en.X, en.Y, int.Parse(words[3]));
+                    Point en = new Point(int.Parse(words[0]), int.Parse(words[1]));
+                    CreateAtom(en.X, en.Y, int.Parse(words[2]));
                     Console.WriteLine(atoms.Count);
 
                 }
@@ -1335,8 +1340,8 @@ namespace Phisic
                 {
                     str = reader.ReadLine();
                     words = str.Split(new char[] { ' ' });
-                    Point en = new Point(int.Parse(words[1]), int.Parse(words[2]));
-                    CreateAtom(en.X, en.Y, int.Parse(words[3]));
+                    Point en = new Point(int.Parse(words[0]), int.Parse(words[1]));
+                    CreateAtom(en.X, en.Y, int.Parse(words[2]));
                 }
                 str = reader.ReadLine();
                 str = reader.ReadLine();
@@ -1355,32 +1360,6 @@ namespace Phisic
                 reader.Close();
             }
         }
-
-        /// <summary>
-        /// Сохранение в файл
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void saveAsToolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-            if (saveFileDialog1.ShowDialog() == DialogResult.Cancel)
-                return;
-            StreamWriter writer = new StreamWriter(saveFileDialog1.FileName);
-
-            writer.WriteLine("Atoms: \n" + atoms.Count);
-            foreach (Atom point in atoms)
-            {
-                writer.WriteLine(point.x + " " + point.y + " " + point.charge);
-            }
-
-            writer.WriteLine("Test: \n" + trialAtoms.Count);
-            foreach (Trial point in trialAtoms)
-            {
-                writer.WriteLine(point.x + " " + point.y);
-            }
-
-            writer.Close();
-        }//Сохранить как
 
         /// <summary>
         /// Вывод точки нулевой напряженности поля
@@ -1418,7 +1397,6 @@ namespace Phisic
             }
         }
 
-        // TODO: исправить название функции
         private void TensityVectorToolStripMenuItem_Click(object sender, EventArgs e)
         {
             currentTypeOfFunction = Type.TensityVector;
