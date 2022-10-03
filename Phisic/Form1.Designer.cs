@@ -60,7 +60,6 @@
             this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.loadAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.DeleteAtomButton = new System.Windows.Forms.Button();
             this.ChargeModuleInput = new System.Windows.Forms.TextBox();
             this.InstructionButton = new System.Windows.Forms.Button();
             this.DeleteSelectedAtomButton = new System.Windows.Forms.Button();
@@ -140,43 +139,40 @@
             // plusToolStripMenuItem
             // 
             this.plusToolStripMenuItem.Name = "plusToolStripMenuItem";
-            this.plusToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.plusToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
             this.plusToolStripMenuItem.Text = "Положительный";
             this.plusToolStripMenuItem.Click += new System.EventHandler(this.plusToolStripMenuItem_Click);
             // 
             // minusToolStripMenuItem
             // 
             this.minusToolStripMenuItem.Name = "minusToolStripMenuItem";
-            this.minusToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.minusToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
             this.minusToolStripMenuItem.Text = "Отрицательный";
             this.minusToolStripMenuItem.Click += new System.EventHandler(this.minusToolStripMenuItem_Click);
             // 
             // nullChargeToolStripMenuItem
             // 
             this.nullChargeToolStripMenuItem.Name = "nullChargeToolStripMenuItem";
-            this.nullChargeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.nullChargeToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
             this.nullChargeToolStripMenuItem.Text = "Нейтральный";
             this.nullChargeToolStripMenuItem.Click += new System.EventHandler(this.nullChargeToolStripMenuItem_Click);
             // 
             // elcToolStripMenuItem
             // 
             this.elcToolStripMenuItem.Name = "elcToolStripMenuItem";
-            this.elcToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.elcToolStripMenuItem.Text = "Пробный";
-            this.elcToolStripMenuItem.Visible = false;
-            this.elcToolStripMenuItem.Click += new System.EventHandler(this.elcToolStripMenuItem_Click);
+            this.elcToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
             // 
             // moveToolStripMenuItem
             // 
             this.moveToolStripMenuItem.Name = "moveToolStripMenuItem";
-            this.moveToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.moveToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
             this.moveToolStripMenuItem.Text = "Изменение";
             this.moveToolStripMenuItem.Click += new System.EventHandler(this.moveToolStripMenuItem_Click);
             // 
             // TensityVectorToolStripMenuItem
             // 
             this.TensityVectorToolStripMenuItem.Name = "TensityVectorToolStripMenuItem";
-            this.TensityVectorToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.TensityVectorToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
             this.TensityVectorToolStripMenuItem.Text = "Вектор поля";
             this.TensityVectorToolStripMenuItem.Click += new System.EventHandler(this.TensityVectorToolStripMenuItem_Click);
             // 
@@ -338,19 +334,9 @@
             this.loadAsToolStripMenuItem.Name = "loadAsToolStripMenuItem";
             this.loadAsToolStripMenuItem.Size = new System.Drawing.Size(32, 19);
             // 
-            // DeleteAtomButton
-            // 
-            this.DeleteAtomButton.Location = new System.Drawing.Point(770, 31);
-            this.DeleteAtomButton.Name = "DeleteAtomButton";
-            this.DeleteAtomButton.Size = new System.Drawing.Size(112, 50);
-            this.DeleteAtomButton.TabIndex = 7;
-            this.DeleteAtomButton.Text = "Удалить тестовый заряд";
-            this.DeleteAtomButton.UseVisualStyleBackColor = true;
-            this.DeleteAtomButton.Click += new System.EventHandler(this.DeleteAtomButton_Click);
-            // 
             // ChargeModuleInput
             // 
-            this.ChargeModuleInput.Location = new System.Drawing.Point(770, 169);
+            this.ChargeModuleInput.Location = new System.Drawing.Point(770, 112);
             this.ChargeModuleInput.Name = "ChargeModuleInput";
             this.ChargeModuleInput.Size = new System.Drawing.Size(112, 20);
             this.ChargeModuleInput.TabIndex = 8;
@@ -369,7 +355,7 @@
             // 
             // DeleteSelectedAtomButton
             // 
-            this.DeleteSelectedAtomButton.Location = new System.Drawing.Point(770, 87);
+            this.DeleteSelectedAtomButton.Location = new System.Drawing.Point(770, 30);
             this.DeleteSelectedAtomButton.Name = "DeleteSelectedAtomButton";
             this.DeleteSelectedAtomButton.Size = new System.Drawing.Size(112, 50);
             this.DeleteSelectedAtomButton.TabIndex = 10;
@@ -379,7 +365,7 @@
             // 
             // XCoordinateInput
             // 
-            this.XCoordinateInput.Location = new System.Drawing.Point(770, 221);
+            this.XCoordinateInput.Location = new System.Drawing.Point(770, 164);
             this.XCoordinateInput.Name = "XCoordinateInput";
             this.XCoordinateInput.Size = new System.Drawing.Size(45, 20);
             this.XCoordinateInput.TabIndex = 13;
@@ -388,7 +374,7 @@
             // 
             // YCoordinateInput
             // 
-            this.YCoordinateInput.Location = new System.Drawing.Point(837, 221);
+            this.YCoordinateInput.Location = new System.Drawing.Point(837, 164);
             this.YCoordinateInput.Name = "YCoordinateInput";
             this.YCoordinateInput.Size = new System.Drawing.Size(45, 20);
             this.YCoordinateInput.TabIndex = 14;
@@ -397,7 +383,7 @@
             // 
             // CreateAtomButton
             // 
-            this.CreateAtomButton.Location = new System.Drawing.Point(770, 247);
+            this.CreateAtomButton.Location = new System.Drawing.Point(770, 190);
             this.CreateAtomButton.Name = "CreateAtomButton";
             this.CreateAtomButton.Size = new System.Drawing.Size(112, 50);
             this.CreateAtomButton.TabIndex = 16;
@@ -415,7 +401,7 @@
             // 
             // CoordinateGrid
             // 
-            this.CoordinateGrid.Location = new System.Drawing.Point(770, 303);
+            this.CoordinateGrid.Location = new System.Drawing.Point(770, 246);
             this.CoordinateGrid.Name = "CoordinateGrid";
             this.CoordinateGrid.Size = new System.Drawing.Size(112, 33);
             this.CoordinateGrid.TabIndex = 18;
@@ -494,7 +480,7 @@
             // 
             // ConstChargeInputText
             // 
-            this.ConstChargeInputText.Location = new System.Drawing.Point(770, 143);
+            this.ConstChargeInputText.Location = new System.Drawing.Point(770, 86);
             this.ConstChargeInputText.Name = "ConstChargeInputText";
             this.ConstChargeInputText.ReadOnly = true;
             this.ConstChargeInputText.Size = new System.Drawing.Size(112, 20);
@@ -504,7 +490,7 @@
             // 
             // ConstXInputText
             // 
-            this.ConstXInputText.Location = new System.Drawing.Point(770, 195);
+            this.ConstXInputText.Location = new System.Drawing.Point(770, 138);
             this.ConstXInputText.Name = "ConstXInputText";
             this.ConstXInputText.ReadOnly = true;
             this.ConstXInputText.Size = new System.Drawing.Size(45, 20);
@@ -514,7 +500,7 @@
             // 
             // ConstYInputText
             // 
-            this.ConstYInputText.Location = new System.Drawing.Point(837, 195);
+            this.ConstYInputText.Location = new System.Drawing.Point(837, 138);
             this.ConstYInputText.Name = "ConstYInputText";
             this.ConstYInputText.ReadOnly = true;
             this.ConstYInputText.Size = new System.Drawing.Size(45, 20);
@@ -524,7 +510,7 @@
             // 
             // ConstCoordinatesText
             // 
-            this.ConstCoordinatesText.Location = new System.Drawing.Point(770, 337);
+            this.ConstCoordinatesText.Location = new System.Drawing.Point(770, 280);
             this.ConstCoordinatesText.Name = "ConstCoordinatesText";
             this.ConstCoordinatesText.ReadOnly = true;
             this.ConstCoordinatesText.Size = new System.Drawing.Size(112, 20);
@@ -534,7 +520,7 @@
             // 
             // ConstYOutputText
             // 
-            this.ConstYOutputText.Location = new System.Drawing.Point(837, 363);
+            this.ConstYOutputText.Location = new System.Drawing.Point(837, 306);
             this.ConstYOutputText.Name = "ConstYOutputText";
             this.ConstYOutputText.ReadOnly = true;
             this.ConstYOutputText.Size = new System.Drawing.Size(45, 20);
@@ -544,7 +530,7 @@
             // 
             // ConstXOutputText
             // 
-            this.ConstXOutputText.Location = new System.Drawing.Point(770, 363);
+            this.ConstXOutputText.Location = new System.Drawing.Point(770, 306);
             this.ConstXOutputText.Name = "ConstXOutputText";
             this.ConstXOutputText.ReadOnly = true;
             this.ConstXOutputText.Size = new System.Drawing.Size(45, 20);
@@ -554,7 +540,7 @@
             // 
             // YCoordinateOutput
             // 
-            this.YCoordinateOutput.Location = new System.Drawing.Point(837, 389);
+            this.YCoordinateOutput.Location = new System.Drawing.Point(837, 332);
             this.YCoordinateOutput.Name = "YCoordinateOutput";
             this.YCoordinateOutput.ReadOnly = true;
             this.YCoordinateOutput.Size = new System.Drawing.Size(45, 20);
@@ -563,7 +549,7 @@
             // 
             // XCoordinateOutput
             // 
-            this.XCoordinateOutput.Location = new System.Drawing.Point(770, 389);
+            this.XCoordinateOutput.Location = new System.Drawing.Point(770, 332);
             this.XCoordinateOutput.Name = "XCoordinateOutput";
             this.XCoordinateOutput.ReadOnly = true;
             this.XCoordinateOutput.Size = new System.Drawing.Size(45, 20);
@@ -572,7 +558,7 @@
             // 
             // ConstChargeText
             // 
-            this.ConstChargeText.Location = new System.Drawing.Point(770, 415);
+            this.ConstChargeText.Location = new System.Drawing.Point(770, 358);
             this.ConstChargeText.Name = "ConstChargeText";
             this.ConstChargeText.ReadOnly = true;
             this.ConstChargeText.Size = new System.Drawing.Size(112, 20);
@@ -582,7 +568,7 @@
             // 
             // ChargeModuleOutput
             // 
-            this.ChargeModuleOutput.Location = new System.Drawing.Point(770, 441);
+            this.ChargeModuleOutput.Location = new System.Drawing.Point(770, 384);
             this.ChargeModuleOutput.Name = "ChargeModuleOutput";
             this.ChargeModuleOutput.ReadOnly = true;
             this.ChargeModuleOutput.Size = new System.Drawing.Size(112, 20);
@@ -591,7 +577,7 @@
             // 
             // TensityOutput
             // 
-            this.TensityOutput.Location = new System.Drawing.Point(770, 506);
+            this.TensityOutput.Location = new System.Drawing.Point(770, 449);
             this.TensityOutput.Name = "TensityOutput";
             this.TensityOutput.ReadOnly = true;
             this.TensityOutput.Size = new System.Drawing.Size(112, 20);
@@ -600,7 +586,7 @@
             // 
             // ConstTensityText
             // 
-            this.ConstTensityText.Location = new System.Drawing.Point(770, 467);
+            this.ConstTensityText.Location = new System.Drawing.Point(770, 410);
             this.ConstTensityText.Multiline = true;
             this.ConstTensityText.Name = "ConstTensityText";
             this.ConstTensityText.ReadOnly = true;
@@ -639,7 +625,6 @@
             this.Controls.Add(this.DeleteSelectedAtomButton);
             this.Controls.Add(this.InstructionButton);
             this.Controls.Add(this.ChargeModuleInput);
-            this.Controls.Add(this.DeleteAtomButton);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.menuStrip1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -672,7 +657,6 @@
         private System.Windows.Forms.ToolStripMenuItem clearToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem fillToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem Fill_Multyple;
-        private System.Windows.Forms.Button DeleteAtomButton;
         private System.Windows.Forms.ToolStripMenuItem moveToolStripMenuItem;
         private System.Windows.Forms.TextBox ChargeModuleInput;
         private System.Windows.Forms.Button InstructionButton;
