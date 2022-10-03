@@ -115,3 +115,15 @@ C:\Users\ulgeo\source\repos\Numillyash\Elstat\Phisic\bin\Release\System.Drawing.
 C:\Users\ulgeo\source\repos\Numillyash\Elstat\Phisic\bin\Release\SharpGL.xml
 C:\Users\ulgeo\source\repos\Numillyash\Elstat\Phisic\bin\Release\SharpGL.SceneGraph.xml
 C:\Users\ulgeo\source\repos\Numillyash\Elstat\Phisic\bin\Release\SharpGL.WinForms.xml
+C:\Users\Georgul\Source\Repos\Numillyash\Elstat\Phisic\obj\Release\Phisic.csproj.AssemblyReference.cache
+C:\Users\Georgul\Source\Repos\Numillyash\Elstat\Phisic\obj\Release\Phisic.Form1.resources
+C:\Users\Georgul\Source\Repos\Numillyash\Elstat\Phisic\obj\Release\Phisic.InstructionForm.resources
+C:\Users\Georgul\Source\Repos\Numillyash\Elstat\Phisic\obj\Release\Phisic.Properties.Resources.resources
+C:\Users\Georgul\Source\Repos\Numillyash\Elstat\Phisic\obj\Release\Phisic.csproj.GenerateResource.cache
+C:\Users\Georgul\Source\Repos\Numillyash\Elstat\Phisic\bin\Release\System.Drawing.Common.dll
+C:\Users\Georgul\Source\Repos\Numillyash\Elstat\Phisic\obj\Release\Phisic.csproj.CoreCompileInputs.cache
+C:\Users\Georgul\Source\Repos\Numillyash\Elstat\Phisic\bin\Release\elstat_v4.0.exe.config
+C:\Users\Georgul\Source\Repos\Numillyash\Elstat\Phisic\bin\Release\elstat_v4.0.exe
+C:\Users\Georgul\Source\Repos\Numillyash\Elstat\Phisic\bin\Release\elstat_v4.0.pdb
+C:\Users\Georgul\Source\Repos\Numillyash\Elstat\Phisic\obj\Release\elstat_v4.0.exe
+C:\Users\Georgul\Source\Repos\Numillyash\Elstat\Phisic\obj\Release\elstat_v4.0.pdb
