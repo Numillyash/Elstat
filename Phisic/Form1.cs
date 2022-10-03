@@ -218,6 +218,7 @@ namespace Phisic
             }
         }
 
+        // TODO: вынести "линии" в привязке к атому, чтобы отрисовывать их уже позже. ПИЗДЕЦ ПОЗЖЕ.
         static private void AtomPhisicsThread(Object obj)
         {
             Atom at = (Atom)obj;
@@ -796,9 +797,9 @@ namespace Phisic
                         if (rad < 10)
                         {
                             selectedAtomIndex = atoms.IndexOf(atom);
-                            textBox11.Text = string.Format("{0}", atom.x);
-                            textBox10.Text = string.Format("{0}", 750 - atom.y);
-                            textBox13.Text = string.Format("{0}", atoms[selectedAtomIndex].charge);
+                            XCoordinateOutput.Text = string.Format("{0}", atom.x);
+                            YCoordinateOutput.Text = string.Format("{0}", 750 - atom.y);
+                            ChargeModuleOutput.Text = string.Format("{0}", atoms[selectedAtomIndex].charge);
                         }
                     }
                     break;
@@ -823,7 +824,7 @@ namespace Phisic
             {
                 summaryForce += at.getForceInPosition(elemCharge);
             }
-            textBox14.Text = string.Format("{0}", summaryForce.GetLong());
+            TensityOutput.Text = string.Format("{0}", summaryForce.GetLong());
             summaryForce *= 100;
             Pen pen = new Pen(Color.Purple, 3);
             pen.EndCap = System.Drawing.Drawing2D.LineCap.ArrowAnchor;
@@ -886,9 +887,9 @@ namespace Phisic
                         }
                         if (selectedAtomIndex >= 0)
                         {
-                            textBox11.Text = string.Format("{0}", atoms[selectedAtomIndex].x);
-                            textBox10.Text = string.Format("{0}", 750 - atoms[selectedAtomIndex].y);
-                            textBox13.Text = string.Format("{0}", atoms[selectedAtomIndex].charge);
+                            XCoordinateOutput.Text = string.Format("{0}", atoms[selectedAtomIndex].x);
+                            YCoordinateOutput.Text = string.Format("{0}", 750 - atoms[selectedAtomIndex].y);
+                            ChargeModuleOutput.Text = string.Format("{0}", atoms[selectedAtomIndex].charge);
                             changeSelectedAtomPosition(e, selectedAtomIndex);
                         }
                         break;
@@ -963,45 +964,12 @@ namespace Phisic
 
         }
 
-        // TODO: not using
-        /// <summary>
-        /// Назначение 8 линий исходящих из заряда
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void button1_Click(object sender, EventArgs e)
-        {
-            //dalk = 8;
-        }
-
-        // TODO: not using
-        /// <summary>
-        /// Назначение 16 линий исходящих из заряда
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void button2_Click(object sender, EventArgs e)
-        {
-            //dalk = 16;
-        }
-
-        // TODO: not using
-        /// <summary>
-        /// Назначение 0 линий исходящих из заряда
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void button4_Click(object sender, EventArgs e)
-        {
-            //dalk = 0;
-        }
-
         /// <summary>
         /// Очистка от пробных зарядов
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void button3_Click_1(object sender, EventArgs e)
+        private void DeleteAtomButton_Click(object sender, EventArgs e)
         {
             trialAtoms = new List<Trial> { };
             RenderPicture();
@@ -1022,11 +990,11 @@ namespace Phisic
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void textBox1_TextChanged_1(object sender, EventArgs e)
+        private void ChargeModuleInput_TextChanged(object sender, EventArgs e)
         {
             try
             {
-                currentCharge = (int.Parse(textBox1.Text));
+                currentCharge = (int.Parse(ChargeModuleInput.Text));
                 if (currentCharge > 16) currentCharge = 16;
                 if (currentCharge < -16) currentCharge = -16;
                 if (selectedAtomIndex >= 0)
@@ -1035,7 +1003,7 @@ namespace Phisic
                     atoms[selectedAtomIndex].elemChargesCount = 8 * (int)Math.Sqrt(Math.Abs(currentCharge));
                     atoms[selectedAtomIndex].createAtomElemCharges();
                     atoms[selectedAtomIndex].radius = Math.Abs((int)(atoms[selectedAtomIndex].charge)) / 2 + 10;
-                    textBox13.Text = string.Format("{0}", atoms[selectedAtomIndex].charge);
+                    ChargeModuleOutput.Text = string.Format("{0}", atoms[selectedAtomIndex].charge);
                     RenderPicture();
                 }
             }
@@ -1048,7 +1016,7 @@ namespace Phisic
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void button1_Click_1(object sender, EventArgs e)
+        private void InstructionButton_Click(object sender, EventArgs e)
         {
             if (Properties.Settings.Default.isInstructionFromAddaed == false)
             {
@@ -1074,7 +1042,7 @@ namespace Phisic
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void button5_Click(object sender, EventArgs e)
+        private void DeleteSelectedAtomButton_Click(object sender, EventArgs e)
         {
             if (selectedAtomIndex >= 0)
             {
@@ -1089,14 +1057,14 @@ namespace Phisic
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void button6_Click(object sender, EventArgs e)
+        private void CreateAtomButton_Click(object sender, EventArgs e)
         {
             trialAtoms = new List<Trial> { };
             selectedAtomIndex = -1;
             try
             {
-                int x = int.Parse(textBox2.Text);
-                int y = 750 - int.Parse(textBox3.Text);
+                int x = int.Parse(XCoordinateInput.Text);
+                int y = 750 - int.Parse(YCoordinateInput.Text);
 
                 CreateAtom(x, y, currentCharge);
 
@@ -1114,9 +1082,9 @@ namespace Phisic
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        private void CoordinateGrid_CheckedChanged(object sender, EventArgs e)
         {
-            isDrawingCoordinateGrid = checkBox1.Checked;
+            isDrawingCoordinateGrid = CoordinateGrid.Checked;
             RenderPicture();
         }
 
@@ -1125,13 +1093,13 @@ namespace Phisic
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void textBox2_TextChanged(object sender, EventArgs e)
+        private void XCoordinateInput_TextChanged(object sender, EventArgs e)
         {
             if (selectedAtomIndex >= 0)
             {
                 try
                 {
-                    atoms[selectedAtomIndex].x = int.Parse(textBox2.Text);
+                    atoms[selectedAtomIndex].x = int.Parse(XCoordinateInput.Text);
                     atoms[selectedAtomIndex].createAtomElemCharges();
                     label4.Text = "";
                 }
@@ -1139,9 +1107,9 @@ namespace Phisic
                 {
                     label4.Text = "Error";
                 }
-                textBox11.Text = string.Format("{0}", atoms[selectedAtomIndex].x);
-                textBox10.Text = string.Format("{0}", 750 - atoms[selectedAtomIndex].y);
-                textBox13.Text = string.Format("{0}", atoms[selectedAtomIndex].charge);
+                XCoordinateOutput.Text = string.Format("{0}", atoms[selectedAtomIndex].x);
+                YCoordinateOutput.Text = string.Format("{0}", 750 - atoms[selectedAtomIndex].y);
+                ChargeModuleOutput.Text = string.Format("{0}", atoms[selectedAtomIndex].charge);
             }
             RenderPicture();
         }
@@ -1151,13 +1119,13 @@ namespace Phisic
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void textBox3_TextChanged(object sender, EventArgs e)
+        private void YCoordinateInput_TextChanged(object sender, EventArgs e)
         {
             if (selectedAtomIndex >= 0)
             {
                 try
                 {
-                    atoms[selectedAtomIndex].y = 750 - int.Parse(textBox3.Text);
+                    atoms[selectedAtomIndex].y = 750 - int.Parse(YCoordinateInput.Text);
                     atoms[selectedAtomIndex].createAtomElemCharges();
                     label4.Text = "";
                 }
@@ -1165,9 +1133,9 @@ namespace Phisic
                 {
                     label4.Text = "Error";
                 }
-                textBox11.Text = string.Format("{0}", atoms[selectedAtomIndex].x);
-                textBox10.Text = string.Format("{0}", 750 - atoms[selectedAtomIndex].y);
-                textBox13.Text = string.Format("{0}", atoms[selectedAtomIndex].charge);
+                XCoordinateOutput.Text = string.Format("{0}", atoms[selectedAtomIndex].x);
+                YCoordinateOutput.Text = string.Format("{0}", 750 - atoms[selectedAtomIndex].y);
+                ChargeModuleOutput.Text = string.Format("{0}", atoms[selectedAtomIndex].charge);
             }
             RenderPicture();
         }
@@ -1177,7 +1145,7 @@ namespace Phisic
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void button7_Click(object sender, EventArgs e)
+        private void DeselectButton_Click(object sender, EventArgs e)
         {
             selectedAtomIndex = -1;
             RenderPicture();
@@ -1188,13 +1156,12 @@ namespace Phisic
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void checkBox2_CheckedChanged(object sender, EventArgs e)
+        private void ShowArrowsCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            isDrawingArrows = checkBox2.Checked;
+            isDrawingArrows = ShowArrowsCheckBox.Checked;
             RenderPicture();
         }
 
-        // TODO: записать толщины линии в енум
         /// <summary>
         /// Изменение толщины линии
         /// </summary>
@@ -1255,25 +1222,15 @@ namespace Phisic
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void checkBox3_CheckedChanged(object sender, EventArgs e)
+        private void ShowRareArrowsCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            areArrowsRare = checkBox3.Checked;
+            areArrowsRare = ShowRareArrowsCheckBox.Checked;
             if (!isDrawingArrows && areArrowsRare)
             {
                 isDrawingArrows = true;
-                checkBox2.Checked = true;
+                ShowArrowsCheckBox.Checked = true;
             }
             RenderPicture();
-        }
-
-        // TODO: not using
-        /// <summary>
-        /// Включить/выключить темную тему
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void blackThemeToolStripMenuItem_Click(object sender, EventArgs e)
-        {
         }
 
         /// <summary>
@@ -1281,21 +1238,10 @@ namespace Phisic
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void checkBox4_CheckedChanged(object sender, EventArgs e)
+        private void ShowTensityCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            isNeedToCountTension = checkBox4.Checked;
+            isNeedToCountTension = ShowTensityCheckBox.Checked;
             RenderPicture();
-        }
-
-        // TODO: not using
-        /// <summary>
-        /// (не используется)
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void fillToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
         }
 
         // TODO: исправить формат сохранения. В идеале на json
@@ -1441,9 +1387,9 @@ namespace Phisic
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void checkBox5_CheckedChanged(object sender, EventArgs e)
+        private void ShowE0CheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            isCountingZeroTension = checkBox5.Checked;
+            isCountingZeroTension = ShowE0CheckBox.Checked;
             RenderPicture();
         }
 
@@ -1472,57 +1418,10 @@ namespace Phisic
             }
         }
 
-        // TODO: not using
-        private void label11_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label10_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label9_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox4_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox5_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void openFileDialog1_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-
-        }
-
-        private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
-        {
-
-        }
-
         // TODO: исправить название функции
-        private void векторПоляToolStripMenuItem_Click(object sender, EventArgs e)
+        private void TensityVectorToolStripMenuItem_Click(object sender, EventArgs e)
         {
             currentTypeOfFunction = Type.TensityVector;
-        }
-
-        // TODO: not using
-        private void textBox15_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox14_TextChanged(object sender, EventArgs e)
-        {
-
         }
     }
 
