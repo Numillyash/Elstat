@@ -216,9 +216,9 @@ namespace Phisic
                     float inaccuracy;
                     if (minDistanceToAtom < 100)
                         inaccuracy = 1;
-                    else if (minDistanceToAtom < 250)
-                        inaccuracy = 2;
                     else if (minDistanceToAtom < 500)
+                        inaccuracy = 2;
+                    else if (minDistanceToAtom < 1000)
                         inaccuracy = 5;
                     else 
                         inaccuracy = 10;
@@ -258,7 +258,7 @@ namespace Phisic
         static private void AtomPhisicsThread(Object obj)
         {
             Atom at = (Atom)obj;
-            int iterationsNumber = 2500;
+            int iterationsNumber = 1500;
             Stopwatch stopWatch = new Stopwatch();
             stopWatch.Start();
             at.allLinesToElems = new List<Tuple<List<PointF>, List<PointF>>> { };
@@ -346,14 +346,13 @@ namespace Phisic
             if (isNeedToCountTension)
             {
                 Color currentColor;
-                for (int x = 0; x < 800; x += 1)
+                for (int x = 0; x < 750; x += 1)
                 {
-                    for (int y = 0; y < 800; y += 1)
+                    for (int y = 0; y < 750; y += 1)
                     {
                         ElementaryCharge el = new ElementaryCharge(x, y, false);
 
                         Vector2 newPosition = new Vector2();
-                        // TODO: засечь время здесь и посчитать что долгое
                         foreach (Atom at in atoms)
                         {
                             newPosition += at.getForceInPosition(el, out double per);
@@ -572,7 +571,7 @@ namespace Phisic
             Stopwatch stopWatch = new Stopwatch();
             stopWatch.Start();
 
-            Refresh();
+            pictureBox1.Refresh();
 
             stopWatch.Stop();
             TimeSpan ts = stopWatch.Elapsed;
@@ -1320,11 +1319,12 @@ namespace Phisic
         /// <returns>Итоговый вектор силы</returns>
         public Vector2 getForceInPosition(ElementaryCharge el, out double distanceToAtom)
         {
-            double quadDistanceToAtom = (el.x - x) * (el.x - x) + (el.y - y) * (el.y - y);
+            double deltaX = (double)(el.x - x), deltaY = (double)(el.y - y);
+            double quadDistanceToAtom = deltaX * deltaX + deltaY * deltaY;
             // расстояние до атома
             distanceToAtom = Math.Sqrt(quadDistanceToAtom);
             // Единичный вектор напрвления "атом - электрон"
-            Vector2 unitForceVector = new Vector2((double)(el.x - x) / distanceToAtom, (double)(el.y - y) / distanceToAtom);
+            Vector2 unitForceVector = new Vector2(deltaX / distanceToAtom, deltaY / distanceToAtom);
             // Сила: заряд атома * заряд электрона * коеффицент / расстояние^2
             double force = proportionalCoefficent * el.charge * charge / quadDistanceToAtom;
 

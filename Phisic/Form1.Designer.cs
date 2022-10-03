@@ -35,7 +35,6 @@
             this.plusToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.minusToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.nullChargeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.elcToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.moveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.TensityVectorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.clearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -129,7 +128,6 @@
             this.plusToolStripMenuItem,
             this.minusToolStripMenuItem,
             this.nullChargeToolStripMenuItem,
-            this.elcToolStripMenuItem,
             this.moveToolStripMenuItem,
             this.TensityVectorToolStripMenuItem});
             this.лууToolStripMenuItem.Name = "лууToolStripMenuItem";
@@ -139,40 +137,35 @@
             // plusToolStripMenuItem
             // 
             this.plusToolStripMenuItem.Name = "plusToolStripMenuItem";
-            this.plusToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
+            this.plusToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.plusToolStripMenuItem.Text = "Положительный";
             this.plusToolStripMenuItem.Click += new System.EventHandler(this.plusToolStripMenuItem_Click);
             // 
             // minusToolStripMenuItem
             // 
             this.minusToolStripMenuItem.Name = "minusToolStripMenuItem";
-            this.minusToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
+            this.minusToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.minusToolStripMenuItem.Text = "Отрицательный";
             this.minusToolStripMenuItem.Click += new System.EventHandler(this.minusToolStripMenuItem_Click);
             // 
             // nullChargeToolStripMenuItem
             // 
             this.nullChargeToolStripMenuItem.Name = "nullChargeToolStripMenuItem";
-            this.nullChargeToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
+            this.nullChargeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.nullChargeToolStripMenuItem.Text = "Нейтральный";
             this.nullChargeToolStripMenuItem.Click += new System.EventHandler(this.nullChargeToolStripMenuItem_Click);
-            // 
-            // elcToolStripMenuItem
-            // 
-            this.elcToolStripMenuItem.Name = "elcToolStripMenuItem";
-            this.elcToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
             // 
             // moveToolStripMenuItem
             // 
             this.moveToolStripMenuItem.Name = "moveToolStripMenuItem";
-            this.moveToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
+            this.moveToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.moveToolStripMenuItem.Text = "Изменение";
             this.moveToolStripMenuItem.Click += new System.EventHandler(this.moveToolStripMenuItem_Click);
             // 
             // TensityVectorToolStripMenuItem
             // 
             this.TensityVectorToolStripMenuItem.Name = "TensityVectorToolStripMenuItem";
-            this.TensityVectorToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
+            this.TensityVectorToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.TensityVectorToolStripMenuItem.Text = "Вектор поля";
             this.TensityVectorToolStripMenuItem.Click += new System.EventHandler(this.TensityVectorToolStripMenuItem_Click);
             // 
@@ -422,24 +415,28 @@
             // 
             // ShowArrowsCheckBox
             // 
-            this.ShowArrowsCheckBox.Location = new System.Drawing.Point(770, 648);
+            this.ShowArrowsCheckBox.Enabled = false;
+            this.ShowArrowsCheckBox.Location = new System.Drawing.Point(770, 596);
             this.ShowArrowsCheckBox.Name = "ShowArrowsCheckBox";
             this.ShowArrowsCheckBox.Size = new System.Drawing.Size(112, 20);
             this.ShowArrowsCheckBox.TabIndex = 24;
             this.ShowArrowsCheckBox.Text = "Стрелки";
             this.ShowArrowsCheckBox.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.ShowArrowsCheckBox.UseVisualStyleBackColor = true;
+            this.ShowArrowsCheckBox.Visible = false;
             this.ShowArrowsCheckBox.CheckedChanged += new System.EventHandler(this.ShowArrowsCheckBox_CheckedChanged);
             // 
             // ShowRareArrowsCheckBox
             // 
-            this.ShowRareArrowsCheckBox.Location = new System.Drawing.Point(770, 622);
+            this.ShowRareArrowsCheckBox.Enabled = false;
+            this.ShowRareArrowsCheckBox.Location = new System.Drawing.Point(770, 570);
             this.ShowRareArrowsCheckBox.Name = "ShowRareArrowsCheckBox";
             this.ShowRareArrowsCheckBox.Size = new System.Drawing.Size(112, 20);
             this.ShowRareArrowsCheckBox.TabIndex = 25;
             this.ShowRareArrowsCheckBox.Text = "Редкие стрелки";
             this.ShowRareArrowsCheckBox.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.ShowRareArrowsCheckBox.UseVisualStyleBackColor = true;
+            this.ShowRareArrowsCheckBox.Visible = false;
             this.ShowRareArrowsCheckBox.CheckedChanged += new System.EventHandler(this.ShowRareArrowsCheckBox_CheckedChanged);
             // 
             // linkLabel1
@@ -454,7 +451,7 @@
             // 
             // ShowTensityCheckBox
             // 
-            this.ShowTensityCheckBox.Location = new System.Drawing.Point(770, 596);
+            this.ShowTensityCheckBox.Location = new System.Drawing.Point(770, 648);
             this.ShowTensityCheckBox.Name = "ShowTensityCheckBox";
             this.ShowTensityCheckBox.Size = new System.Drawing.Size(112, 20);
             this.ShowTensityCheckBox.TabIndex = 27;
@@ -469,13 +466,15 @@
             // 
             // ShowE0CheckBox
             // 
-            this.ShowE0CheckBox.Location = new System.Drawing.Point(770, 570);
+            this.ShowE0CheckBox.Enabled = false;
+            this.ShowE0CheckBox.Location = new System.Drawing.Point(770, 622);
             this.ShowE0CheckBox.Name = "ShowE0CheckBox";
             this.ShowE0CheckBox.Size = new System.Drawing.Size(112, 20);
             this.ShowE0CheckBox.TabIndex = 28;
             this.ShowE0CheckBox.Text = "Show E = 0";
             this.ShowE0CheckBox.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.ShowE0CheckBox.UseVisualStyleBackColor = true;
+            this.ShowE0CheckBox.Visible = false;
             this.ShowE0CheckBox.CheckedChanged += new System.EventHandler(this.ShowE0CheckBox_CheckedChanged);
             // 
             // ConstChargeInputText
@@ -636,7 +635,7 @@
             this.Name = "Form1";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Симуляция силовых линий электростатического поля v3.2";
+            this.Text = "Симуляция силовых линий электростатического поля v4.0";
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.menuStrip1.ResumeLayout(false);
@@ -653,7 +652,6 @@
         private System.Windows.Forms.ToolStripMenuItem лууToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem plusToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem minusToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem elcToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem clearToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem fillToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem Fill_Multyple;
