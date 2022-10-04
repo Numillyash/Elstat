@@ -36,7 +36,7 @@
     <ApplicationIcon>spider2.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestCertificateThumbprint>3E71CBB561FC404D8B19BE23F01D84D4623F27F4</ManifestCertificateThumbprint>
@@ -44,19 +44,10 @@
   <PropertyGroup>
     <ManifestKeyFile>Phisic_1_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
+  <PropertyGroup>
+    <NoWin32Manifest>true</NoWin32Manifest>
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="OpenTK, Version=3.3.3.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
-      <HintPath>..\packages\OpenTK.3.3.3\lib\net20\OpenTK.dll</HintPath>
-    </Reference>
-    <Reference Include="SharpGL, Version=3.1.1.0, Culture=neutral, PublicKeyToken=27fc851303210b27, processorArchitecture=MSIL">
-      <HintPath>..\packages\SharpGL.3.1.1\lib\net472\SharpGL.dll</HintPath>
-    </Reference>
-    <Reference Include="SharpGL.SceneGraph, Version=3.1.1.0, Culture=neutral, PublicKeyToken=27fc851303210b27, processorArchitecture=MSIL">
-      <HintPath>..\packages\SharpGL.SceneGraph.3.1.1\lib\net472\SharpGL.SceneGraph.dll</HintPath>
-    </Reference>
-    <Reference Include="SharpGL.WinForms, Version=3.1.1.0, Culture=neutral, PublicKeyToken=27fc851303210b27, processorArchitecture=MSIL">
-      <HintPath>..\packages\SharpGL.WinForms.3.1.1\lib\net472\SharpGL.WinForms.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Design" />
@@ -104,9 +95,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <None Include="OpenTK.dll.config" />
     <None Include="packages.config" />
-    <None Include="Phisic_1_TemporaryKey.pfx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -122,8 +111,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Alice.ico" />
-    <Content Include="SharpGL.ico" />
-    <Content Include="SharpGL.png" />
     <Content Include="spider2.ico" />
     <Content Include="Без имени.ico" />
   </ItemGroup>
